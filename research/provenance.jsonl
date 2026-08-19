@@ -1,0 +1,1 @@
+{"command":"uv run --locked python scripts/validate_research_state.py --strict","dirty_worktree":true,"operation":"research-validation","relevant_paths":["research/claims/ledger.yaml","research/STATE.md"],"success":true,"timestamp":"2026-08-19T10:38:40Z","tool":"validate_research_state"}

@@ -1,0 +1,42 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+
+# OpenCode/Bun dependencies
+.opencode/node_modules/
+node_modules/
+
+# Editors and operating systems
+.DS_Store
+*.swp
+*.tmp
+
+# Local credentials and machine-specific settings
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.pfx
+credentials*.json
+
+# Raw experiment data is normally external or reproducible. Keep its manifest.
+research/experiments/*/raw/*
+!research/experiments/*/raw/README.md
+
+# Common large local scientific artifacts
+data/
+scratch/
+*.h5
+*.hdf5
+*.zarr/
+*.npy
+*.npz
+*.nc
+*.parquet
+*.ckpt

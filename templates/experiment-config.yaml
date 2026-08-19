@@ -1,0 +1,16 @@
+schema_version: 1
+experiment_id: "{{EXPERIMENT_ID}}"
+claims: {{CLAIMS_JSON}}
+title: >-
+  {{TITLE}}
+method: >-
+  {{METHOD}}
+parameters: {}
+random_seeds: []
+inputs: []
+solver:
+  tolerances: {}
+  precision: null
+convergence:
+  planned: false
+  criteria: []

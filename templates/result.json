@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "experiment_id": null,
+  "title": null,
+  "claims": [],
+  "git_commit": null,
+  "dirty_worktree": null,
+  "command": null,
+  "config_sha256": null,
+  "started_at": null,
+  "completed_at": null,
+  "environment": {},
+  "parameters": {},
+  "random_seeds": [],
+  "results": {},
+  "checks": {
+    "completed": false,
+    "convergence": null,
+    "independent_seed": null,
+    "known_limit": null,
+    "precision": null
+  },
+  "artifacts": [],
+  "notes": "No calculation has been run."
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "research-director",
+  "instructions": [
+    "AGENTS.md"
+  ],
+  "share": "disabled",
+  "autoupdate": "notify",
+  "subagent_depth": 1,
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "tail_turns": 10
+  }
+}
