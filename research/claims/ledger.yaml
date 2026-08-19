@@ -1,2 +1,232 @@
 schema_version: 1
-claims: []
+claims:
+  - id: C001
+    claim: >-
+      For a declared controlled class of Lorentzian circle-collapse configurations with only d=4 and d=5 regular open strata, there exists an intrinsic generalized-space state description in which local dimension, differential/integration data, causal curves, and a topology on configuration space are defined, and every designated physical observable is invariant under all resolution morphisms declared to represent the same physical configuration.
+    status: conjecture
+    importance: critical
+    hypotheses: [H001, H002, H003]
+    assumptions:
+      - The transition is restricted to a controlled spacelike-circle collapse with one persistent timelike direction.
+      - The admissible regularity class, morphisms, and set of designated observables are fixed before testing invariance.
+      - A finite amount of transition control data is allowed.
+    evidence:
+      derivations: []
+      experiments: []
+      literature: []
+      verification: []
+    checks:
+      dimensional_analysis: not-applicable
+      limiting_cases: pending
+      independent_verification: pending
+      numerical_reproduction: not-applicable
+    dependencies: []
+    conflicts: []
+    created_at: "2026-08-19T10:57:00Z"
+    updated_at: "2026-08-19T10:57:00Z"
+
+  - id: C002
+    claim: >-
+      On at least one state space satisfying C001, there exists a local Lorentz- and diffeomorphism-covariant first-order action for d in {4,5} that is defined without an inverse coframe at rank change, has a differentiable first variation under all declared bulk and transition-displacement variations, and yields both bulk and transition equations without separately imposed matching conditions.
+    status: conjecture
+    importance: critical
+    hypotheses: [H001, H002, H003]
+    assumptions:
+      - Locality means dependence on finitely many fields and derivatives on strata plus finite transition data.
+      - The action may contain required boundary, corner, incidence, or transgression terms.
+      - The nondegenerate limits are the declared four- and five-dimensional first-order gravity theories.
+    evidence:
+      derivations: []
+      experiments: []
+      literature: []
+      verification: []
+    checks:
+      dimensional_analysis: pending
+      limiting_cases: pending
+      independent_verification: pending
+      numerical_reproduction: not-applicable
+    dependencies: [C001]
+    conflicts: []
+    created_at: "2026-08-19T10:57:00Z"
+    updated_at: "2026-08-19T10:57:00Z"
+
+  - id: C003
+    claim: >-
+      At least one action satisfying C002 has a planar or regular-polar circle-collapse background for which the complete linearized Dirac system has a regular branchwise constraint classification and compatible transition constraints defining a deterministic global reduced phase space with no arbitrary nongauge functions, while the gauge-fixed initial-transition problem is strongly hyperbolic and the reduced quadratic kinetic form has no negative eigenvalue.
+    status: conjecture
+    importance: critical
+    hypotheses: [H001, H002, H003]
+    assumptions:
+      - The background and perturbation regularity class include all physical interface and coframe/connection modes.
+      - Gauge and constraint modes are removed before assessing kinetic signs.
+      - Strong hyperbolicity is tested on each stratum and with compatible transition conditions, not inferred from static equations.
+    evidence:
+      derivations: []
+      experiments: []
+      literature: []
+      verification: []
+    checks:
+      dimensional_analysis: pending
+      limiting_cases: pending
+      independent_verification: pending
+      numerical_reproduction: pending
+    dependencies: [C001, C002]
+    conflicts: []
+    created_at: "2026-08-19T10:57:00Z"
+    updated_at: "2026-08-19T11:12:00Z"
+
+  - id: C004
+    claim: >-
+      In the fully defined admissible configuration spaces of a stable Q=1 Hopf-framed dimensional defect, inclusion of the based Hopf-map sector sends its nontrivial pi_1 element injectively into the one-defect space, and in the two-unit-defect space a physical 2pi rotation of one defect and exchange of the two defects represent the same nontrivial order-two loop even when core overlap and all allowed rank-changing histories are admitted.
+    status: conjecture
+    importance: critical
+    hypotheses: [H004, H005]
+    assumptions:
+      - A stable localized defect and full admissible one- and two-defect configuration spaces have been defined.
+      - Hopf charge and framing remain meaningful under every admitted overlap and rank-changing history.
+      - Gauge transformations and labeling/permutation quotients are included in the physical configuration spaces.
+    evidence:
+      derivations: []
+      experiments: []
+      literature: []
+      verification:
+        - research/results/verification/C004-2026-08-19.md
+    checks:
+      dimensional_analysis: not-applicable
+      limiting_cases: pending
+      independent_verification: inconclusive
+      numerical_reproduction: not-applicable
+    dependencies: [C001, C002, C003]
+    conflicts: []
+    created_at: "2026-08-19T10:57:00Z"
+    updated_at: "2026-08-19T11:05:00Z"
+
+  - id: C005
+    claim: >-
+      For the microscopic theory and configuration spaces in C004, restriction to a conserved odd opened-fiber momentum k uniquely induces a quantum line bundle whose holonomy is -1 on the common nontrivial rotation/exchange loop, so the fermionic Finkelstein-Rubinstein character is fixed by the action and constraints rather than chosen independently; the lowest allowed spatial-rotation multiplet at |k|=1 has j=1/2.
+    status: conjecture
+    importance: critical
+    hypotheses: [H004, H005]
+    assumptions:
+      - A globally valid fiber bundle/collective coordinate and conserved integer k exist in the defect sector.
+      - The collective-coordinate reduction includes all Berry and topological terms and is valid below noncollective excitations.
+      - No additional compatible flat line-bundle twist remains after imposing microscopic constraints and regularity.
+    evidence:
+      derivations: []
+      experiments: []
+      literature: []
+      verification: []
+    checks:
+      dimensional_analysis: pending
+      limiting_cases: pending
+      independent_verification: pending
+      numerical_reproduction: not-applicable
+    dependencies: [C002, C004]
+    conflicts: []
+    created_at: "2026-08-19T10:57:00Z"
+    updated_at: "2026-08-19T10:57:00Z"
+
+  - id: C006
+    claim: >-
+      At least one action passing C001-C003 admits an asymptotically flat, finite-ADM-mass, timelike-world-tube solution with a Q=1 Hopf-framed exactly d=5 core and exactly d=4 exterior, and its complete gauge-reduced linear fluctuation spectrum contains no mode with negative kinetic norm or exponentially growing frequency.
+    status: conjecture
+    importance: critical
+    hypotheses: [H001, H002, H003, H004]
+    assumptions:
+      - The continuum solution scale is parametrically larger than the ultraviolet cutoff length.
+      - Exact exterior collapse and finite ADM mass are imposed as boundary conditions derived from the action.
+      - The fluctuation basis includes nonspherical, framing, torsional, interface, merger/fragmentation, and rank-changing modes permitted by the theory.
+    evidence:
+      derivations: []
+      experiments: []
+      literature: []
+      verification: []
+    checks:
+      dimensional_analysis: pending
+      limiting_cases: pending
+      independent_verification: pending
+      numerical_reproduction: pending
+    dependencies: [C001, C002, C003]
+    conflicts: []
+    created_at: "2026-08-19T10:57:00Z"
+    updated_at: "2026-08-19T10:57:00Z"
+
+  - id: C007
+    claim: >-
+      For the local quotient X=[U x (-epsilon,epsilon) x S1]/~ that identifies each full circle exactly when s<=0, the two flat-profile maps F_i=(u,s,rho_i cos(theta),rho_i sin(theta)) with rho_1=ell exp[-(L/s)^2] and rho_2=ell exp[-(L/s)^4] on s>0 and zero otherwise induce homeomorphisms onto their horn images; X has regular strata of dimensions five and four and a three-dimensional interface, a neighborhood in X of each interface point is locally homeomorphic to R^{1,2} x C(S1 disjoint_union point), and there the local covering dimension is five, quotient-algebra derivation dimension is four, and ambient-embedding derivation dimension is six.
+    status: derived
+    importance: high
+    hypotheses: [H001, H002, H003]
+    assumptions:
+      - U is an open three-coordinate slab with one designated timelike coordinate and s is spacelike.
+      - The quotient topology, final quotient smooth algebra, and locally ambient-extendible horn algebras are exactly those defined in D002.
+      - Both collapse profiles are C-infinity flat and the comparison uses the canonical homeomorphism preserving u, s, and the core circle label.
+    evidence:
+      derivations: [D002]
+      experiments: []
+      literature: []
+      verification:
+        - research/results/verification/C007-2026-08-19.md
+    checks:
+      dimensional_analysis: not-applicable
+      limiting_cases: passed
+      independent_verification: inconclusive
+      numerical_reproduction: not-applicable
+    dependencies: []
+    conflicts: []
+    created_at: "2026-08-19T13:34:00Z"
+    updated_at: "2026-08-19T13:54:00Z"
+
+  - id: C008
+    claim: >-
+      For the benchmark in C007, the smooth-function algebras transported to the common topological quotient obey C_infinity,2 strictly contained in C_infinity,1 strictly contained in C_infinity,q; the canonical horn homeomorphism from profile rho_1 to rho_2 is smooth, but its inverse has no locally ambient C1 extension and fails the ambient-subdiffeology plot test, so the two embedding-induced differential spaces are not diffeomorphic under this canonical comparison.
+    status: derived
+    importance: high
+    hypotheses: [H001, H002, H003]
+    assumptions:
+      - Smooth horn functions are restrictions of ambient C-infinity functions, and the nonsmooth inverse is also tested with the ambient sub-diffeologies.
+      - The canonical comparison preserves the base normal coordinate and circle label rather than allowing an arbitrary abstract horn homeomorphism.
+      - The asymptotic profile ordering rho_2/rho_1 -> 0 is used only after shrinking toward s=0 from the core.
+    evidence:
+      derivations: [D002]
+      experiments: []
+      literature: []
+      verification:
+        - research/results/verification/C008-2026-08-19.md
+    checks:
+      dimensional_analysis: not-applicable
+      limiting_cases: passed
+      independent_verification: inconclusive
+      numerical_reproduction: not-applicable
+    dependencies: [C007]
+    conflicts: []
+    created_at: "2026-08-19T13:34:00Z"
+    updated_at: "2026-08-19T13:54:00Z"
+
+  - id: C009
+    claim: >-
+      For the quotient-form equalizer and connection choices defined in the C007 benchmark, dtheta+A does not descend, whereas rho_i(dtheta+A), horizontal A, F=dA, and horizontal theta-independent mixed connection components do descend; if an Ehresmann or independent SO(1,4) connection is retained on the nondegenerate rank-four exterior, ordinary U(1) or Lorentz gauge cannot map the displayed nonzero F or coframe-relative mixed curvature to zero, while a coframe-only state omits those independent data, an explicitly enlarged exterior-forgetful equivalence discards them, and future equations or boundary conditions could exclude them.
+    status: derived
+    importance: critical
+    hypotheses: [H001, H002, H003]
+    assumptions:
+      - Quotient forms are defined by the kernel-pair equalizer in D002 with the fiber-product diffeology.
+      - A is smooth, horizontal, and theta-independent; mixed connection components are assessed in the declared horizontal theta-independent sector.
+      - Ordinary gauge means the explicit vertical U(1) action or local SO(1,4) frame action, not the separately defined exterior-forgetful relation.
+      - No claim is made that independent connection data must be included in a coframe-only physical state.
+      - The coframe-relative mixed projection uses the internal unit normal to the nondegenerate rank-four exterior image and is not asserted on the intrinsic rank-three interface tangent.
+    evidence:
+      derivations: [D002]
+      experiments: []
+      literature: []
+      verification:
+        - research/results/verification/C009-2026-08-19.md
+    checks:
+      dimensional_analysis: passed
+      limiting_cases: passed
+      independent_verification: inconclusive
+      numerical_reproduction: not-applicable
+    dependencies: [C007]
+    conflicts: []
+    created_at: "2026-08-19T13:34:00Z"
+    updated_at: "2026-08-19T13:54:00Z"
