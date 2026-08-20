@@ -2,7 +2,6 @@
 description: Finds and evaluates primary scientific sources, citation chains, exact evidence, regimes, and contradictions. Use for focused literature questions and evidence packets.
 mode: subagent
 color: info
-steps: 24
 permission:
   "*": deny
   read:

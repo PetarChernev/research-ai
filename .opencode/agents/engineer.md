@@ -2,7 +2,6 @@
 description: Builds, tests, documents, and maintains research-specific software and execution environments from a computational contract supplied by Scientific Computation. Use only when the computational substrate must be created, extended, repaired, or materially changed.
 mode: subagent
 color: info
-steps: 32
 permission:
   "*": deny
   read:

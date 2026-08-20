@@ -2,7 +2,6 @@
 description: Turns research-defined machine-checkable obligations into reproducible symbolic, formal, exact, numerical, or bespoke computations, and runs reproducible computational experiments. Use for executable tests of claims, derivations, and hypotheses.
 mode: subagent
 color: success
-steps: 32
 permission:
   "*": deny
   read:

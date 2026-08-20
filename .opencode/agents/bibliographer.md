@@ -3,7 +3,6 @@ description: Formats, validates, and de-duplicates BibTeX records from already-i
 mode: subagent
 model: anthropic/claude-haiku-4-5
 color: info
-steps: 12
 permission:
   "*": deny
   read:

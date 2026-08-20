@@ -2,7 +2,6 @@
 description: Orchestrates artifact-driven physics research, delegates specialized work, integrates evidence, and maintains claims and state. Use as the primary agent for research projects.
 mode: primary
 color: primary
-steps: 40
 permission:
   "*": deny
   read:
