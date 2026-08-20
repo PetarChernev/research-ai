@@ -167,6 +167,7 @@ claims:
       literature: []
       verification:
         - research/results/verification/C007-2026-08-19.md
+        - research/results/verification/C007-2026-08-19-anthropic-r2.md
     checks:
       dimensional_analysis: not-applicable
       limiting_cases: passed
@@ -175,12 +176,12 @@ claims:
     dependencies: []
     conflicts: []
     created_at: "2026-08-19T13:34:00Z"
-    updated_at: "2026-08-19T13:54:00Z"
+    updated_at: "2026-08-19T16:36:00Z"
 
   - id: C008
     claim: >-
       For the benchmark in C007, the smooth-function algebras transported to the common topological quotient obey C_infinity,2 strictly contained in C_infinity,1 strictly contained in C_infinity,q; the canonical horn homeomorphism from profile rho_1 to rho_2 is smooth, but its inverse has no locally ambient C1 extension and fails the ambient-subdiffeology plot test, so the two embedding-induced differential spaces are not diffeomorphic under this canonical comparison.
-    status: derived
+    status: verified
     importance: high
     hypotheses: [H001, H002, H003]
     assumptions:
@@ -193,20 +194,21 @@ claims:
       literature: []
       verification:
         - research/results/verification/C008-2026-08-19.md
+        - research/results/verification/C008-2026-08-19-anthropic-r2.md
     checks:
       dimensional_analysis: not-applicable
       limiting_cases: passed
-      independent_verification: inconclusive
+      independent_verification: passed
       numerical_reproduction: not-applicable
     dependencies: [C007]
     conflicts: []
     created_at: "2026-08-19T13:34:00Z"
-    updated_at: "2026-08-19T13:54:00Z"
+    updated_at: "2026-08-19T16:36:00Z"
 
   - id: C009
     claim: >-
       For the quotient-form equalizer and connection choices defined in the C007 benchmark, dtheta+A does not descend, whereas rho_i(dtheta+A), horizontal A, F=dA, and horizontal theta-independent mixed connection components do descend; if an Ehresmann or independent SO(1,4) connection is retained on the nondegenerate rank-four exterior, ordinary U(1) or Lorentz gauge cannot map the displayed nonzero F or coframe-relative mixed curvature to zero, while a coframe-only state omits those independent data, an explicitly enlarged exterior-forgetful equivalence discards them, and future equations or boundary conditions could exclude them.
-    status: derived
+    status: verified
     importance: critical
     hypotheses: [H001, H002, H003]
     assumptions:
@@ -221,12 +223,167 @@ claims:
       literature: []
       verification:
         - research/results/verification/C009-2026-08-19.md
+        - research/results/verification/C009-2026-08-19-anthropic-r2.md
     checks:
       dimensional_analysis: passed
       limiting_cases: passed
-      independent_verification: inconclusive
+      independent_verification: passed
       numerical_reproduction: not-applicable
     dependencies: [C007]
     conflicts: []
     created_at: "2026-08-19T13:34:00Z"
-    updated_at: "2026-08-19T13:54:00Z"
+    updated_at: "2026-08-19T16:36:00Z"
+
+  - id: C010
+    claim: >-
+      On the D002 circle-collapse quotient with the final diffeology and C-infinity kernel-pair equalizer, every compactly supported descended four-form has zero trace on the resolved core boundary Sigma x S1 and therefore zero ordinary or normalized-Haar fiber pushforward to Sigma; with the declared orientations, the general resolved Stokes incidence is the core fiber trace minus the exterior boundary trace, so regular descended forms provide no nonzero core-to-exterior Stokes flux.
+    status: derived
+    importance: critical
+    hypotheses: [H001, H002, H003]
+    assumptions:
+      - Forms are C-infinity members of the exact D002 quotient equalizer and extend smoothly to the resolved core closure.
+      - Test forms have compact support away from all outer slab boundaries.
+      - The core, exterior, interface, and circle orientations are those fixed in D003; normalized Haar means one over 2pi times ordinary circle integration.
+      - Singular, polyhomogeneous, finite-regularity, distributional, and independent blow-up boundary forms are excluded.
+    evidence:
+      derivations: [D003]
+      experiments: []
+      literature: []
+      verification: []
+    checks:
+      dimensional_analysis: passed
+      limiting_cases: passed
+      independent_verification: pending
+      numerical_reproduction: not-applicable
+    dependencies: [C007, C009]
+    conflicts: []
+    created_at: "2026-08-19T15:00:00Z"
+    updated_at: "2026-08-19T15:00:00Z"
+
+  - id: C011
+    claim: >-
+      For the D002 benchmark, the bare final diffeology selects no nonzero integration measure, relative stratum weights, or nontrivial collapsed-fiber incidence trace: the two coframe-volume pushforwards are respectively proportional to rho_1 and rho_2, normalized Haar integration is profile-independent only after retaining a marked oriented circle fibration and supplies neither the other stratum measures nor a nonzero regular boundary trace, while a coupled 5D/4D/3D stratified functional requires additional orientations, currents, weights, incidence maps, interface density, and generalized trace data.
+    status: derived
+    importance: critical
+    hypotheses: [H001, H002, H003]
+    assumptions:
+      - Canonical means natural from the unmarked final diffeology, without a selected coframe, density, orientation, fibration, fundamental current, or interface field.
+      - The two profiles are treated either as distinct physical coframes or, conditionally, as alternative resolutions of one bare quotient; these interpretations are not conflated.
+      - The candidate stratified functional uses independent top-degree forms on the 5D, 4D, and 3D strata rather than one homogeneous form of changing degree.
+    evidence:
+      derivations: [D003]
+      experiments: []
+      literature: []
+      verification: []
+    checks:
+      dimensional_analysis: passed
+      limiting_cases: passed
+      independent_verification: pending
+      numerical_reproduction: not-applicable
+    dependencies: [C007, C008, C010]
+    conflicts: []
+    created_at: "2026-08-19T15:00:00Z"
+    updated_at: "2026-08-19T15:00:00Z"
+
+  - id: C012
+    claim: >-
+      For the fixed D002/D003 interface with five- and four-dimensional bare Einstein-Cartan/Palatini actions and tangent variations in the smooth quotient-equalizer class, the ordinary and normalized-circle pushforwards of the five-dimensional presymplectic boundary potential vanish: the E4 channel contains rho(0)=0 and the mixed-connection channel requires a vertical variation coefficient that is zero and flat at the interface, whereas the four-dimensional Palatini boundary potential is generically nonzero; consequently the bare summed action has an uncancelled exterior boundary variation under free regular connection variations.
+    status: derived
+    importance: critical
+    hypotheses: [H001, H002, H003]
+    assumptions:
+      - The interface is fixed and timelike; outer and corner variations are excluded by compact support.
+      - Coframes, tangent connection variations, and any curvature used in the Lovelock extension obey the smooth D002 equalizer.
+      - The actions, ordered antisymmetric-index convention, orientations, and couplings are exactly those in D004.
+      - The extension to polynomial Lovelock bulk terms applies only when the complete potential is a regular descended four-form; boundary, transgression, singular, and independent blow-up terms are excluded.
+    evidence:
+      derivations: [D004]
+      experiments: []
+      literature: []
+      verification: []
+    checks:
+      dimensional_analysis: passed
+      limiting_cases: passed
+      independent_verification: pending
+      numerical_reproduction: not-applicable
+    dependencies: [C009, C010]
+    conflicts: []
+    created_at: "2026-08-19T16:35:00Z"
+    updated_at: "2026-08-19T16:35:00Z"
+
+  - id: C013
+    claim: >-
+      For the fixed-interface Palatini benchmark of C012, fixing the relevant boundary variations or changing polarization makes the action differentiable but yields no transition equation; a regular horizontal interface action can supply surface equations but a pure multiplier equating persistent coframes and connections forces the nonzero exterior Palatini momentum to vanish and is incompatible with a nondegenerate induced triad; a finite core momentum-matching equation can instead be written only after introducing a profile-normalized generalized trace or retained boundary-circle/edge data, together with an additional length normalization and extra domain, reference, or interface-field choices.
+    status: derived
+    importance: critical
+    hypotheses: [H001, H002, H003]
+    assumptions:
+      - Only the three completion classes explicitly varied in D004 are classified; no exhaustive theorem over all boundary actions is claimed.
+      - The regular interface Lagrangian is horizontal and local on Sigma after an explicit identification of the persistent Lorentz subbundles.
+      - The profile-renormalized formulas hold on a fixed-profile divisible domain; the boundary-circle formulas retain the marked circle and reference or edge data.
+      - No moving-interface, Hamiltonian, hyperbolicity, positivity, or quantum claim is included.
+    evidence:
+      derivations: [D004]
+      experiments: []
+      literature: []
+      verification: []
+    checks:
+      dimensional_analysis: passed
+      limiting_cases: passed
+      independent_verification: pending
+      numerical_reproduction: not-applicable
+    dependencies: [C011, C012]
+    conflicts: []
+    created_at: "2026-08-19T16:35:00Z"
+    updated_at: "2026-08-19T16:35:00Z"
+
+  - id: C014
+    claim: >-
+      In the fixed-interface persistent sector of D005, the desired finite core connection momentum one-form proportional to the integral over Sigma x S1 of epsilon_abcd delta(omega_+^{ab}) wedge e_+^c wedge e_+^d wedge eta is not closed on field space when the coframe or vertical normalization of eta is freely varied, and therefore is not by itself the variation of an action; the gauge-covariant primitive using a tensorial difference of two dressed connections is integrable only together with its compulsory coframe, reference/edge, and unconstrained-eta companion variations.
+    status: derived
+    importance: critical
+    hypotheses: [H001, H002, H003]
+    assumptions:
+      - The interface, marked circle, basic persistent fields, bundle isomorphism, and variation classes are exactly those in D005.
+      - Field-space variations commute and have compact support away from corners for the bulk integrability statement.
+      - The result concerns the displayed boundary-circle potential and primitive, not every possible interface action.
+    evidence:
+      derivations: [D005]
+      experiments: []
+      literature: []
+      verification: []
+    checks:
+      dimensional_analysis: passed
+      limiting_cases: passed
+      independent_verification: pending
+      numerical_reproduction: not-applicable
+    dependencies: [C012, C013]
+    conflicts: []
+    created_at: "2026-08-19T19:50:00Z"
+    updated_at: "2026-08-19T19:50:00Z"
+
+  - id: C015
+    claim: >-
+      For the complete fixed-interface gauge-covariant master action of D005, the reference-free choice that uses the matched dynamical exterior connection as the second connection forces the exterior Palatini momentum to vanish and reduces the induced coframe rank to at most one; separating a covariantly transforming fixed reference connection yields a nondegenerate branch with Q equal to the dressed exterior momentum and 2pi ell_*/kappa_5=1/kappa_4, but necessarily adds reference or edge data, a companion coframe equation that restricts without flattening the connection, and fixed vertical circle normalization, while a freely varied reference again forces degeneracy and a gauge-orbit reference instead carries an edge equation and possible charge.
+    status: derived
+    importance: critical
+    hypotheses: [H001, H002, H003]
+    assumptions:
+      - The core and exterior persistent SO(1,3) bundles are isomorphic at the fixed interface and are related by the varied edge field g.
+      - Fields are basic along a marked normalized circle, and mixed SO(1,4), nonbasic Kaluza-Klein, moving-interface, and corner sectors are excluded except for the displayed candidate corner moment maps.
+      - The master action and ordered-pair, orientation, ordinary-circle normalization conventions are exactly those in D005.
+      - The fixed reference transforms geometrically as connection data; freezing its coordinate coefficients without transformation would reduce gauge symmetry and is not covered by the positive branch.
+    evidence:
+      derivations: [D005]
+      experiments: []
+      literature: []
+      verification: []
+    checks:
+      dimensional_analysis: passed
+      limiting_cases: passed
+      independent_verification: pending
+      numerical_reproduction: pending
+    dependencies: [C013, C014]
+    conflicts: []
+    created_at: "2026-08-19T19:50:00Z"
+    updated_at: "2026-08-19T19:50:00Z"
