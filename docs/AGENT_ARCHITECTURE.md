@@ -35,7 +35,7 @@ The producer subagents and two model-bound verifier implementations use closed t
 - `theorist` writes only derivation artifacts, and exposes candidate machine-checkable obligations from substantial derivations.
 - `scientific-computation` chooses the computational representation and trust strategy, defines machine-check semantics and acceptance criteria, writes experiment and claim-specific obligation code, validates reusable infrastructure against the intended mathematics, and runs obligations through the deterministic wrapper. It cannot write `research/checks/**/result.json`.
 - `engineer` is a provisioned implementation subagent under `scientific-computation`, not a peer scientific role. It writes only reusable software and tests under `research/computation/` and research-scoped environment definitions under `research/environment/`, from a bounded computational contract. It cannot write claim checks, claims, state, decisions, canonical results, or verification reports.
-- `verifier-anthropic` runs `anthropic/claude-sonnet-4-6`, reads source evidence, and writes only verification reports for non-Anthropic work.
+- `verifier-anthropic` runs `anthropic/claude-opus-5`, reads source evidence, and writes only verification reports for non-Anthropic work.
 - `verifier-openai` runs `openai/gpt-5.6-sol`, reads source evidence, and writes only verification reports for non-OpenAI work.
 
 There is deliberately no separate global agent for symbolic algebra, formal proof, numerical simulation, PDEs, theorem proving, or code review. Those are methods the `scientific-computation` role uses when the research requires them, recorded in `research/COMPUTATION.md`. Adding a global agent per method would multiply roles without adding a materially different scientific operation.
@@ -144,20 +144,20 @@ Every agent's model is configured independently in its own file under `.opencode
 
 Current assignment:
 
-| Agent | Model | Rationale |
-| --- | --- | --- |
-| `research-director` | session model (unpinned) | Chosen at launch, so the operator can switch the director without editing files. |
-| `theorist` | `openai/gpt-5.6-sol` | Analytical derivation on a provider distinct from the default verifier. |
-| `literature` | session model (unpinned) | Source judgment benefits from a strong model; pin if determinism matters. |
-| `scientific-computation` | session model (unpinned) | Pin when experiment or obligation authorship requires a fixed model. |
-| `engineer` | session model (unpinned) | Implementation support; actual model remains material provenance for infrastructure it creates. |
-| `bibliographer` | `anthropic/claude-haiku-4-5` | Mechanical BibTeX formatting and identifier checking; no evidence judgment. |
-| `verifier-anthropic` | `anthropic/claude-sonnet-4-6` | Pinned to create a verification model boundary. |
-| `verifier-openai` | `openai/gpt-5.6-sol` | Pinned to create a verification model boundary. |
+| Agent                    | Model                        | Rationale                                                                                       |
+| ------------------------ | ---------------------------- | ----------------------------------------------------------------------------------------------- |
+| `research-director`      | session model (unpinned)     | Chosen at launch, so the operator can switch the director without editing files.                |
+| `theorist`               | `openai/gpt-5.6-sol`         | Analytical derivation on a provider distinct from the default verifier.                         |
+| `literature`             | session model (unpinned)     | Source judgment benefits from a strong model; pin if determinism matters.                       |
+| `scientific-computation` | session model (unpinned)     | Pin when experiment or obligation authorship requires a fixed model.                            |
+| `engineer`               | session model (unpinned)     | Implementation support; actual model remains material provenance for infrastructure it creates. |
+| `bibliographer`          | `anthropic/claude-haiku-4-5` | Mechanical BibTeX formatting and identifier checking; no evidence judgment.                     |
+| `verifier-anthropic`     | `anthropic/claude-opus-5`    | Pinned to create a verification model boundary.                                                 |
+| `verifier-openai`        | `openai/gpt-5.6-sol`         | Pinned to create a verification model boundary.                                                 |
 
 Verifier models are pinned deliberately: they encode a correctness constraint rather than a preference, and their identity is asserted in every report. Both providers therefore need valid credentials. To change a verification model, edit its agent frontmatter and update the documented and reported identity together.
 
-Two consequences follow from heterogeneous producers. First, provenance is no longer uniform, so verifier selection must be made per artifact from recorded model IDs rather than from the director's own model. Second, a producer sharing a model with a verifier makes that verifier ineligible for the affected claim; `theorist` on `openai/gpt-5.6-sol` already excludes `verifier-openai` from verifying theorist-authored work. Keep at least one verifier model unused by any producer so an eligible verifier always exists. With the table above, `anthropic/claude-sonnet-4-6` is reserved for verification only, which guarantees `verifier-anthropic` remains eligible provided the director is not launched on that exact model.
+Two consequences follow from heterogeneous producers. First, provenance is no longer uniform, so verifier selection must be made per artifact from recorded model IDs rather than from the director's own model. Second, a producer sharing a model with a verifier makes that verifier ineligible for the affected claim; `theorist` on `openai/gpt-5.6-sol` already excludes `verifier-openai` from verifying theorist-authored work. Keep at least one verifier model unused by any producer so an eligible verifier always exists. With the table above, `anthropic/claude-opus-5` is reserved for verification only, which guarantees `verifier-anthropic` remains eligible provided the director is not launched on that exact model.
 
 Computational evidence does not relax any of this. Deterministic execution removes the model from the *outcome*, not from the *design or implementation*: the assertion, representation, encoded assumptions, acceptance criterion, environment, and reusable kernel were still authored by models. Treat Scientific Computation and every material Engineer model as originating provenance for supported claims. Engineer does not need to be model-separated from the theorist, but its contribution can make a verifier model ineligible and can create correlated implementation risk.
 

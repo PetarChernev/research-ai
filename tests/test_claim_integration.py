@@ -18,7 +18,7 @@ claim_id: "C001"
 outcome: "verified"
 date: "2026-02-01"
 verifier: "verifier-anthropic"
-verifier_model: "anthropic/claude-sonnet-4-6"
+verifier_model: "anthropic/claude-opus-5"
 originating_models: ["openai/gpt-5.6-sol"]
 source_artifacts: ["research/claims/ledger.yaml"]
 ---
