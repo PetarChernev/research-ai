@@ -56,7 +56,7 @@ Work only in the resulting `research/experiments/ENNN/` directory. Fill `README.
 
 Record equations, discretization, solver, tolerances, precision, boundary/initial conditions, random seeds, input provenance, software versions, and hardware-sensitive choices. Define reference or analytic limits.
 
-Follow the representations, methods, and evidence standards recorded in `research/COMPUTATION.md`; that plan, not this skill, decides which tooling this project uses. Reusable machinery shared with other experiments or obligations belongs in `research/computation/`, declared and justified in the plan.
+Follow the representations, methods, and evidence standards recorded in `research/COMPUTATION.md`; that plan, not this skill, decides which tooling this project uses. Scientific Computation owns experiment design, solver semantics, convergence interpretation, and scientific acceptance. When reusable machinery or a research-scoped environment must be created or materially changed, Scientific Computation supplies a bounded contract and provisions Engineer. Engineer does not choose the solver, parameter samples, observable, or scientific criterion.
 
 ## 5. Design convergence and robustness checks
 

@@ -51,12 +51,33 @@ property-based sampling, or bespoke machinery. Record convention choices that th
 representation encodes, since a faithful-looking encoding can silently change the
 mathematical statement.
 
+For each substantial reusable or conclusion-critical representation, record a
+proportionate computational trust strategy: mathematical domain,
+representation, trusted primitive operations, equality or normal-form semantics,
+external dependencies, custom infrastructure, why the representation was
+chosen, known limitations, infrastructure tests, research-specific scientific
+validation, and independent cross-check strategy. Trivial calculations do not
+need a lengthy trust analysis.
+
+Prefer explicit mathematical structure over heuristic symbolic simplification
+when a compact exact representation or small decidable operation set is
+practical, and minimize the trusted computational surface. General-purpose CAS
+software remains valid when it is the clearest reliable choice; state what its
+conclusion-critical use trusts.
+
 ## Research-specific computational infrastructure
 
-Document reusable machinery under `research/computation/`: what it is, why it
-exists, which obligations depend on it, how it is tested, and what its known
-representational limitations are. A reusable library is methodology, not
-evidence.
+Document reusable machinery under `research/computation/` and research-scoped
+environment definitions under `research/environment/`: why each exists, its
+computational contract and API, dependencies and environment identity, which
+obligations depend on it, Engineer implementation provenance, infrastructure
+tests, research-specific scientific validation, and known representational
+limitations. A reusable library is methodology, not evidence.
+
+Scientific Computation owns the contract and scientific validation. Engineer is
+provisioned only when the substrate needs to be created or materially changed,
+and verifies that software satisfies the supplied contract. This section is the
+director-owned trust record, not an Engineer backlog.
 
 ## Numerical and formal evidence standards
 

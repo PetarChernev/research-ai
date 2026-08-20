@@ -42,7 +42,11 @@ obligation instead and say why.
 ## Infrastructure used
 
 List reusable machinery from `research/computation/` that this obligation
-depends on, and how that machinery is itself tested.
+depends on, research-environment manifests or locks from
+`research/environment/`, the computational contract, Engineer-owned software
+tests, and Scientific Computation's research-specific validation. Declare every
+material path in `spec.yaml`; the runner fingerprints it and a change makes the
+old result stale.
 
 ## How to run
 

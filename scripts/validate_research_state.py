@@ -18,6 +18,7 @@ from _research import (
     PROJECT_ROOT,
     append_provenance,
     current_question,
+    fingerprint_paths,
     git_state,
     load_frontmatter,
     markdown_sections,
@@ -492,18 +493,10 @@ def validate_obligation_spec(
     if not isinstance(infrastructure, list):
         report.error(location, "implementation.infrastructure must be a list")
     else:
-        for item in infrastructure:
-            if not isinstance(item, str) or not item.strip() or Path(item).is_absolute():
-                report.error(location, f"invalid infrastructure path '{item}'")
-                continue
-            candidate = (root / item).resolve()
-            try:
-                candidate.relative_to(root.resolve())
-            except ValueError:
-                report.error(location, f"infrastructure path escapes repository: '{item}'")
-            else:
-                if not candidate.exists():
-                    report.error(location, f"infrastructure path does not exist: '{item}'")
+        try:
+            fingerprint_paths(root, infrastructure)
+        except (OSError, ValueError) as exc:
+            report.error(location, str(exc))
 
     entrypoint = implementation.get("entrypoint")
     if not isinstance(entrypoint, str) or not entrypoint.strip() or Path(entrypoint).is_absolute():
@@ -551,6 +544,8 @@ def validate_obligation_result(
             "dirty_worktree",
             "spec_sha256",
             "implementation_sha256",
+            "infrastructure",
+            "infrastructure_sha256",
             "environment",
             "observations",
             "artifacts",
@@ -560,8 +555,8 @@ def validate_obligation_result(
         location,
         report,
     )
-    if result.get("schema_version") != 1:
-        report.error(location, "schema_version must be 1")
+    if result.get("schema_version") != 2:
+        report.error(location, "schema_version must be 2")
     if result.get("obligation_id") != obligation.id:
         report.error(location, f"obligation_id must be '{obligation.id}'")
     if not valid_choice(result.get("outcome"), OBLIGATION_OUTCOMES):
@@ -624,6 +619,53 @@ def validate_obligation_result(
                 f"{hash_field} does not match the current file; rerun scripts/run_check.py "
                 f"{obligation.id} because the recorded result is stale",
             )
+
+    recorded_infrastructure = result.get("infrastructure")
+    if not isinstance(recorded_infrastructure, list):
+        report.error(location, "infrastructure must be a list of dependency fingerprints")
+    else:
+        for index, record in enumerate(recorded_infrastructure):
+            record_location = f"{location}:infrastructure[{index}]"
+            if not isinstance(record, dict):
+                report.error(record_location, "fingerprint must be a mapping")
+                continue
+            require_fields(record, {"path", "type", "sha256"}, record_location, report)
+            if not isinstance(record.get("path"), str) or not record.get("path", "").strip():
+                report.error(record_location, "path must be a nonempty string")
+            if record.get("type") not in {"file", "directory"}:
+                report.error(record_location, "type must be 'file' or 'directory'")
+            if not isinstance(record.get("sha256"), str) or not SHA256.fullmatch(
+                record.get("sha256", "")
+            ):
+                report.error(record_location, "sha256 must be a lowercase SHA-256 digest")
+
+    infrastructure_sha256 = result.get("infrastructure_sha256")
+    if not isinstance(infrastructure_sha256, str) or not SHA256.fullmatch(
+        infrastructure_sha256 or ""
+    ):
+        report.error(location, "infrastructure_sha256 must be a lowercase SHA-256 digest")
+
+    declared_infrastructure = implementation.get("infrastructure")
+    if isinstance(declared_infrastructure, list):
+        try:
+            current_infrastructure, current_infrastructure_sha256 = fingerprint_paths(
+                root, declared_infrastructure
+            )
+        except (OSError, ValueError) as exc:
+            report.error(location, f"cannot fingerprint current declared infrastructure: {exc}")
+        else:
+            if recorded_infrastructure != current_infrastructure:
+                report.error(
+                    location,
+                    "infrastructure fingerprints do not match current declared dependencies; "
+                    f"rerun scripts/run_check.py {obligation.id} because the recorded result is stale",
+                )
+            if infrastructure_sha256 != current_infrastructure_sha256:
+                report.error(
+                    location,
+                    "infrastructure_sha256 does not match current declared dependencies; "
+                    f"rerun scripts/run_check.py {obligation.id} because the recorded result is stale",
+                )
 
     for path_field in ("artifacts", "logs"):
         values = result.get(path_field)
@@ -1505,6 +1547,8 @@ def validate_supporting_state(root: Path, report: Report) -> None:
             "session_id",
             "tool",
             "operation",
+            "delegated_agent",
+            "task",
             "experiment_id",
             "obligation_id",
             "claim_id",
@@ -1542,6 +1586,27 @@ def validate_supporting_state(root: Path, report: Report) -> None:
                 report.error(f"research/provenance.jsonl:{line_number}", "operation must be a string")
             if "success" in record and not isinstance(record["success"], bool):
                 report.error(f"research/provenance.jsonl:{line_number}", "success must be boolean")
+            delegated_agent = record.get("delegated_agent")
+            if delegated_agent is not None and (
+                not isinstance(delegated_agent, str) or not delegated_agent.strip()
+            ):
+                report.error(
+                    f"research/provenance.jsonl:{line_number}",
+                    "delegated_agent must be a nonempty string",
+                )
+            if record.get("operation") == "engineer-provisioned" and delegated_agent != "engineer":
+                report.error(
+                    f"research/provenance.jsonl:{line_number}",
+                    "engineer-provisioned records require delegated_agent: engineer",
+                )
+            task_description = record.get("task")
+            if task_description is not None and (
+                not isinstance(task_description, str) or not task_description.strip()
+            ):
+                report.error(
+                    f"research/provenance.jsonl:{line_number}",
+                    "task must be a nonempty string",
+                )
             provider_id = record.get("provider_id")
             model_id = record.get("model_id")
             if (provider_id is None) != (model_id is None):

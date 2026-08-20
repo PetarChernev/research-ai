@@ -13,8 +13,9 @@ status:
 
 The implementation may emit one structured JSON observation record to stdout
 prefixed with `##OBSERVATIONS##`. That payload is stored as data and can never
-select the outcome. The wrapper records provenance and hashes; it does not
-interpret the science.
+select the outcome. Result schema v2 records the spec, entrypoint, and
+deterministic content fingerprints of every declared infrastructure or
+research-environment dependency. The wrapper does not interpret the science.
 """
 
 from __future__ import annotations
@@ -36,6 +37,7 @@ import yaml
 from _research import (
     PROJECT_ROOT,
     append_provenance,
+    fingerprint_paths,
     git_state,
     relative_to_root,
     sha256_file,
@@ -46,7 +48,7 @@ from _research import (
 
 OBLIGATION_ID = re.compile(r"^O\d{3}$")
 OBSERVATION_PREFIX = "##OBSERVATIONS##"
-RESULT_SCHEMA_VERSION = 1
+RESULT_SCHEMA_VERSION = 2
 DEFAULT_TIMEOUT_SECONDS = 900
 MAX_LOG_BYTES = 1_048_576
 MAX_OBSERVATION_BYTES = 65_536
@@ -197,6 +199,18 @@ def main() -> int:
 
     claims = spec.get("claims") if isinstance(spec.get("claims"), list) else []
     derivations = spec.get("derivations") if isinstance(spec.get("derivations"), list) else []
+    implementation = spec.get("implementation")
+    declared_infrastructure = (
+        implementation.get("infrastructure") if isinstance(implementation, dict) else None
+    )
+    if not isinstance(declared_infrastructure, list):
+        raise SystemExit("spec.yaml must declare implementation.infrastructure as a list")
+    try:
+        infrastructure, infrastructure_sha256 = fingerprint_paths(
+            root, declared_infrastructure
+        )
+    except (OSError, ValueError) as exc:
+        raise SystemExit(f"Cannot fingerprint declared infrastructure: {exc}") from exc
     spec_sha256 = sha256_file(spec_path)
     implementation_sha256 = sha256_file(entrypoint)
     implementation_path = relative_to_root(root, entrypoint)
@@ -258,6 +272,8 @@ def main() -> int:
         "dirty_worktree": dirty,
         "spec_sha256": spec_sha256,
         "implementation_sha256": implementation_sha256,
+        "infrastructure": infrastructure,
+        "infrastructure_sha256": infrastructure_sha256,
         "environment": environment_summary(),
         "observations": extract_observations(stdout),
         "artifacts": collect_artifacts(root, check_dir),
@@ -273,7 +289,10 @@ def main() -> int:
         operation="check-run",
         obligation_id=obligation,
         command=runner_command,
-        relevant_paths=[relative_to_root(root, result_path)],
+        relevant_paths=[
+            relative_to_root(root, result_path),
+            *[record["path"] for record in infrastructure],
+        ],
         git_commit=commit,
         dirty_worktree=dirty,
         success=outcome == "passed",
@@ -286,6 +305,7 @@ def main() -> int:
         "result": relative_to_root(root, result_path),
         "logs": result["logs"],
         "artifacts": result["artifacts"],
+        "infrastructure_sha256": infrastructure_sha256,
     }
     if args.json:
         print(json.dumps(summary))

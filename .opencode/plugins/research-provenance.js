@@ -119,6 +119,11 @@ export const ResearchProvenance = async ({ worktree }) => {
         }
 
         let operation = relevantPaths.length ? "research-artifact-write" : null
+        if (relevantPaths.some((item) => item.startsWith("research/environment/"))) {
+          operation = "research-environment-write"
+        } else if (relevantPaths.some((item) => item.startsWith("research/computation/"))) {
+          operation = "research-infrastructure-write"
+        }
         const command = input.tool === "bash" ? input.args?.command : null
         const experimentMatch =
           typeof command === "string"
@@ -136,6 +141,13 @@ export const ResearchProvenance = async ({ worktree }) => {
           operation = "check-command"
           relevantPaths = [`research/checks/${checkMatch[1]}`]
         }
+        const engineerTask =
+          input.tool === "task" && input.args?.subagent_type === "engineer"
+            ? input.args
+            : null
+        if (engineerTask) {
+          operation = "engineer-provisioned"
+        }
         if (!operation) return
 
         const experimentID = relevantPaths
@@ -147,6 +159,10 @@ export const ResearchProvenance = async ({ worktree }) => {
         const claimID = relevantPaths
           .map((item) => item.match(/(?:^|\/)(C\d{3})(?:[-/.]|$)/)?.[1])
           .find(Boolean)
+        const delegatedObligationID =
+          typeof engineerTask?.prompt === "string"
+            ? engineerTask.prompt.match(/\b(O\d{3})\b/)?.[1]
+            : undefined
         const session = sessions.get(input.sessionID)
         await append({
           agent: session?.agent,
@@ -154,8 +170,13 @@ export const ResearchProvenance = async ({ worktree }) => {
           model_id: session?.modelID,
           tool: input.tool,
           operation,
+          delegated_agent: engineerTask ? "engineer" : undefined,
+          task:
+            typeof engineerTask?.description === "string"
+              ? engineerTask.description.slice(0, 240)
+              : undefined,
           experiment_id: experimentID,
-          obligation_id: obligationID,
+          obligation_id: obligationID || delegatedObligationID,
           claim_id: claimID,
           relevant_paths: relevantPaths,
           success:

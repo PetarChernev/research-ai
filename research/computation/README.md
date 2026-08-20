@@ -5,6 +5,12 @@ program decided it needs**. It is empty by default and deliberately so: the
 global architecture provides the place, process, and provenance semantics, not
 the mathematics or the tooling.
 
+Scientific Computation owns the mathematical contract, trust strategy, and
+research-specific validation. The bounded Engineer implements and maintains the
+reusable substrate from that contract. Engineer is not a scientific authority,
+does not choose the representation, and does not write claim-specific
+obligation runners.
+
 Typical contents, once a project justifies them, might include custom symbolic
 representations, algebraic or tensor machinery, domain-specific transformations,
 exact-arithmetic helpers, discretization or solver infrastructure, formalization
@@ -40,16 +46,30 @@ says nothing about whether the encoded representation is physically faithful.
 
 ## Requirements for anything added here
 
-- Record in `research/COMPUTATION.md` why the infrastructure exists, which
-  obligations depend on it, and its representational limitations.
+- Record in `research/COMPUTATION.md` why the infrastructure exists, its
+  computational contract and public API, dependencies and environment,
+  implementation provenance, which obligations depend on it, and its
+  representational limitations.
 - Declare the dependency in each dependent obligation's `spec.yaml` under
   `implementation.infrastructure`.
-- Test the machinery itself where practical. A check built on untested
-  infrastructure inherits its bugs.
-- Keep it importable and runnable from the repository root with the project's
-  locked environment, or record the additional environment it needs.
+- Engineer tests that the machinery satisfies its contract: relevant unit,
+  property, algebra-law, API, serialization, determinism, environment smoke,
+  compatibility, and performance sanity tests.
+- Scientific Computation separately validates that the contract and
+  implementation faithfully represent the mathematics needed for the claim,
+  using hand calculations, soluble limits, sign/normalization regressions, or
+  independent representations where relevant.
+- Keep it runnable through the research environment documented under
+  `research/environment/`, or through the root tooling environment only when no
+  additional scientific substrate is needed.
 - Do not add a global project dependency for a package only one obligation
   needs; record the requirement with the artifact that uses it.
+
+The Engineer handoff must report files changed, dependency/environment changes,
+tests and outcomes, API notes, limitations, unresolved problems, and actual
+`provider/model` provenance. Passing infrastructure tests says the software
+behaves according to its contract; it does not say that the contract is the
+right scientific representation.
 
 Shared infrastructure creates shared failure modes. Two obligations built on the
 same module are not independent implementations, and a verifier must be told

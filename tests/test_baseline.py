@@ -55,6 +55,17 @@ class BaselineTests(WorkspaceTestCase):
         ]
         self.assertTrue(records, "expected an obligation provenance record")
 
+    def test_provenance_accepts_engineer_delegation_metadata(self) -> None:
+        path = self.root / "research" / "provenance.jsonl"
+        path.write_text(
+            '{"timestamp":"2026-01-01T00:00:00Z","agent":"scientific-computation",'
+            '"operation":"engineer-provisioned","delegated_agent":"engineer",'
+            '"task":"Build exact kernel","obligation_id":"O001","success":true}\n',
+            encoding="utf-8",
+        )
+        payload = validate(self.root)
+        self.assert_no_error_matching(payload, "delegated_agent")
+
 
 class DependencyTests(unittest.TestCase):
     def test_no_physics_specific_dependency_was_introduced(self) -> None:
