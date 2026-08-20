@@ -32,6 +32,14 @@ def frontmatter(path: Path) -> dict:
     return yaml.safe_load("\n".join(lines[1:end]))
 
 
+class AgentCompatibilityTests(unittest.TestCase):
+    def test_agents_do_not_set_step_caps(self) -> None:
+        # OpenCode 1.18.19 sends its final-step instruction as an assistant
+        # prefill, which Claude 4.6+ rejects before it can return a summary.
+        capped = [path.name for path in AGENTS.glob("*.md") if "steps" in frontmatter(path)]
+        self.assertEqual(capped, [], "explicit agent step caps trigger OpenCode issue #40455")
+
+
 class AgentRenameTests(unittest.TestCase):
     def test_scientific_computation_replaced_numerics(self) -> None:
         self.assertTrue((AGENTS / "scientific-computation.md").is_file())

@@ -3,7 +3,6 @@ description: Verifies claims with OpenAI GPT-5.6 Sol. Use for work originating f
 mode: subagent
 model: openai/gpt-5.6-sol
 color: warning
-steps: 32
 permission:
   "*": deny
   read:

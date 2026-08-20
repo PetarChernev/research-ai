@@ -3,7 +3,6 @@ description: Verifies claims with Anthropic Claude Opus 5. Use for work originat
 mode: subagent
 model: anthropic/claude-opus-5
 color: warning
-steps: 32
 permission:
   "*": deny
   read:

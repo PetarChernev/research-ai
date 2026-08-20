@@ -3,7 +3,6 @@ description: Performs analytical derivations, modeling, asymptotics, perturbatio
 mode: subagent
 model: openai/gpt-5.6-sol
 color: accent
-steps: 28
 permission:
   "*": deny
   read:
