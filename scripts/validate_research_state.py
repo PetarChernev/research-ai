@@ -17,9 +17,11 @@ import yaml
 from _research import (
     PROJECT_ROOT,
     append_provenance,
+    current_question,
     git_state,
     load_frontmatter,
     markdown_sections,
+    sha256_file,
 )
 
 
@@ -47,6 +49,37 @@ HYPOTHESIS_STATUSES = {
 }
 DERIVATION_STATUSES = {"draft", "complete", "checked", "superseded"}
 EXPERIMENT_STATUSES = {"planned", "ready", "running", "complete", "failed", "archived"}
+# Generic, method-neutral vocabulary. A class names the kind of assertion under
+# test; it never implies a library, language, or tool.
+OBLIGATION_CLASSES = {
+    "exact-symbolic",
+    "formal",
+    "numerical",
+    "convergence",
+    "independent-implementation",
+    "limiting-case",
+    "symmetry",
+    "dimensional",
+    "counterexample",
+    "other",
+}
+OBLIGATION_STATUSES = {"active", "superseded"}
+OBLIGATION_INDEPENDENCE = {"not-required", "recommended", "required"}
+OBLIGATION_OUTCOMES = {"passed", "failed", "inconclusive", "error"}
+COMPUTATION_SECTIONS = [
+    "Current research phase",
+    "Checkability map",
+    "Current machine-check obligations",
+    "Computational representations and methods",
+    "Research-specific computational infrastructure",
+    "Numerical and formal evidence standards",
+    "Independence strategy",
+    "Phase-transition triggers",
+    "Deferred or non-machine-checkable issues",
+    "Known limitations and risks",
+    "Related decisions",
+]
+COMPUTATION_UNINITIALIZED_MARKER = "Status: not-started"
 VERIFICATION_OUTCOMES = {
     "verified",
     "supported but not independently verified",
@@ -61,6 +94,10 @@ VERIFICATION_SECTIONS = [
     "Reconstruction",
     "Falsification attempts",
     "Checks",
+    "Computational evidence reviewed",
+    "Sufficiency of computational obligations",
+    "Missing or adversarial checks",
+    "Computational independence",
     "Findings",
     "Outcome",
     "Required follow-up",
@@ -71,6 +108,9 @@ REPORT_PLACEHOLDER_PREFIXES = (
     "re-derive or reproduce",
     "record attempted",
     "list failures",
+    "list the relevant",
+    "explain whether",
+    "identify checks",
     "use exactly one",
     "state what would",
 )
@@ -89,7 +129,48 @@ CLAIM_ID = re.compile(r"^C\d{3}$")
 HYPOTHESIS_ID = re.compile(r"^H\d{3}$")
 DERIVATION_ID = re.compile(r"^D\d{3}$")
 EXPERIMENT_ID = re.compile(r"^E\d{3}$")
+OBLIGATION_ID = re.compile(r"^O\d{3}$")
+SHA256 = re.compile(r"^[0-9a-f]{64}$")
 MODEL_ID = re.compile(r"^[a-z0-9][a-z0-9._-]*/[A-Za-z0-9][A-Za-z0-9._-]*$")
+
+
+@dataclass
+class Obligation:
+    """Structural view of one machine-check obligation under research/checks/."""
+
+    id: str
+    path: Path
+    spec: dict[str, Any] | None = None
+    result: dict[str, Any] | None = None
+
+    @property
+    def status(self) -> str | None:
+        return self.spec.get("status") if isinstance(self.spec, dict) else None
+
+    @property
+    def is_active(self) -> bool:
+        return self.status == "active"
+
+    @property
+    def is_required(self) -> bool:
+        return bool(self.spec.get("required")) if isinstance(self.spec, dict) else False
+
+    @property
+    def outcome(self) -> str | None:
+        if not isinstance(self.result, dict):
+            return None
+        value = self.result.get("outcome")
+        return value if isinstance(value, str) else None
+
+    @property
+    def targets(self) -> list[Any]:
+        if not isinstance(self.spec, dict):
+            return []
+        claims = self.spec.get("claims")
+        return claims if isinstance(claims, list) else []
+
+    def satisfied(self) -> bool:
+        return self.outcome == "passed"
 
 
 @dataclass
@@ -287,7 +368,7 @@ def validate_markdown_artifacts(
         "Validity regime",
         "Dimensional check",
         "Limiting-case checks",
-        "Symbolic/numerical checks",
+        "Candidate machine-checkable obligations",
         "Relationship to literature",
         "Unresolved concerns",
         "Conclusion",
@@ -321,12 +402,346 @@ def validate_markdown_artifacts(
         require_sections(body, derivation_sections, location, report)
 
 
+def validate_obligation_spec(
+    root: Path,
+    report: Report,
+    obligation: Obligation,
+    derivations: dict[str, Path],
+) -> Path | None:
+    """Validate spec.yaml structurally and return the resolved entrypoint."""
+    location = relative(root, obligation.path) + "/spec.yaml"
+    spec = obligation.spec
+    if spec is None:
+        return None
+    require_fields(
+        spec,
+        {
+            "schema_version",
+            "id",
+            "title",
+            "claims",
+            "derivations",
+            "class",
+            "required",
+            "status",
+            "question",
+            "assumptions",
+            "acceptance_criterion",
+            "method",
+            "implementation",
+            "independence",
+            "created_at",
+            "updated_at",
+        },
+        location,
+        report,
+    )
+    if spec.get("schema_version") != 1:
+        report.error(location, "schema_version must be 1")
+    if spec.get("id") != obligation.id:
+        report.error(location, f"id must be '{obligation.id}'")
+    if not isinstance(spec.get("title"), str) or not spec.get("title", "").strip():
+        report.error(location, "title must be a nonempty string")
+    for list_field in ("claims", "derivations", "assumptions"):
+        if not isinstance(spec.get(list_field), list):
+            report.error(location, f"{list_field} must be a list")
+    if not valid_choice(spec.get("class"), OBLIGATION_CLASSES):
+        report.error(location, f"invalid check class '{spec.get('class')}'")
+    if not isinstance(spec.get("required"), bool):
+        report.error(location, "required must be a boolean")
+    if not valid_choice(spec.get("status"), OBLIGATION_STATUSES):
+        report.error(location, f"invalid obligation status '{spec.get('status')}'")
+    for text_field in ("question", "acceptance_criterion"):
+        value = spec.get(text_field)
+        if not isinstance(value, str) or not value.strip():
+            report.error(location, f"{text_field} must be a nonempty string")
+    for timestamp in ("created_at", "updated_at"):
+        if not valid_timestamp(spec.get(timestamp)):
+            report.error(location, f"{timestamp} must be a timezone-aware ISO-8601 timestamp")
+
+    method = spec.get("method")
+    if not isinstance(method, dict):
+        report.error(location, "method must be a mapping")
+    else:
+        if not isinstance(method.get("description"), str) or not method.get("description", "").strip():
+            report.error(location, "method.description must be a nonempty string")
+        if not isinstance(method.get("rationale"), str):
+            report.error(location, "method.rationale must be a string")
+
+    independence = spec.get("independence")
+    if not isinstance(independence, dict):
+        report.error(location, "independence must be a mapping")
+    else:
+        if not valid_choice(independence.get("requirement"), OBLIGATION_INDEPENDENCE):
+            report.error(
+                location, f"invalid independence.requirement '{independence.get('requirement')}'"
+            )
+        if not isinstance(independence.get("rationale"), str):
+            report.error(location, "independence.rationale must be a string")
+
+    for derivation_id in spec.get("derivations", []) if isinstance(spec.get("derivations"), list) else []:
+        validate_id_reference(
+            derivation_id, DERIVATION_ID, derivations, "derivation", location, report
+        )
+
+    implementation = spec.get("implementation")
+    if not isinstance(implementation, dict):
+        report.error(location, "implementation must be a mapping")
+        return None
+    infrastructure = implementation.get("infrastructure")
+    if not isinstance(infrastructure, list):
+        report.error(location, "implementation.infrastructure must be a list")
+    else:
+        for item in infrastructure:
+            if not isinstance(item, str) or not item.strip() or Path(item).is_absolute():
+                report.error(location, f"invalid infrastructure path '{item}'")
+                continue
+            candidate = (root / item).resolve()
+            try:
+                candidate.relative_to(root.resolve())
+            except ValueError:
+                report.error(location, f"infrastructure path escapes repository: '{item}'")
+            else:
+                if not candidate.exists():
+                    report.error(location, f"infrastructure path does not exist: '{item}'")
+
+    entrypoint = implementation.get("entrypoint")
+    if not isinstance(entrypoint, str) or not entrypoint.strip() or Path(entrypoint).is_absolute():
+        report.error(location, "implementation.entrypoint must be a repository-relative path")
+        return None
+    resolved = (root / entrypoint).resolve()
+    try:
+        resolved.relative_to(obligation.path.resolve())
+    except ValueError:
+        report.error(location, "implementation.entrypoint must resolve inside the obligation directory")
+        return None
+    if not resolved.is_file():
+        report.error(location, f"implementation.entrypoint does not exist: '{entrypoint}'")
+        return None
+    return resolved
+
+
+def validate_obligation_result(
+    root: Path,
+    report: Report,
+    obligation: Obligation,
+    entrypoint: Path | None,
+) -> None:
+    """Validate a recorded machine result without judging its science."""
+    location = relative(root, obligation.path) + "/result.json"
+    result = obligation.result
+    spec = obligation.spec if isinstance(obligation.spec, dict) else {}
+    if result is None:
+        return
+    require_fields(
+        result,
+        {
+            "schema_version",
+            "obligation_id",
+            "claims",
+            "derivations",
+            "outcome",
+            "exit_code",
+            "started_at",
+            "completed_at",
+            "command",
+            "runner_command",
+            "implementation",
+            "git_commit",
+            "dirty_worktree",
+            "spec_sha256",
+            "implementation_sha256",
+            "environment",
+            "observations",
+            "artifacts",
+            "logs",
+            "notes",
+        },
+        location,
+        report,
+    )
+    if result.get("schema_version") != 1:
+        report.error(location, "schema_version must be 1")
+    if result.get("obligation_id") != obligation.id:
+        report.error(location, f"obligation_id must be '{obligation.id}'")
+    if not valid_choice(result.get("outcome"), OBLIGATION_OUTCOMES):
+        report.error(location, f"invalid outcome '{result.get('outcome')}'")
+    if result.get("exit_code") is not None and not isinstance(result.get("exit_code"), int):
+        report.error(location, "exit_code must be null or an integer")
+    for timestamp in ("started_at", "completed_at"):
+        if not valid_timestamp(result.get(timestamp)):
+            report.error(location, f"{timestamp} must be a timezone-aware ISO-8601 timestamp")
+    for text_field in ("command", "runner_command"):
+        if not isinstance(result.get(text_field), str) or not result.get(text_field, "").strip():
+            report.error(location, f"{text_field} must be a nonempty string")
+    if not isinstance(result.get("notes"), str):
+        report.error(location, "notes must be a string")
+    if result.get("git_commit") is not None and not isinstance(result.get("git_commit"), str):
+        report.error(location, "git_commit must be null or a string")
+    if result.get("dirty_worktree") is not None and not isinstance(result.get("dirty_worktree"), bool):
+        report.error(location, "dirty_worktree must be null or boolean")
+    if not isinstance(result.get("environment"), dict) or not result.get("environment"):
+        report.error(location, "environment must be a nonempty mapping")
+    if not isinstance(result.get("observations"), dict):
+        report.error(location, "observations must be a mapping")
+    if result.get("git_commit") is None:
+        report.warning(location, "machine result recorded without a Git commit")
+
+    for id_field, pattern in (("claims", CLAIM_ID), ("derivations", DERIVATION_ID)):
+        values = result.get(id_field)
+        if not isinstance(values, list):
+            report.error(location, f"{id_field} must be a list")
+            continue
+        if any(not isinstance(value, str) or not pattern.fullmatch(value) for value in values):
+            report.error(location, f"invalid {id_field} entry in the recorded result")
+        expected = spec.get(id_field)
+        if isinstance(expected, list) and values != expected:
+            report.error(location, f"result {id_field} disagree with spec.yaml")
+
+    implementation = spec.get("implementation") if isinstance(spec.get("implementation"), dict) else {}
+    declared_entrypoint = implementation.get("entrypoint")
+    if isinstance(declared_entrypoint, str) and result.get("implementation") != declared_entrypoint:
+        report.error(location, "result implementation path disagrees with spec.yaml")
+
+    for hash_field, target in (
+        ("spec_sha256", obligation.path / "spec.yaml"),
+        ("implementation_sha256", entrypoint),
+    ):
+        value = result.get(hash_field)
+        if not isinstance(value, str) or not SHA256.fullmatch(value):
+            report.error(location, f"{hash_field} must be a lowercase SHA-256 digest")
+            continue
+        if target is None or not target.is_file():
+            continue
+        try:
+            actual = sha256_file(target)
+        except OSError as exc:
+            report.error(location, f"cannot hash {relative(root, target)}: {exc}")
+            continue
+        if value != actual:
+            report.error(
+                location,
+                f"{hash_field} does not match the current file; rerun scripts/run_check.py "
+                f"{obligation.id} because the recorded result is stale",
+            )
+
+    for path_field in ("artifacts", "logs"):
+        values = result.get(path_field)
+        if not isinstance(values, list):
+            report.error(location, f"{path_field} must be a list")
+            continue
+        for value in values:
+            if not isinstance(value, str) or not value.strip() or Path(value).is_absolute():
+                report.error(location, f"invalid {path_field} path '{value}'")
+                continue
+            candidate = (root / value).resolve()
+            try:
+                candidate.relative_to(root.resolve())
+            except ValueError:
+                report.error(location, f"{path_field} path escapes repository: '{value}'")
+            else:
+                if not candidate.is_file():
+                    report.error(location, f"{path_field} path does not exist: '{value}'")
+
+
+def validate_obligations(
+    root: Path,
+    report: Report,
+    derivations: dict[str, Path],
+) -> dict[str, Obligation]:
+    """Load and structurally validate every machine-check obligation."""
+    directory = root / "research" / "checks"
+    obligations: dict[str, Obligation] = {}
+    if not directory.is_dir():
+        return obligations
+    for entry in sorted(directory.iterdir()):
+        if entry.is_file():
+            if entry.name != "README.md":
+                report.error(
+                    relative(root, entry), "unexpected file in research/checks/; obligations are directories"
+                )
+            continue
+        if not OBLIGATION_ID.fullmatch(entry.name):
+            report.error(
+                relative(root, entry),
+                "obligation directories must be named ONNN; allocate IDs with scripts/new_check.py",
+            )
+            continue
+        obligations[entry.name] = Obligation(id=entry.name, path=entry)
+
+    for obligation_id, obligation in obligations.items():
+        location = relative(root, obligation.path)
+        if not (obligation.path / "README.md").is_file():
+            report.error(location, "missing required file 'README.md'")
+        spec_path = obligation.path / "spec.yaml"
+        if not spec_path.is_file():
+            report.error(location, "missing required file 'spec.yaml'")
+        else:
+            try:
+                spec = yaml.safe_load(spec_path.read_text(encoding="utf-8"))
+            except (OSError, UnicodeError, yaml.YAMLError) as exc:
+                report.error(location + "/spec.yaml", str(exc))
+                spec = None
+            if spec is not None and not isinstance(spec, dict):
+                report.error(location + "/spec.yaml", "must contain a mapping")
+                spec = None
+            obligation.spec = spec
+        entrypoint = validate_obligation_spec(root, report, obligation, derivations)
+
+        result_path = obligation.path / "result.json"
+        if result_path.is_file():
+            try:
+                obligation.result = load_json_object(result_path)
+            except (OSError, UnicodeError, ValueError) as exc:
+                report.error(location + "/result.json", str(exc))
+                obligation.result = None
+            validate_obligation_result(root, report, obligation, entrypoint)
+        elif obligation.is_active and obligation.is_required:
+            report.warning(
+                location,
+                "active required obligation has no result.json; it has not run",
+            )
+    return obligations
+
+
+def validate_obligation_claim_links(
+    root: Path,
+    report: Report,
+    claims: set[str],
+    claims_by_id: dict[str, dict[str, Any]],
+    obligations: dict[str, Obligation],
+) -> None:
+    """Require obligation -> claim references to exist and be reciprocal."""
+    for obligation_id, obligation in obligations.items():
+        if not isinstance(obligation.spec, dict):
+            continue
+        location = relative(root, obligation.path) + "/spec.yaml"
+        targets = obligation.spec.get("claims")
+        if not isinstance(targets, list):
+            continue
+        for claim_id in targets:
+            validate_id_reference(claim_id, CLAIM_ID, claims, "claim", location, report)
+            if not isinstance(claim_id, str) or claim_id not in claims_by_id:
+                continue
+            if obligation.status != "active":
+                continue
+            evidence = claims_by_id[claim_id].get("evidence")
+            listed = evidence.get("computational_checks") if isinstance(evidence, dict) else None
+            if not isinstance(listed, list) or obligation_id not in listed:
+                report.error(
+                    location,
+                    f"active obligation targets {claim_id} but the claim does not list "
+                    f"'{obligation_id}' under evidence.computational_checks",
+                )
+
+
 def validate_ledger(
     root: Path,
     report: Report,
     hypotheses: dict[str, Path],
     derivations: dict[str, Path],
     experiments: dict[str, Path],
+    obligations: dict[str, Obligation],
 ) -> tuple[dict[str, dict[str, Any]], dict[str, Any] | None]:
     path = root / "research" / "claims" / "ledger.yaml"
     location = relative(root, path)
@@ -339,8 +754,8 @@ def validate_ledger(
         report.error(location, "ledger root must be a mapping")
         return {}, None
     require_fields(ledger, {"schema_version", "claims"}, location, report)
-    if ledger.get("schema_version") != 1:
-        report.error(location, "schema_version must be 1")
+    if ledger.get("schema_version") != 2:
+        report.error(location, "schema_version must be 2")
     entries = ledger.get("claims")
     if not isinstance(entries, list):
         report.error(location, "claims must be a list")
@@ -392,7 +807,13 @@ def validate_ledger(
         if not isinstance(evidence, dict):
             report.error(entry_location, "evidence must be a mapping")
             evidence = {}
-        evidence_fields = {"derivations", "experiments", "literature", "verification"}
+        evidence_fields = {
+            "derivations",
+            "experiments",
+            "literature",
+            "computational_checks",
+            "verification",
+        }
         require_fields(evidence, evidence_fields, entry_location + ":evidence", report)
         for field_name in evidence_fields:
             if not isinstance(evidence.get(field_name), list):
@@ -405,8 +826,8 @@ def validate_ledger(
         check_fields = {
             "dimensional_analysis",
             "limiting_cases",
+            "computational_verification",
             "independent_verification",
-            "numerical_reproduction",
         }
         require_fields(checks, check_fields, entry_location + ":checks", report)
         for name in check_fields:
@@ -473,6 +894,43 @@ def validate_ledger(
             ):
                 qualifying_experiments += 1
 
+        listed_obligations = (
+            evidence.get("computational_checks")
+            if isinstance(evidence.get("computational_checks"), list)
+            else []
+        )
+        qualifying_checks = 0
+        for obligation_id in listed_obligations:
+            validate_id_reference(
+                obligation_id, OBLIGATION_ID, obligations, "obligation", entry_location, report
+            )
+            obligation = obligations.get(obligation_id) if isinstance(obligation_id, str) else None
+            if obligation is None or not isinstance(obligation.spec, dict):
+                continue
+            if claim_id not in obligation.targets:
+                report.error(entry_location, f"obligation '{obligation_id}' does not target {claim_id}")
+                continue
+            if obligation.is_active and obligation.satisfied():
+                qualifying_checks += 1
+
+        # Structural gate over the project's own declared verification strategy.
+        # It says nothing about whether those obligations are scientifically
+        # sufficient; that judgment belongs to the independent verifier.
+        unsatisfied_required = sorted(
+            obligation_id
+            for obligation_id, obligation in obligations.items()
+            if obligation.is_active
+            and obligation.is_required
+            and claim_id in obligation.targets
+            and not obligation.satisfied()
+        )
+        if unsatisfied_required and checks.get("computational_verification") == "passed":
+            report.error(
+                entry_location,
+                "checks.computational_verification cannot be passed while active required "
+                f"obligation(s) lack a passing result: {', '.join(unsatisfied_required)}",
+            )
+
         qualifying_literature_notes = 0
         for source in evidence.get("literature", []) if isinstance(evidence.get("literature"), list) else []:
             if not isinstance(source, str) or not source.strip():
@@ -527,16 +985,28 @@ def validate_ledger(
         if status == "literature-supported" and not qualifying_literature_notes:
             report.error(entry_location, "literature-supported status requires a linked literature note")
         if status == "reproduced":
-            if checks.get("numerical_reproduction") != "passed":
-                report.error(entry_location, "reproduced status requires checks.numerical_reproduction: passed")
-            if not qualifying_experiments:
-                report.error(entry_location, "reproduced status requires a complete checked experiment")
+            if checks.get("computational_verification") != "passed":
+                report.error(
+                    entry_location, "reproduced status requires checks.computational_verification: passed"
+                )
+            if not qualifying_experiments and not qualifying_checks:
+                report.error(
+                    entry_location,
+                    "reproduced status requires a complete checked experiment or a passing "
+                    "active machine-check obligation",
+                )
         if status == "verified":
             if checks.get("independent_verification") != "passed":
                 report.error(entry_location, "verified status requires checks.independent_verification: passed")
-            for check_name in ("dimensional_analysis", "limiting_cases"):
+            for check_name in ("dimensional_analysis", "limiting_cases", "computational_verification"):
                 if checks.get(check_name) not in {"passed", "not-applicable"}:
                     report.error(entry_location, f"verified status requires an explicit passing {check_name} check")
+            if unsatisfied_required:
+                report.error(
+                    entry_location,
+                    "verified status requires every active required obligation to have a passing "
+                    f"result; unsatisfied: {', '.join(unsatisfied_required)}",
+                )
             if not qualifying_verified_reports:
                 report.error(
                     entry_location,
@@ -967,6 +1437,7 @@ def validate_supporting_state(root: Path, report: Report) -> None:
     expected = [
         "research/QUESTION.md",
         "research/STATE.md",
+        "research/COMPUTATION.md",
         "research/DECISIONS.md",
         "research/provenance.jsonl",
         "research/claims/ledger.yaml",
@@ -978,6 +1449,7 @@ def validate_supporting_state(root: Path, report: Report) -> None:
 
     section_requirements = {
         "research/QUESTION.md": ["Question", "Scope", "Conventions", "Success criteria"],
+        "research/COMPUTATION.md": COMPUTATION_SECTIONS,
         "research/STATE.md": [
             "Current question",
             "Current working picture",
@@ -999,6 +1471,30 @@ def validate_supporting_state(root: Path, report: Report) -> None:
             except (OSError, UnicodeError) as exc:
                 report.error(name, str(exc))
 
+    # A computation plan is required once a research question actually exists.
+    # The validator checks that the plan is initialized and structurally
+    # complete; it never judges the scientific method the research chose.
+    plan = root / "research" / "COMPUTATION.md"
+    if plan.is_file() and current_question(root):
+        try:
+            plan_text = plan.read_text(encoding="utf-8")
+        except (OSError, UnicodeError) as exc:
+            report.error("research/COMPUTATION.md", str(exc))
+            plan_text = ""
+        if COMPUTATION_UNINITIALIZED_MARKER in plan_text:
+            report.error(
+                "research/COMPUTATION.md",
+                "a research question is initialized but the computational verification strategy "
+                "is still the uninitialized scaffold; run scripts/init_computation_plan.py and "
+                "populate it",
+            )
+        phase = markdown_sections(plan_text).get("Current research phase", "").strip()
+        if phase.lower().startswith(("not set", "none", "tbd")):
+            report.error(
+                "research/COMPUTATION.md",
+                "'## Current research phase' must describe the current methodological regime",
+            )
+
     provenance = root / "research" / "provenance.jsonl"
     if provenance.exists():
         allowed_fields = {
@@ -1010,6 +1506,7 @@ def validate_supporting_state(root: Path, report: Report) -> None:
             "tool",
             "operation",
             "experiment_id",
+            "obligation_id",
             "claim_id",
             "command",
             "relevant_paths",
@@ -1093,8 +1590,12 @@ def main() -> int:
     hypotheses = artifact_ids(root / "research" / "hypotheses", "H")
     derivations = artifact_ids(root / "research" / "derivations", "D")
     experiments = artifact_ids(root / "research" / "experiments", "E", directories=True)
-    claims_by_id, _ = validate_ledger(root, report, hypotheses, derivations, experiments)
+    obligations = validate_obligations(root, report, derivations)
+    claims_by_id, _ = validate_ledger(
+        root, report, hypotheses, derivations, experiments, obligations
+    )
     claim_ids = set(claims_by_id)
+    validate_obligation_claim_links(root, report, claim_ids, claims_by_id, obligations)
     validate_markdown_artifacts(root, report, claim_ids, hypotheses, derivations)
     validate_experiments(root, report, claim_ids, experiments)
     validate_literature_notes(root, report)
@@ -1110,6 +1611,8 @@ def main() -> int:
             "hypotheses": len(hypotheses),
             "derivations": len(derivations),
             "experiments": len(experiments),
+            "obligations": len(obligations),
+            "active_obligations": sum(1 for item in obligations.values() if item.is_active),
         },
     }
     commit, dirty = git_state(root)
@@ -1121,7 +1624,11 @@ def main() -> int:
             "uv run --locked python scripts/validate_research_state.py"
             + (" --strict" if args.strict else "")
         ),
-        relevant_paths=["research/claims/ledger.yaml", "research/STATE.md"],
+        relevant_paths=[
+            "research/claims/ledger.yaml",
+            "research/STATE.md",
+            "research/COMPUTATION.md",
+        ],
         git_commit=commit,
         dirty_worktree=dirty,
         success=payload["valid"],
@@ -1137,7 +1644,8 @@ def main() -> int:
             f"Validation {'passed' if payload['valid'] else 'failed'}: "
             f"{len(report.errors)} error(s), {len(report.warnings)} warning(s); "
             f"{len(claim_ids)} claim(s), {len(hypotheses)} hypothesis artifact(s), "
-            f"{len(derivations)} derivation(s), {len(experiments)} experiment(s)."
+            f"{len(derivations)} derivation(s), {len(experiments)} experiment(s), "
+            f"{len(obligations)} machine-check obligation(s)."
         )
     return 0 if payload["valid"] else 1
 

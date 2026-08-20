@@ -8,10 +8,13 @@ Record important conclusions in files:
 
 - `research/QUESTION.md`: current scientific problem and scope
 - `research/STATE.md`: concise current status and next actions
+- `research/COMPUTATION.md`: research-specific computational verification strategy
 - `research/hypotheses/`: explicit competing hypotheses (`HNNN`)
 - `research/claims/ledger.yaml`: canonical claim registry (`CNNN`)
 - `research/derivations/`: auditable derivations (`DNNN`)
 - `research/experiments/`: reproducible calculations (`ENNN`)
+- `research/checks/`: claim-linked machine-check obligations (`ONNN`)
+- `research/computation/`: reusable research-specific computational machinery
 - `research/literature/notes/`: source-specific evidence packets
 - `research/results/`: validated consolidated results and verification reports
 - `research/DECISIONS.md`: consequential research-direction choices
@@ -61,14 +64,50 @@ For important numerical results, check where relevant:
 - analytically known limits;
 - an independent implementation when warranted.
 
+## Computational Evidence
+
+The architecture prescribes the process for designing computational evidence, not the methods themselves. Which symbolic, formal, exact, numerical, or bespoke method suits a problem is a research output, recorded in `research/COMPUTATION.md`, not a global rule.
+
+1. Important claims should expose machine-checkable obligations where scientifically useful, and should explicitly record where they cannot.
+2. Theorists propose checkable assertions; `scientific-computation` implements them.
+3. Deterministic runners produce canonical machine outcomes. `research/checks/ONNN/result.json` is written only by `scripts/run_check.py`; no result file means the obligation has not run.
+4. Independent verifiers judge whether the chosen obligations, methods, assumptions, and outcomes are sufficient for the scientific claim.
+5. A passing computation does not automatically verify the scientific claim.
+6. Symbolic output is not automatically a proof; it can depend on assumptions, simplification strategy, branch cuts, and representation.
+7. Numerical agreement is not a derivation, and sampling is coverage rather than proof.
+8. A formal proof establishes only the formalized proposition under its encoded assumptions and axioms.
+9. Shared implementations, representations, infrastructure, or assumptions are not independent confirmation.
+10. Computational strategy is phase-dependent and must be reconsidered when the research regime changes.
+11. Failed and superseded checks remain durable artifacts; never delete failing history to clear a gate.
+
+Directory boundaries:
+
+```text
+research/computation/   reusable research-specific methodology and infrastructure
+research/checks/        claim-linked executable evidence (ONNN obligations)
+research/experiments/   scientific computational experiments (ENNN)
+```
+
+A reusable mathematical library is not evidence. A reproducible execution of a declared obligation using that library is evidence. An experiment explores a hypothesis or computes an observable; an obligation tests one declared assertion.
+
+The authority boundary is:
+
+```text
+LLMs decide what should be derived, tested, challenged, and implemented.
+Deterministic computation establishes the outcome of declared obligations.
+Independent verification decides whether those obligations, methods,
+assumptions, and outcomes support the scientific claim.
+```
+
 ## Reproducibility
 
-An important computational result must be reproducible without its originating conversation. Preserve code, parameters, environment information, random seeds, input provenance, the exact command, and the Git commit when available. Do not claim a check was performed unless its artifact records the test and outcome.
+An important computational result must be reproducible without its originating conversation. Preserve code, parameters, environment information, random seeds, input provenance, the exact command, and the Git commit when available. This applies to symbolic and formal checks as well as numerical runs; a symbolic calculation is still a computation. Do not claim a check was performed unless its artifact records the test and outcome.
 
 ## Research Behavior
 
 - Prefer competing hypotheses and tests that discriminate among them.
 - Start with analytic estimates or tiny numerical diagnostics before expensive computation.
+- Reason about what needs checking, then build the smallest useful executable diagnostic, then stronger machinery only when scientifically justified.
 - Bound delegated work, integrate its artifacts, and avoid recursive delegation.
 - Give important claims and their originating model IDs to a model-separated verifier with primary artifacts, not an approving summary.
 - Do not optimize manuscript prose before core claims are adequately supported.

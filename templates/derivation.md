@@ -46,9 +46,22 @@ Record dimensions on both sides of the important equations.
 
 Test soluble, symmetric, weak/strong-coupling, or other informative limits.
 
-## Symbolic/numerical checks
+## Candidate machine-checkable obligations
 
-Record commands and artifacts; symbolic output is supporting evidence, not the derivation.
+Identify concrete assertions from this derivation that can be tested
+mechanically. State the expected result and the assumptions each test would
+encode, and say what it would leave untested. Link existing `ONNN` obligations
+under `research/checks/` where they have already been instantiated, and record
+recorded outcomes rather than expectations.
+
+Recommend a method if one is obviously suited, but the research plan in
+`research/COMPUTATION.md` decides the representation, tooling, and standard. It
+is acceptable to record that a step is conceptual and not usefully
+machine-checkable.
+
+Do not treat proposed or successful machine checks as a replacement for the
+readable derivation. Symbolic output is supporting evidence, not automatically a
+proof; numerical agreement is not a derivation.
 
 ## Relationship to literature
 

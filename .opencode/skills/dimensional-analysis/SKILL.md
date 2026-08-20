@@ -42,4 +42,6 @@ Rewrite the target relation in dimensionless form. Check asymptotic powers, exte
 
 ## 7. Record the check
 
-Add a concise table of symbols and dimensions plus pass/fail findings to the relevant derivation, experiment, claim check, or verification report. Use `not-applicable` only with a reason. A passed dimensional check does not independently verify the claim.
+Add a concise table of symbols and dimensions plus pass/fail findings to the relevant derivation, experiment, machine-check obligation, claim check, or verification report. Use `not-applicable` only with a reason. A passed dimensional check does not independently verify the claim.
+
+When the dimensional statement is mechanical and conclusion-critical, it can be made an executable obligation of class `dimensional` under `research/checks/`; see the `computational-verification` skill. The architecture does not prescribe how to compute dimensions, and a hand check recorded in the artifact remains adequate for most cases.
