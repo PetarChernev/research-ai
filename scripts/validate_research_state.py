@@ -89,6 +89,7 @@ CLAIM_ID = re.compile(r"^C\d{3}$")
 HYPOTHESIS_ID = re.compile(r"^H\d{3}$")
 DERIVATION_ID = re.compile(r"^D\d{3}$")
 EXPERIMENT_ID = re.compile(r"^E\d{3}$")
+MODEL_ID = re.compile(r"^[a-z0-9][a-z0-9._-]*/[A-Za-z0-9][A-Za-z0-9._-]*$")
 
 
 @dataclass
@@ -150,6 +151,22 @@ def valid_timestamp(value: Any) -> bool:
     except ValueError:
         return False
     return parsed.tzinfo is not None
+
+
+def valid_model_id(value: Any) -> bool:
+    return isinstance(value, str) and bool(MODEL_ID.fullmatch(value))
+
+
+def verification_has_model_separation(metadata: dict[str, Any]) -> bool:
+    verifier_model = metadata.get("verifier_model")
+    originating_models = metadata.get("originating_models")
+    return (
+        valid_model_id(verifier_model)
+        and isinstance(originating_models, list)
+        and bool(originating_models)
+        and all(valid_model_id(model) for model in originating_models)
+        and verifier_model not in originating_models
+    )
 
 
 def explicit_check_outcome(value: Any) -> str | None:
@@ -497,6 +514,7 @@ def validate_ledger(
                     outcome == "verified"
                     and isinstance(report_metadata.get("source_artifacts"), list)
                     and bool(report_metadata["source_artifacts"])
+                    and verification_has_model_separation(report_metadata)
                     and verification_report_is_substantive(report_body)
                 ):
                     qualifying_verified_reports += 1
@@ -520,7 +538,10 @@ def validate_ledger(
                 if checks.get(check_name) not in {"passed", "not-applicable"}:
                     report.error(entry_location, f"verified status requires an explicit passing {check_name} check")
             if not qualifying_verified_reports:
-                report.error(entry_location, "verified status requires a substantive linked verified report")
+                report.error(
+                    entry_location,
+                    "verified status requires a substantive linked report with known model separation",
+                )
             if any(outcome in {"failed verification", "contradicted"} for outcome in verification_outcomes):
                 report.error(entry_location, "verified status conflicts with a linked failed or contradicted report")
 
@@ -868,7 +889,15 @@ def validate_verification_reports(root: Path, report: Report, claims: set[str]) 
             continue
         require_fields(
             metadata,
-            {"claim_id", "outcome", "date", "verifier", "source_artifacts"},
+            {
+                "claim_id",
+                "outcome",
+                "date",
+                "verifier",
+                "verifier_model",
+                "originating_models",
+                "source_artifacts",
+            },
             location,
             report,
         )
@@ -889,6 +918,27 @@ def validate_verification_reports(root: Path, report: Report, claims: set[str]) 
             or "{{" in verifier
         ):
             report.error(location, "verifier must identify the actual verification agent or method")
+        verifier_model = metadata.get("verifier_model")
+        if not valid_model_id(verifier_model):
+            report.error(location, "verifier_model must be a full provider/model ID")
+        originating_models = metadata.get("originating_models")
+        if not isinstance(originating_models, list) or not originating_models:
+            report.error(location, "originating_models must be a nonempty list")
+        else:
+            for model in originating_models:
+                if model == "unknown":
+                    report.warning(location, "originating model is unknown; model separation is unproven")
+                elif not valid_model_id(model):
+                    report.error(location, f"invalid originating model ID '{model}'")
+            if valid_model_id(verifier_model):
+                known_models = [model for model in originating_models if valid_model_id(model)]
+                if verifier_model in known_models:
+                    report.warning(location, "verifier model also materially produced the claim or its evidence")
+                verifier_provider = verifier_model.split("/", 1)[0]
+                if any(model.split("/", 1)[0] == verifier_provider for model in known_models):
+                    report.warning(location, "verifier shares a provider with at least one originating model")
+        if metadata.get("outcome") == "verified" and not verification_has_model_separation(metadata):
+            report.error(location, "verified outcome requires known originating models distinct from verifier_model")
         source_artifacts = metadata.get("source_artifacts")
         if not isinstance(source_artifacts, list) or not source_artifacts:
             report.error(location, "source_artifacts must be a nonempty list")
@@ -954,6 +1004,8 @@ def validate_supporting_state(root: Path, report: Report) -> None:
         allowed_fields = {
             "timestamp",
             "agent",
+            "provider_id",
+            "model_id",
             "session_id",
             "tool",
             "operation",
@@ -993,6 +1045,19 @@ def validate_supporting_state(root: Path, report: Report) -> None:
                 report.error(f"research/provenance.jsonl:{line_number}", "operation must be a string")
             if "success" in record and not isinstance(record["success"], bool):
                 report.error(f"research/provenance.jsonl:{line_number}", "success must be boolean")
+            provider_id = record.get("provider_id")
+            model_id = record.get("model_id")
+            if (provider_id is None) != (model_id is None):
+                report.error(
+                    f"research/provenance.jsonl:{line_number}",
+                    "provider_id and model_id must be recorded together",
+                )
+            for field_name, value in (("provider_id", provider_id), ("model_id", model_id)):
+                if value is not None and (not isinstance(value, str) or not value.strip()):
+                    report.error(
+                        f"research/provenance.jsonl:{line_number}",
+                        f"{field_name} must be a nonempty string",
+                    )
             paths = record.get("relevant_paths", [])
             if not isinstance(paths, list):
                 report.error(f"research/provenance.jsonl:{line_number}", "relevant_paths must be a list")

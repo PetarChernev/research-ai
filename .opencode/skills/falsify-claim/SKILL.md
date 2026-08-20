@@ -40,8 +40,8 @@ Record every serious failed check, including commands and artifacts needed to in
 
 ## 5. Assign an outcome
 
-Use only: `verified`, `supported but not independently verified`, `inconclusive`, `failed verification`, or `contradicted`. Passing one check is not verification. Shared assumptions, code, data, or model reduce independence and must be disclosed; a fresh same-model session is procedural separation only.
+Use only: `verified`, `supported but not independently verified`, `inconclusive`, `failed verification`, or `contradicted`. Passing one check is not verification. Record the verifier and originating `provider/model` IDs. This workspace requires a known verifier model different from every originating model before `verified` is available, preferably across providers. Model separation alone is not sufficient; shared assumptions, code, and data reduce independence and must be disclosed.
 
 ## 6. Write the report
 
-Create a report from `templates/verification-report.md` under `research/results/verification/`. Link source artifacts, document the independence boundary, and list required follow-up. The director, not the verifier, updates the claim ledger and `STATE.md`.
+Create a report from `templates/verification-report.md` under `research/results/verification/`. Link source artifacts, fill `verifier_model` and `originating_models`, document the independence boundary, and list required follow-up. The director, not the verifier, updates the claim ledger and `STATE.md`.

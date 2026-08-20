@@ -53,6 +53,8 @@ Actively search for incompatible data, alternate explanations, convention mismat
 
 Create or update a note under `research/literature/notes/` from `templates/literature-note.md`. Include question investigated, search strategy, relevant sources, supported claims, contradicted claims, exact evidence locations, assumptions/regime, confidence, and unresolved issues. Add checked BibTeX metadata to `research/literature/bibliography.bib` when the source is used.
 
+Bulk or mechanical citation work — formatting entries, validating DOI and arXiv identifiers, normalizing author fields, de-duplicating keys — does not require this skill's judgment and can be delegated by the director to the small-model `bibliographer` agent. Reserve this skill's effort for source selection, exact evidence extraction, regime matching, and contradiction search.
+
 ## 8. Report uncertainty
 
 Distinguish confidence in source identity, confidence in evidence extraction, and confidence that the source applies to the project regime. Never fabricate inaccessible details. Return stable artifact paths and remaining literature gaps.

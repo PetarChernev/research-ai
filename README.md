@@ -27,4 +27,4 @@ uv run --locked python scripts/new_hypothesis.py --title "Candidate mechanism"
 uv run --locked python scripts/new_experiment.py --title "Small-scale diagnostic"
 ```
 
-See `docs/RESEARCH_WORKFLOW.md` for the workflow and `docs/REPRODUCIBILITY.md` for experiment requirements. OpenCode configuration is project-local and does not select an LLM vendor or model.
+See `docs/RESEARCH_WORKFLOW.md` for the workflow and `docs/REPRODUCIBILITY.md` for experiment requirements. The project binds verification roles to one OpenAI and one Anthropic model so the director can route review away from the model that produced a claim; other roles continue to use the invoking model.

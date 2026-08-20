@@ -14,7 +14,18 @@ const RESEARCH_COMMANDS = new Set([
 export const ResearchProvenance = async ({ worktree }) => {
   const root = path.resolve(worktree)
   const logPath = path.join(root, "research", "provenance.jsonl")
-  const agents = new Map()
+  const sessions = new Map()
+
+  const rememberSession = (input) => {
+    if (!input?.sessionID) return
+    const current = sessions.get(input.sessionID) || {}
+    const modelID = input.model?.modelID || input.model?.id
+    sessions.set(input.sessionID, {
+      agent: input.agent || current.agent,
+      providerID: input.model?.providerID || current.providerID,
+      modelID: modelID || current.modelID,
+    })
+  }
 
   const gitCommit = () => {
     try {
@@ -68,7 +79,14 @@ export const ResearchProvenance = async ({ worktree }) => {
   return {
     "chat.message": async (input) => {
       try {
-        if (input.agent) agents.set(input.sessionID, input.agent)
+        rememberSession(input)
+      } catch {
+        // Ignore malformed optional metadata.
+      }
+    },
+    "chat.params": async (input) => {
+      try {
+        rememberSession(input)
       } catch {
         // Ignore malformed optional metadata.
       }
@@ -76,8 +94,11 @@ export const ResearchProvenance = async ({ worktree }) => {
     "command.execute.before": async (input) => {
       try {
         if (!RESEARCH_COMMANDS.has(input.command)) return
+        const session = sessions.get(input.sessionID)
         await append({
-          agent: agents.get(input.sessionID) || "research-director",
+          agent: session?.agent || "research-director",
+          provider_id: session?.providerID,
+          model_id: session?.modelID,
           operation: "research-command",
           command: `/${input.command}`,
         })
@@ -113,8 +134,11 @@ export const ResearchProvenance = async ({ worktree }) => {
         const claimID = relevantPaths
           .map((item) => item.match(/(?:^|\/)(C\d{3})(?:[-/.]|$)/)?.[1])
           .find(Boolean)
+        const session = sessions.get(input.sessionID)
         await append({
-          agent: agents.get(input.sessionID),
+          agent: session?.agent,
+          provider_id: session?.providerID,
+          model_id: session?.modelID,
           tool: input.tool,
           operation,
           experiment_id: experimentID,

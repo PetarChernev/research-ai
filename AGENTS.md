@@ -28,9 +28,18 @@ Label statements as one of: assumption, conjecture, derived result, numerical ob
 - Repetition of one argument by several agents is not independent confirmation.
 - Agreement between implementations sharing assumptions or code is not independent verification.
 - A separate agent session using the same model is procedural separation, not independence by itself.
+- Route verification to a model that did not materially produce the claim or its primary evidence, preferring a different provider, and record both sides of that model boundary.
 - Keep material assumptions and unresolved contradictions visible.
 
 Use `verified` only after an independent verifier has reconstructed or attacked the claim by an alternate method or comparably strong independent check and a substantive report is linked from the ledger. Failed verification remains part of the record.
+
+## Model Assignment
+
+Each agent's model is configured independently in its file under `.opencode/agents/`. Producer agents do not inherit the director's model, so a single claim may have heterogeneous model provenance. Establish the producing model per artifact rather than assuming it matches the director.
+
+One constraint is hard: a claim may reach `verified` only through a verifier whose model is absent from every model that materially produced the claim or its primary evidence. A different provider is preferred and recorded, but only the model-level separation is mandatory. Choosing models for cost or capability is otherwise free, including a deliberately small model for mechanical work such as citation metadata.
+
+Keep at least one verifier model unused by any producer agent, so an eligible verifier always exists. When no eligible verifier remains, leave the claim below `verified` and reassign a model rather than routing the check anyway.
 
 ## Physics Checks
 
@@ -61,7 +70,7 @@ An important computational result must be reproducible without its originating c
 - Prefer competing hypotheses and tests that discriminate among them.
 - Start with analytic estimates or tiny numerical diagnostics before expensive computation.
 - Bound delegated work, integrate its artifacts, and avoid recursive delegation.
-- Give important claims to the independent verifier with primary artifacts, not an approving summary.
+- Give important claims and their originating model IDs to a model-separated verifier with primary artifacts, not an approving summary.
 - Do not optimize manuscript prose before core claims are adequately supported.
 - An experiment without method, configuration, provenance, and validation is incomplete.
 - Never fabricate citations, results, checks, consensus, or verification.

@@ -3,6 +3,8 @@ claim_id: "{{CLAIM_ID}}"
 outcome: "{{OUTCOME}}"
 date: "{{DATE}}"
 verifier: "{{VERIFIER}}"
+verifier_model: "{{VERIFIER_MODEL}}"
+originating_models: {{ORIGINATING_MODELS_JSON}}
 source_artifacts: {{SOURCE_ARTIFACTS_JSON}}
 ---
 
@@ -14,7 +16,7 @@ Quote the exact ledger claim and status at the start of verification.
 
 ## Independence statement
 
-State which reasoning, code, data, and assumptions were reconstructed independently and which were shared.
+State the originating and verifier `provider/model` IDs, then identify which reasoning, code, data, and assumptions were reconstructed independently and which were shared.
 
 ## Reconstruction
 

@@ -35,7 +35,7 @@ Use stable IDs for hypotheses, derivations, experiments, dependencies, and confl
 
 ## 5. Apply verification guardrails
 
-Set `verified` only when `checks.independent_verification` is `passed` and `evidence.verification` links a report documenting genuine independence and serious falsification attempts. A supportive report with shared code must not be promoted silently.
+Set `verified` only when `checks.independent_verification` is `passed` and `evidence.verification` links a report documenting known verifier and originating model IDs, no exact-model overlap, genuine methodological independence, and serious falsification attempts. Different-model review is necessary but not sufficient. A report with unknown model provenance or materially shared code must not be promoted silently.
 
 ## 6. Preserve material history
 

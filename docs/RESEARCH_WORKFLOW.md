@@ -68,7 +68,11 @@ The helpers inspect existing IDs, allocate the next one, instantiate templates, 
 /verify-claim C003
 ```
 
-The verifier receives the exact ledger claim and primary artifacts, reconstructs or reproduces it, attempts falsification, and writes a report. Only a genuinely independent `verified` report can support ledger status `verified`; supportive work sharing code or assumptions remains below that threshold.
+The director combines `provider_id` and `model_id` from artifact provenance, excludes a verifier with exact-model overlap, and prefers a provider absent from the originating set. This normally selects `verifier-anthropic` for OpenAI-originated work or `verifier-openai` for Anthropic-originated work. The selected verifier receives the exact ledger claim, originating model IDs, and primary artifacts, reconstructs or reproduces it, attempts falsification, and writes a report. If provenance is missing or overlaps the selected verifier model, the report cannot qualify as `verified`.
+
+Because each agent's model is configured independently, provenance is heterogeneous and this pairing is a default rather than a rule. A producer configured on a verifier's model makes that verifier ineligible for the affected claim, so eligibility is checked per claim from recorded model IDs. If no eligible verifier remains, the claim stays below `verified` until a model is reassigned.
+
+A different model, preferably from a different provider, is required but not sufficient. Only a genuinely independent `verified` report using alternate reasoning, code, data, or comparably strong checks can support ledger status `verified`; supportive work sharing assumptions or implementations remains below that threshold.
 
 The normal lifecycle is:
 
