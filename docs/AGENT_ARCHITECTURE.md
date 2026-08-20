@@ -6,10 +6,10 @@ User
   v
 Research Director
   |-- Literature
-  |   `-- Bibliographer
   |-- Theorist
   |-- Scientific Computation
-  `-- Verifier
+  |   `-- Engineer
+  `-- Independent Verifier
       |-- Anthropic model
       `-- OpenAI model
 ```
@@ -33,26 +33,32 @@ The producer subagents and two model-bound verifier implementations use closed t
 - `literature` writes only bibliography records and source evidence notes.
 - `bibliographer` writes only `research/literature/bibliography.bib`, on a deliberately small model, and handles mechanical citation metadata without judging evidence.
 - `theorist` writes only derivation artifacts, and exposes candidate machine-checkable obligations from substantial derivations.
-- `scientific-computation` writes experiment directories, machine-check obligations, and reusable computational infrastructure. Its role is broader than numerical simulation: it turns research-defined obligations into reproducible symbolic, formal, exact, numerical, or bespoke computations. It cannot write `research/checks/**/result.json`.
+- `scientific-computation` chooses the computational representation and trust strategy, defines machine-check semantics and acceptance criteria, writes experiment and claim-specific obligation code, validates reusable infrastructure against the intended mathematics, and runs obligations through the deterministic wrapper. It cannot write `research/checks/**/result.json`.
+- `engineer` is a provisioned implementation subagent under `scientific-computation`, not a peer scientific role. It writes only reusable software and tests under `research/computation/` and research-scoped environment definitions under `research/environment/`, from a bounded computational contract. It cannot write claim checks, claims, state, decisions, canonical results, or verification reports.
 - `verifier-anthropic` runs `anthropic/claude-sonnet-4-6`, reads source evidence, and writes only verification reports for non-Anthropic work.
 - `verifier-openai` runs `openai/gpt-5.6-sol`, reads source evidence, and writes only verification reports for non-OpenAI work.
 
 There is deliberately no separate global agent for symbolic algebra, formal proof, numerical simulation, PDEs, theorem proving, or code review. Those are methods the `scientific-computation` role uses when the research requires them, recorded in `research/COMPUTATION.md`. Adding a global agent per method would multiply roles without adding a materially different scientific operation.
 
-Workers cannot launch subagents. `subagent_depth` is one, and the director's task permission lists only these six configured subagents. This prevents recursive delegation while preserving genuine specialization and independent criticism. The `bibliographer` sits under `literature` conceptually, but the director invokes it directly, since workers cannot delegate.
+`subagent_depth` is two to permit exactly one nested edge: `research-director -> scientific-computation -> engineer`. Scientific Computation's task allowlist contains only Engineer, and Engineer has `task: deny`. Every other worker remains unable to delegate. The director does not have Engineer in its task allowlist, preserving Scientific Computation's ownership of the contract and handoff. The `bibliographer` remains a director-invoked mechanical helper rather than a nested scientific worker.
 
-Scientific agents deny secret-like files, undeclared tools, and external directories. Non-literature network access and all scientific computation require user approval. `scientific-computation` additionally denies edits to `research/checks/**/result.json` so that canonical machine results are not hand-written. That permission rule is a guardrail, not a security boundary; the load-bearing architectural constraint is that only `scripts/run_check.py` produces a result file. OpenCode permissions in general are operational guardrails rather than an OS sandbox. Built-in OpenCode agents remain available for explicit infrastructure maintenance and are not independent scientific evidence.
+Scientific agents deny secret-like files, undeclared tools, and external directories. Non-literature network access and all scientific computation require user approval. `scientific-computation` additionally denies edits to `research/checks/**/result.json`; Engineer cannot edit anything under `research/checks/` at all. These permission rules are guardrails, not a security boundary; the load-bearing architectural constraint is that only `scripts/run_check.py` produces a result file and Scientific Computation authors claim-specific runners. OpenCode permissions in general are operational guardrails rather than an OS sandbox.
 
 ## Computational Authority Layers
 
-Computation is not a synonym for numerics, and a computation is not self-certifying. Four distinct authorities are kept separate:
+Computation is not a synonym for numerics, and a computation is not self-certifying. The authority chain is:
 
 ```text
 scientific reasoning
     -> identifies assertions and obligations
 
 scientific computation
-    -> implements executable tests
+    -> selects representation and trust strategy
+    -> defines computational contracts
+    -> writes claim-specific executable tests
+
+engineer
+    -> builds and tests bounded reusable software/environment substrate
 
 deterministic runner
     -> records actual outcomes
@@ -68,19 +74,54 @@ The artifact boundary mirrors it:
 
 ```text
 research/computation/   reusable methodology/infrastructure
+research/environment/   research-scoped dependency/runtime definitions
 research/checks/        claim-linked executable evidence
 research/experiments/   scientific computational experiments
 ```
 
 A reusable mathematical library is methodology, not evidence. A reproducible execution of a declared obligation using that library is evidence. An experiment explores a hypothesis or computes an observable; an obligation tests one concrete declared assertion against a predeclared acceptance criterion. The same computation may motivate both artifacts.
 
-`scripts/run_check.py` is the only writer of `research/checks/ONNN/result.json`. It derives the outcome from the actual process exit status (`0` passed, `1` failed, `2` inconclusive, anything else an error), records the spec and implementation hashes, environment, timestamps, Git state, logs, and generated artifacts, and writes the result atomically. An implementation may emit structured observations to stdout; that payload is stored as data and cannot select the outcome. The runner never interprets the physics.
+`scripts/run_check.py` is the only writer of `research/checks/ONNN/result.json`. It derives the outcome from the actual process exit status (`0` passed, `1` failed, `2` inconclusive, anything else an error), records the spec and implementation hashes, deterministically fingerprints declared infrastructure files/directories and research-environment manifests, captures runtime environment, timestamps, Git state, logs, and generated artifacts, and writes the result atomically. An implementation may emit structured observations to stdout; that payload is stored as data and cannot select the outcome. The runner never interprets the physics.
 
-The global architecture does not select SymPy, Cadabra, Lean, Mathematica, Sage, Julia, interval arithmetic, a tensor engine, a PDE solver, or any other tool. Those choices are research output, recorded with their rationale in `research/COMPUTATION.md`, and project-specific machinery lives under `research/computation/`.
+The global architecture does not select SymPy, Cadabra, Lean, Mathematica, Sage, Julia, interval arithmetic, a tensor engine, a PDE solver, an environment manager, or any other tool. Those choices are research output, recorded with their rationale in `research/COMPUTATION.md`. Project-specific machinery lives under `research/computation/`; environment manifests and locks live under `research/environment/`. The root locked environment remains for architecture tooling.
+
+## Representation First
+
+Scientific Computation explicitly assesses the mathematical domain, required operations, exact/canonical representations, equality semantics, encoded assumptions, external trust, existing-library adequacy, custom-kernel risk, and independent checks. Prefer explicit mathematical structure over heuristic symbolic simplification when a compact exact representation or small decidable operation set is practical. Minimize the trusted computational surface by composing conclusion-critical calculations from a small set of explicit, tested primitives where practical.
+
+This does not ban general-purpose CAS software or heuristic simplification. It requires an explicit judgment about whether conclusion-critical equality or transformation depends on opaque heuristic behavior when a clearer exact method is practical.
+
+When reusable mathematical machinery is needed, Scientific Computation freezes a contract covering the domain, coefficient ring, bases/generators, relations, grading/index/orientation/sign conventions, assumptions, normal form, equality, primitive operations, invariants, law tests, invalid inputs, non-goals, and minimum API as relevant. Engineer implements the contract. Engineer-owned infrastructure tests answer "does the software satisfy the contract?" Scientific Computation's research-specific tests answer "does this contract faithfully represent the mathematics needed for the claim?"
+
+## Need-Based Provisioning
+
+Engineer is invoked only when the substrate needs work: a dependency or research environment is absent, compatibility must be established, reusable infrastructure is missing or broken, a custom kernel is justified, reusable solver/formalization support is needed, performance blocks the required calculation, or a verifier raises a material substrate concern. Existing adequate infrastructure and trivial claim-specific coding remain entirely with Scientific Computation.
+
+```text
+theorist derives mathematics
+        |
+scientific computation identifies a machine-checkable obligation
+        |
+representation assessment
+        |
+        +-- existing substrate sufficient --> scientific computation writes check
+        |
+        `-- substrate work required
+                |
+        scientific computation defines contract
+                |
+        engineer builds environment/infrastructure and tests it
+                |
+        scientific computation validates representation and writes check
+                |
+        deterministic runner executes
+                |
+        independent verifier evaluates the complete chain
+```
 
 ## Why a Small Team
 
-A large swarm increases duplicated arguments, hidden dependence, context volume, and fake consensus. Five conceptual roles — director, literature, theorist, scientific computation, verifier — cover the materially different operations; the verifier role has two provider-specific implementations solely to create a model boundary, and `bibliographer` is a cost split from `literature` rather than a new scientific role. Parallel work is useful only when tasks are separable and evidence streams are genuinely independent. Adding an agent purely to use a different model is not a reason to grow the team; change an existing agent's `model:` field instead. Adding an agent per computational method is not a reason either; methods belong in the research plan.
+A large swarm increases duplicated arguments, hidden dependence, context volume, and fake consensus. Five conceptual scientific roles - director, literature, theorist, scientific computation, verifier - cover the materially different operations; Engineer is bounded implementation support beneath Scientific Computation, and `bibliographer` is a mechanical cost split rather than another scientific voice. Neither adds independent scientific evidence. Adding an agent per computational method remains unnecessary; methods belong in the research plan.
 
 ## Claim Integration
 
@@ -97,7 +138,7 @@ This workspace targets the interfaces verified with OpenCode `1.18.18`:
 - Markdown slash commands in `.opencode/commands/`;
 - named TypeScript tools in `.opencode/tools/` using `@opencode-ai/plugin`;
 - auto-discovered project plugins in `.opencode/plugins/`;
-- scoped permission patterns and one-level task delegation.
+- scoped permission patterns and one bounded two-level delegation path.
 
 Every agent's model is configured independently in its own file under `.opencode/agents/`, using the `model:` frontmatter field. There is no inheritance requirement: the director may run on one provider while a producer runs on another. An agent with no `model:` field follows the invoking primary model, which is a convenience default rather than a guarantee. Model changes are config-time and take effect only after OpenCode restarts.
 
@@ -109,6 +150,7 @@ Current assignment:
 | `theorist` | `openai/gpt-5.6-sol` | Analytical derivation on a provider distinct from the default verifier. |
 | `literature` | session model (unpinned) | Source judgment benefits from a strong model; pin if determinism matters. |
 | `scientific-computation` | session model (unpinned) | Pin when experiment or obligation authorship requires a fixed model. |
+| `engineer` | session model (unpinned) | Implementation support; actual model remains material provenance for infrastructure it creates. |
 | `bibliographer` | `anthropic/claude-haiku-4-5` | Mechanical BibTeX formatting and identifier checking; no evidence judgment. |
 | `verifier-anthropic` | `anthropic/claude-sonnet-4-6` | Pinned to create a verification model boundary. |
 | `verifier-openai` | `openai/gpt-5.6-sol` | Pinned to create a verification model boundary. |
@@ -117,11 +159,11 @@ Verifier models are pinned deliberately: they encode a correctness constraint ra
 
 Two consequences follow from heterogeneous producers. First, provenance is no longer uniform, so verifier selection must be made per artifact from recorded model IDs rather than from the director's own model. Second, a producer sharing a model with a verifier makes that verifier ineligible for the affected claim; `theorist` on `openai/gpt-5.6-sol` already excludes `verifier-openai` from verifying theorist-authored work. Keep at least one verifier model unused by any producer so an eligible verifier always exists. With the table above, `anthropic/claude-sonnet-4-6` is reserved for verification only, which guarantees `verifier-anthropic` remains eligible provided the director is not launched on that exact model.
 
-Computational evidence does not relax any of this. Deterministic execution removes the model from the *outcome*, not from the *design*: the assertion, representation, encoded assumptions, and acceptance criterion were still authored by a model, and a check that tests the wrong thing will pass deterministically. Treat an obligation's authoring model as originating provenance for the claims it supports, and require the verifier to inspect implementation dependence as well as model provenance.
+Computational evidence does not relax any of this. Deterministic execution removes the model from the *outcome*, not from the *design or implementation*: the assertion, representation, encoded assumptions, acceptance criterion, environment, and reusable kernel were still authored by models. Treat Scientific Computation and every material Engineer model as originating provenance for supported claims. Engineer does not need to be model-separated from the theorist, but its contribution can make a verifier model ineligible and can create correlated implementation risk.
 
 ## Provenance Plugin
 
-`research-provenance.js` uses the documented `chat.message`, `chat.params`, `command.execute.before`, and `tool.execute.after` hooks. It records agent, provider, and model metadata for research slash commands, research-artifact writes, experiment commands, and machine-check commands, including `experiment_id` and `obligation_id` when they can be derived from paths. It never stores prompt text, arbitrary arguments, file contents, environment values, or tool output. All plugin writes are caught and fail open, so a logging problem cannot block research.
+`research-provenance.js` uses the documented `chat.message`, `chat.params`, `command.execute.before`, and `tool.execute.after` hooks. It records agent, provider, and model metadata for research slash commands, infrastructure/environment writes, experiment commands, machine-check commands, and Engineer provisioning. Engineer provisioning records Scientific Computation as the parent agent, `delegated_agent: engineer`, and an associated obligation ID when one appears in the bounded task. Child writes carry Engineer's actual session model. It never stores prompt text, arbitrary arguments, file contents, environment values, or tool output. All plugin writes are caught and fail open, so a logging problem cannot block research.
 
 Direct helper scripts, generated experiment runners, and `scripts/run_check.py` also write explicit provenance. This keeps the scientific workflow usable even if plugins are disabled with OpenCode's pure mode.
 

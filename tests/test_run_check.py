@@ -86,6 +86,8 @@ class RunCheckProvenanceTests(WorkspaceTestCase):
             "dirty_worktree",
             "spec_sha256",
             "implementation_sha256",
+            "infrastructure",
+            "infrastructure_sha256",
             "environment",
             "observations",
             "artifacts",
@@ -94,6 +96,9 @@ class RunCheckProvenanceTests(WorkspaceTestCase):
             self.assertIn(field, result)
         self.assertEqual(len(result["spec_sha256"]), 64)
         self.assertEqual(len(result["implementation_sha256"]), 64)
+        self.assertEqual(result["schema_version"], 2)
+        self.assertEqual(result["infrastructure"], [])
+        self.assertEqual(len(result["infrastructure_sha256"]), 64)
         self.assertEqual(result["implementation"], "research/checks/O001/run.py")
         self.assertIn("python", result["environment"])
         self.assertEqual(
@@ -195,6 +200,90 @@ class StaleResultTests(WorkspaceTestCase):
         payload = validate(self.root)
         self.assertFalse(payload["valid"])
         self.assert_error_matching(payload, "missing required field 'spec_sha256'")
+
+
+class InfrastructureStalenessTests(WorkspaceTestCase):
+    def _declare(self, path: str) -> None:
+        self.edit_spec(
+            "O001",
+            {"  infrastructure: []": f'  infrastructure: ["{path}"]'},
+        )
+
+    def test_changed_infrastructure_file_makes_result_stale(self) -> None:
+        self.new_check()
+        infrastructure = self.root / "research" / "computation" / "kernel.txt"
+        infrastructure.write_text("contract-v1\n", encoding="utf-8")
+        self._declare("research/computation/kernel.txt")
+        self.implement("O001", PASSING_CHECK)
+        self.run_check("O001")
+        self.assertTrue(validate(self.root)["valid"])
+
+        infrastructure.write_text("contract-v2\n", encoding="utf-8")
+        payload = validate(self.root)
+        self.assertFalse(payload["valid"])
+        self.assert_error_matching(payload, "infrastructure fingerprints do not match")
+
+        self.run_check("O001")
+        self.assertTrue(validate(self.root)["valid"], validate(self.root)["errors"])
+
+    def test_changed_file_in_declared_directory_makes_result_stale(self) -> None:
+        self.new_check()
+        directory = self.root / "research" / "computation" / "kernel"
+        directory.mkdir()
+        (directory / "b.txt").write_text("b\n", encoding="utf-8")
+        (directory / "a.txt").write_text("a\n", encoding="utf-8")
+        self._declare("research/computation/kernel")
+        self.implement("O001", PASSING_CHECK)
+        self.run_check("O001")
+        first = self.result_of("O001")["infrastructure_sha256"]
+
+        self.run_check("O001")
+        self.assertEqual(self.result_of("O001")["infrastructure_sha256"], first)
+        (directory / "a.txt").write_text("changed\n", encoding="utf-8")
+        payload = validate(self.root)
+        self.assert_error_matching(payload, "infrastructure_sha256 does not match")
+
+    def test_directory_metadata_does_not_change_fingerprint(self) -> None:
+        import os
+
+        self.new_check()
+        directory = self.root / "research" / "computation" / "kernel"
+        directory.mkdir()
+        source = directory / "source.txt"
+        source.write_text("stable\n", encoding="utf-8")
+        self._declare("research/computation/kernel")
+        self.implement("O001", PASSING_CHECK)
+        self.run_check("O001")
+        before = self.result_of("O001")["infrastructure_sha256"]
+
+        os.utime(directory, (1_700_000_000, 1_700_000_000))
+        os.utime(source, (1_700_000_001, 1_700_000_001))
+        payload = validate(self.root)
+        self.assertTrue(payload["valid"], payload["errors"])
+        self.run_check("O001")
+        self.assertEqual(self.result_of("O001")["infrastructure_sha256"], before)
+
+    def test_changed_environment_manifest_makes_result_stale(self) -> None:
+        self.new_check()
+        manifest = self.root / "research" / "environment" / "environment.yml"
+        manifest.write_text("name: research\ndependencies: []\n", encoding="utf-8")
+        self._declare("research/environment/environment.yml")
+        self.implement("O001", PASSING_CHECK)
+        self.run_check("O001")
+        self.assertTrue(validate(self.root)["valid"])
+
+        manifest.write_text("name: research-v2\ndependencies: []\n", encoding="utf-8")
+        payload = validate(self.root)
+        self.assertFalse(payload["valid"])
+        self.assert_error_matching(payload, "infrastructure fingerprints do not match")
+
+        self.run_check("O001")
+        refreshed = self.result_of("O001")
+        self.assertEqual(
+            refreshed["infrastructure"][0]["path"],
+            "research/environment/environment.yml",
+        )
+        self.assertTrue(validate(self.root)["valid"], validate(self.root)["errors"])
 
 
 if __name__ == "__main__":

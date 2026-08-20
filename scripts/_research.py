@@ -54,6 +54,74 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def sha256_path(path: Path) -> tuple[str, str]:
+    """Hash a file or directory deterministically, excluding filesystem metadata.
+
+    Directory hashes include sorted relative entry names, entry kinds, and file
+    content hashes. Timestamps, ownership, permissions, and traversal order do
+    not affect the result. Symlinks and special files are rejected because their
+    external or platform-dependent targets are not a reproducible dependency.
+    """
+    if path.is_symlink():
+        raise ValueError(f"symbolic links cannot be fingerprinted reproducibly: {path}")
+    if path.is_file():
+        return "file", sha256_file(path)
+    if not path.is_dir():
+        raise ValueError(f"infrastructure path must be a file or directory: {path}")
+
+    digest = hashlib.sha256()
+    digest.update(b"research-directory-sha256-v1\0")
+    entries = sorted(path.rglob("*"), key=lambda item: item.relative_to(path).as_posix())
+    for entry in entries:
+        relative = entry.relative_to(path).as_posix().encode("utf-8")
+        if entry.is_symlink():
+            raise ValueError(f"symbolic links cannot be fingerprinted reproducibly: {entry}")
+        if entry.is_dir():
+            digest.update(b"directory\0" + relative + b"\0")
+        elif entry.is_file():
+            digest.update(
+                b"file\0"
+                + relative
+                + b"\0"
+                + sha256_file(entry).encode("ascii")
+                + b"\0"
+            )
+        else:
+            raise ValueError(f"special files cannot be fingerprinted reproducibly: {entry}")
+    return "directory", digest.hexdigest()
+
+
+def fingerprint_paths(root: Path, values: list[str]) -> tuple[list[dict[str, str]], str]:
+    """Fingerprint declared repository-relative dependencies and their aggregate."""
+    normalized: list[str] = []
+    for value in values:
+        if not isinstance(value, str) or not value.strip() or Path(value).is_absolute():
+            raise ValueError(f"invalid infrastructure path '{value}'")
+        path_value = Path(value).as_posix()
+        if path_value in normalized:
+            raise ValueError(f"duplicate infrastructure path '{path_value}'")
+        normalized.append(path_value)
+
+    records: list[dict[str, str]] = []
+    for value in sorted(normalized):
+        unresolved = root / value
+        if unresolved.is_symlink():
+            raise ValueError(f"symbolic links cannot be declared as infrastructure: '{value}'")
+        candidate = unresolved.resolve()
+        try:
+            candidate.relative_to(root.resolve())
+        except ValueError as exc:
+            raise ValueError(f"infrastructure path escapes repository: '{value}'") from exc
+        if not candidate.exists():
+            raise ValueError(f"infrastructure path does not exist: '{value}'")
+        kind, digest = sha256_path(candidate)
+        records.append({"path": value, "type": kind, "sha256": digest})
+
+    encoded = json.dumps(records, sort_keys=True, separators=(",", ":"), allow_nan=False)
+    aggregate = hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+    return records, aggregate
+
+
 def render_template(template: Path, replacements: dict[str, str]) -> str:
     content = template.read_text(encoding="utf-8")
     required = set(_TEMPLATE_TOKEN.findall(content))
@@ -155,6 +223,8 @@ def append_provenance(root: Path, **event: Any) -> None:
         "session_id",
         "tool",
         "operation",
+        "delegated_agent",
+        "task",
         "experiment_id",
         "obligation_id",
         "claim_id",

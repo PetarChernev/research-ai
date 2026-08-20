@@ -13,18 +13,18 @@ If the question is empty, ask for it and make no scientific artifacts. Otherwise
 
 1. Read `AGENTS.md`, current `research/QUESTION.md`, `research/STATE.md`, `research/COMPUTATION.md`, `research/DECISIONS.md`, and `research/claims/ledger.yaml`. Preserve relevant existing work; if this changes an established question, record the consequential scope decision.
 2. Rewrite `research/QUESTION.md` with the exact question, physical scope, exclusions, observables, conventions, parameter regime, and practical success criteria. Mark unresolved choices explicitly.
-3. Build an initial map of what is known, what must be derived, what needs literature evidence, and what can be tested computationally. Delegate at most three sharply bounded discovery tasks where specialization adds value; do not recurse through subagents.
+3. Build an initial map of what is known, what must be derived, what needs literature evidence, and what can be tested computationally. Delegate at most three sharply bounded scientific discovery tasks where specialization adds value. The sole nested exception is `scientific-computation -> engineer` if initialization already justifies a bounded substrate task; Engineer cannot delegate.
 4. Generate multiple competing hypotheses when the question permits. Use `research_new_hypothesis` for stable IDs, then fill assumptions, predictions, falsifiers, and discriminating tests. Do not manufacture diversity when there is only one meaningful hypothesis.
 5. Add only genuinely precise candidate claims to the ledger, with status `conjecture` and no invented evidence. Use the `update-claim-ledger` skill.
 6. Initialize the computational verification strategy. Invoke `research_init_computation_plan`, then populate `research/COMPUTATION.md` yourself. Keep the initial strategy deliberately lightweight and specifically:
    - describe the current methodological regime in this problem's own terms;
    - identify the important candidate machine-checkable aspects of the question;
    - identify what cannot yet be usefully machine checked, and say why;
-   - state whether any custom infrastructure under `research/computation/` is already justified, and prefer "not yet" when it is;
+   - state whether custom infrastructure under `research/computation/` or a research environment under `research/environment/` is already justified, and prefer "not yet" when it is;
    - name the cheapest useful initial executable tests;
    - define the triggers that would require revisiting the strategy.
 
-   Do not preselect a symbolic algebra system, proof assistant, interval-arithmetic library, tensor package, PDE solver, or numerical stack without a scientific reason recorded in the plan. The intended progression is `reason about what needs checking -> smallest useful executable diagnostic -> stronger machinery only when scientifically justified`. Sophisticated infrastructure is not expected at initialization.
+   Do not preselect a symbolic algebra system, proof assistant, interval-arithmetic library, tensor package, PDE solver, or numerical stack without a scientific reason recorded in the plan. Require a representation/trust assessment before bespoke machinery. If infrastructure is justified, Scientific Computation owns its contract and provisions Engineer; the Director does not invoke Engineer directly. The intended progression is `reason about what needs checking -> smallest useful executable diagnostic -> stronger machinery only when scientifically justified`. Sophisticated infrastructure is not expected at initialization.
 7. Rank the first tasks by information gain and cost. Prefer analytic limits and tiny diagnostics before full calculations or heavy machinery.
 8. Update every section of concise `research/STATE.md`, including literature gaps and independent-verification needs. Do not pretend this invocation finishes the research.
 9. Run `research_validate_state`. Fix structural failures and report scientific unknowns separately.

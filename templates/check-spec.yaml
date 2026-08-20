@@ -48,7 +48,10 @@ implementation:
   # Repository-relative entrypoint executed by scripts/run_check.py.
   entrypoint: "research/checks/{{OBLIGATION_ID}}/run.py"
   # Repository-relative reusable machinery this obligation depends on, normally
-  # under research/computation/.
+  # under research/computation/. Also list material research-environment
+  # manifests, locks, container definitions, and build records under
+  # research/environment/. The runner fingerprints files and directories, so a
+  # change makes the recorded result stale.
   infrastructure: []
 
 independence:

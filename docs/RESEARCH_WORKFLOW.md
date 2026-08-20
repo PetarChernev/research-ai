@@ -30,7 +30,7 @@ Expected artifacts:
 - an initial computational verification strategy;
 - an updated state summary and structurally valid claim ledger.
 
-The initial computational strategy is deliberately lightweight. It names the candidate machine-checkable aspects of the problem, what cannot yet be usefully machine checked, whether custom infrastructure is already justified (usually not), the cheapest useful initial executable tests, and the triggers for revisiting the plan. The architecture prefers:
+The initial computational strategy is deliberately lightweight. It names the candidate machine-checkable aspects of the problem, what cannot yet be usefully machine checked, whether custom infrastructure or a research-scoped environment is already justified (usually not), the cheapest useful initial executable tests, and the triggers for revisiting the plan. The architecture prefers:
 
 ```text
 reason about what needs checking
@@ -38,7 +38,7 @@ reason about what needs checking
     -> stronger machinery only when scientifically justified
 ```
 
-No symbolic, formal, or numerical package is prescribed globally. The project chooses its own and records the choice with its rationale.
+No symbolic, formal, numerical, or environment package is prescribed globally. The project chooses its own and records the choice with its rationale. Scientific Computation owns representation and trust-strategy choices; Engineer implements a bounded environment or reusable substrate only when Scientific Computation supplies an explicit need and contract.
 
 ## Run a Bounded Cycle
 
@@ -46,7 +46,7 @@ No symbolic, formal, or numerical package is prescribed globally. The project ch
 /research-cycle
 ```
 
-The director begins each cycle by reading `research/COMPUTATION.md` alongside the question, state, ledger, and hypotheses. One cycle selects the highest-information unresolved issue, decides whether it needs analytic, literature, experimental, or machine-check work, delegates a small number of specialized tasks, requires evidence artifacts, integrates disagreements, requests independent verification when warranted, and updates state. It stops rather than automatically launching another cycle.
+The director begins each cycle by reading `research/COMPUTATION.md` alongside the question, state, ledger, and hypotheses. One cycle selects the highest-information unresolved issue, decides whether it needs analytic, literature, experimental, or machine-check work, delegates a small number of specialized tasks, requires evidence artifacts, integrates disagreements, requests independent verification when warranted, and updates state. Scientific Computation may provision Engineer for one bounded substrate task; the Director does not invoke Engineer directly and Engineer cannot delegate. The cycle stops rather than automatically launching another cycle.
 
 Typical outputs are:
 
@@ -63,6 +63,7 @@ Not every cycle needs new computational work, and trivial claims do not need obl
 
 ```text
 research/computation/   reusable research-specific machinery
+research/environment/   research-scoped environment definitions
 research/checks/        claim-linked executable evidence (ONNN)
 research/experiments/   scientific computational experiments (ENNN)
 ```
@@ -70,6 +71,56 @@ research/experiments/   scientific computational experiments (ENNN)
 An experiment explores a hypothesis or computes an observable. An obligation tests one concrete declared assertion against a predeclared acceptance criterion. One computation may motivate both, but they are separate artifacts with separate workflows: `numerical-experiment` and `computational-verification`.
 
 A reusable library under `research/computation/` is methodology, not evidence. Only a reproducible execution of a declared obligation is evidence.
+
+## Scientific Computation and Engineer
+
+Theorist derives the mathematics. Scientific Computation identifies the precise
+machine-checkable assertion, declares assumptions and acceptance criteria,
+assesses the representation and trusted surface, and writes the claim-specific
+obligation runner. Prefer explicit mathematical structure and a small tested
+primitive set when practical, without banning a well-suited existing CAS or
+library.
+
+If existing software and environments are adequate, Scientific Computation
+writes and runs the check directly. Engineer is provisioned only when a
+dependency or research environment is missing, reusable infrastructure must be
+created or repaired, a custom kernel is justified, compatibility must be
+established, or substrate performance blocks required work.
+
+Before that handoff, Scientific Computation freezes a computational contract:
+represented domain, coefficient domain, bases/generators, relations,
+grading/index/orientation/sign conventions, assumptions, normal form, equality,
+primitive operations, invariants and law tests, invalid inputs, non-goals, and
+minimum API as relevant. Engineer implements the smallest adequate substrate and
+its software tests under `research/computation/` or `research/environment/`.
+Scientific Computation reviews the handoff, validates the representation on
+research-specific cases, and then writes `research/checks/ONNN/run.py`.
+
+```text
+theorist derives mathematics
+        |
+scientific computation defines assertion and representation
+        |
+existing infrastructure sufficient?
+        | yes                         | no
+        |                             v
+        |                    computational contract
+        |                             |
+        |                    engineer builds/tests substrate
+        |                             |
+        `-----------------------------+
+                      |
+scientific computation validates substrate and writes claim check
+                      |
+deterministic runner executes
+                      |
+independent verifier judges sufficiency
+```
+
+Engineer-owned tests answer whether software satisfies the supplied contract.
+Scientific-Computing-owned validation answers whether that contract faithfully
+represents the claim's mathematics. Engineer examples and fixtures never become
+the claim check by default.
 
 ## Create Artifacts Directly
 
@@ -96,7 +147,7 @@ uv run --locked python scripts/run_check.py O001
 
 The helpers inspect existing IDs, allocate the next one, instantiate templates, refuse overwrite, and append lightweight provenance. `new_check.py` requires the question and acceptance criterion up front, so the criterion is declared before implementation, and it never creates `result.json`: an obligation with no result file has not run.
 
-`run_check.py` is the only writer of `research/checks/ONNN/result.json`. It executes the declared entrypoint and derives the canonical outcome from the actual exit status:
+`run_check.py` is the only writer of `research/checks/ONNN/result.json`. It executes the declared entrypoint, fingerprints every declared infrastructure file/directory and environment manifest, and derives the canonical outcome from the actual exit status:
 
 ```text
 exit 0 -> passed
@@ -113,9 +164,9 @@ An implementation may print one `##OBSERVATIONS## {...}` line of structured metr
 /verify-claim C003
 ```
 
-The director combines `provider_id` and `model_id` from artifact provenance, excludes a verifier with exact-model overlap, and prefers a provider absent from the originating set. This normally selects `verifier-anthropic` for OpenAI-originated work or `verifier-openai` for Anthropic-originated work. The selected verifier receives the exact ledger claim, originating model IDs, and primary artifacts — including the computational plan, obligation specifications, the implementations themselves, the machine-generated results, and any `research/computation/` infrastructure they depend on — reconstructs or reproduces the claim, attempts falsification, and writes a report. If provenance is missing or overlaps the selected verifier model, the report cannot qualify as `verified`.
+The director combines `provider_id` and `model_id` from artifact provenance, including every Scientific Computation and Engineer model that materially produced the evidence, excludes a verifier with exact-model overlap, and prefers a provider absent from the originating set. This normally selects `verifier-anthropic` for OpenAI-originated work or `verifier-openai` for Anthropic-originated work. The selected verifier receives the exact ledger claim, originating model IDs, computational contract, research environment, reusable source and infrastructure tests, Scientific Computation's research-specific validation, obligation specifications and implementations, infrastructure fingerprints, and machine-generated results. If provenance is missing or overlaps the selected verifier model, the report cannot qualify as `verified`.
 
-The verifier's task is not to observe that checks passed. It judges whether the declared obligations actually test the claim, whether important failure modes are untested, whether the encoded assumptions match the claim's assumptions, whether the representation is faithful, whether the acceptance criteria are adequate, whether shared implementations undermine independence, and whether apparently strong machine evidence establishes only a narrower statement. It may recommend further obligations; it never writes a canonical `result.json`. A claim with no meaningful machine-checkable component can still be verified, provided the absence is explicit in `research/COMPUTATION.md` and the verifier considered it.
+The verifier's task is not to observe that checks passed. It judges whether the declared obligations actually test the claim, the representation and normal form are faithful, dependencies and APIs introduce hidden assumptions, primitive laws and unsupported inputs are sufficiently tested, Scientific Computation validated the contract on scientific cases, acceptance criteria are adequate, shared implementations undermine independence, and apparently strong evidence establishes only a narrower statement. It may recommend further obligations or infrastructure validation; it never writes a canonical `result.json` and never provisions Engineer directly. A substrate concern returns to Scientific Computation, then Engineer if warranted, then a fresh obligation run, then verifier reassessment.
 
 Because each agent's model is configured independently, provenance is heterogeneous and this pairing is a default rather than a rule. A producer configured on a verifier's model makes that verifier ineligible for the affected claim, so eligibility is checked per claim from recorded model IDs. If no eligible verifier remains, the claim stays below `verified` until a model is reassigned.
 
@@ -150,4 +201,4 @@ uv run --locked python scripts/research_status.py --json
 uv run --locked python scripts/validate_research_state.py
 ```
 
-Use `research/STATE.md` as concise durable memory, not a raw lab notebook. Use `research/COMPUTATION.md` as the evolving record of how this project decides what to check by machine, with which representations and to which standards; the status tool reports counts and blockers but cannot interpret that plan for you. Put consequential changes of scope, conventions, methods, or interpretation in `research/DECISIONS.md`.
+Use `research/STATE.md` as concise durable memory, not a raw lab notebook. Use `research/COMPUTATION.md` as the evolving record of how this project decides what to check by machine, its representation and trust strategy, computational contracts, environment identity, infrastructure tests, scientific validation, and independent cross-checks; it is not an Engineer backlog. Put consequential changes of scope, conventions, methods, substrate, or interpretation in `research/DECISIONS.md`.

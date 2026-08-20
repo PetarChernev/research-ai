@@ -44,12 +44,22 @@ None. No research question has been initialized.
 None chosen. The global architecture deliberately does not pre-select exact
 algebra, symbolic manipulation, interval arithmetic, numerical integration,
 theorem proving, or any package. Record the project's own choices and their
-rationale here once a question exists.
+rationale here once a question exists. For substantial reusable or
+conclusion-critical machinery, record a proportionate trust strategy: the
+mathematical domain, representation, trusted primitives, equality or normal-form
+semantics, dependencies, custom infrastructure, rationale, limitations,
+infrastructure tests, research-specific scientific validation, and independent
+cross-check strategy. Trivial calculations do not need a lengthy analysis.
 
 ## Research-specific computational infrastructure
 
 None. Reusable machinery, if the research justifies any, belongs under
-`research/computation/` and must be documented here.
+`research/computation/`; research-scoped environment definitions belong under
+`research/environment/`. Document the computational contract, minimum API,
+dependencies and environment identity, dependent obligations, Engineer
+implementation provenance, infrastructure tests, Scientific Computation's
+research-specific validation, and known limitations. Scientific Computation
+owns the semantics; Engineer is provisioned only when the substrate needs work.
 
 ## Numerical and formal evidence standards
 

@@ -15,6 +15,7 @@ Record important conclusions in files:
 - `research/experiments/`: reproducible calculations (`ENNN`)
 - `research/checks/`: claim-linked machine-check obligations (`ONNN`)
 - `research/computation/`: reusable research-specific computational machinery
+- `research/environment/`: research-scoped environment manifests, locks, and setup records
 - `research/literature/notes/`: source-specific evidence packets
 - `research/results/`: validated consolidated results and verification reports
 - `research/DECISIONS.md`: consequential research-direction choices
@@ -38,7 +39,7 @@ Use `verified` only after an independent verifier has reconstructed or attacked 
 
 ## Model Assignment
 
-Each agent's model is configured independently in its file under `.opencode/agents/`. Producer agents do not inherit the director's model, so a single claim may have heterogeneous model provenance. Establish the producing model per artifact rather than assuming it matches the director.
+Each agent's model is configured independently in its file under `.opencode/agents/`, but an unpinned role may use the invoking session model. A single claim may therefore have heterogeneous or shared model provenance. Establish the actual producing model per artifact rather than inferring it from hierarchy. Engineer-authored environments and reusable infrastructure count as material production when they support a claim.
 
 One constraint is hard: a claim may reach `verified` only through a verifier whose model is absent from every model that materially produced the claim or its primary evidence. A different provider is preferred and recorded, but only the model-level separation is mandatory. Choosing models for cost or capability is otherwise free, including a deliberately small model for mechanical work such as citation metadata.
 
@@ -69,21 +70,25 @@ For important numerical results, check where relevant:
 The architecture prescribes the process for designing computational evidence, not the methods themselves. Which symbolic, formal, exact, numerical, or bespoke method suits a problem is a research output, recorded in `research/COMPUTATION.md`, not a global rule.
 
 1. Important claims should expose machine-checkable obligations where scientifically useful, and should explicitly record where they cannot.
-2. Theorists propose checkable assertions; `scientific-computation` implements them.
-3. Deterministic runners produce canonical machine outcomes. `research/checks/ONNN/result.json` is written only by `scripts/run_check.py`; no result file means the obligation has not run.
-4. Independent verifiers judge whether the chosen obligations, methods, assumptions, and outcomes are sufficient for the scientific claim.
-5. A passing computation does not automatically verify the scientific claim.
-6. Symbolic output is not automatically a proof; it can depend on assumptions, simplification strategy, branch cuts, and representation.
-7. Numerical agreement is not a derivation, and sampling is coverage rather than proof.
-8. A formal proof establishes only the formalized proposition under its encoded assumptions and axioms.
-9. Shared implementations, representations, infrastructure, or assumptions are not independent confirmation.
-10. Computational strategy is phase-dependent and must be reconsidered when the research regime changes.
-11. Failed and superseded checks remain durable artifacts; never delete failing history to clear a gate.
+2. Theorists derive mathematics and expose checkable assertions. `scientific-computation` defines machine-check semantics, chooses the representation and trust strategy, and writes claim-specific obligation code.
+3. When the reusable software or research environment needs work, `scientific-computation` supplies a bounded computational contract and provisions `engineer`. Engineer verifies that software satisfies the contract but has no scientific or verification authority.
+4. Deterministic runners produce canonical machine outcomes. `research/checks/ONNN/result.json` is written only by `scripts/run_check.py`; no result file means the obligation has not run.
+5. Independent verifiers judge whether the reasoning, representation, implementation, obligations, assumptions, and outcomes are sufficient for the scientific claim.
+6. A passing computation does not automatically verify the scientific claim.
+7. Prefer explicit mathematical structure over heuristic symbolic simplification when a compact exact representation or small decidable operation set is practical. General-purpose CAS software remains allowed when justified.
+8. Minimize the trusted computational surface: conclusion-critical calculations should compose a small set of explicit, tested primitives where practical.
+9. Symbolic output is not automatically a proof; it can depend on assumptions, simplification strategy, branch cuts, and representation.
+10. Numerical agreement is not a derivation, and sampling is coverage rather than proof.
+11. A formal proof establishes only the formalized proposition under its encoded assumptions and axioms.
+12. Shared implementations, representations, infrastructure, environments, or assumptions are not independent confirmation.
+13. Computational strategy is phase-dependent and must be reconsidered when the research regime changes.
+14. Failed and superseded checks remain durable artifacts; never delete failing history to clear a gate.
 
 Directory boundaries:
 
 ```text
 research/computation/   reusable research-specific methodology and infrastructure
+research/environment/   research-scoped dependency and runtime definitions
 research/checks/        claim-linked executable evidence (ONNN obligations)
 research/experiments/   scientific computational experiments (ENNN)
 ```
@@ -94,6 +99,8 @@ The authority boundary is:
 
 ```text
 LLMs decide what should be derived, tested, challenged, and implemented.
+Scientific Computation owns computational semantics and claim-specific checks.
+Engineer supplies bounded, contract-driven software and environment support.
 Deterministic computation establishes the outcome of declared obligations.
 Independent verification decides whether those obligations, methods,
 assumptions, and outcomes support the scientific claim.
@@ -101,14 +108,14 @@ assumptions, and outcomes support the scientific claim.
 
 ## Reproducibility
 
-An important computational result must be reproducible without its originating conversation. Preserve code, parameters, environment information, random seeds, input provenance, the exact command, and the Git commit when available. This applies to symbolic and formal checks as well as numerical runs; a symbolic calculation is still a computation. Do not claim a check was performed unless its artifact records the test and outcome.
+An important computational result must be reproducible without its originating conversation. Preserve code, parameters, research-environment manifests or locks, package and external executable versions, declared infrastructure fingerprints, infrastructure test commands and outcomes, random seeds, input provenance, the exact command, and the Git commit when available. This applies to symbolic and formal checks as well as numerical runs; a symbolic calculation is still a computation. Do not claim a check was performed unless its artifact records the test and outcome.
 
 ## Research Behavior
 
 - Prefer competing hypotheses and tests that discriminate among them.
 - Start with analytic estimates or tiny numerical diagnostics before expensive computation.
 - Reason about what needs checking, then build the smallest useful executable diagnostic, then stronger machinery only when scientifically justified.
-- Bound delegated work, integrate its artifacts, and avoid recursive delegation.
+- Bound delegated work and integrate its artifacts. The only nested edge is `scientific-computation -> engineer` for a declared substrate task; Engineer cannot delegate.
 - Give important claims and their originating model IDs to a model-separated verifier with primary artifacts, not an approving summary.
 - Do not optimize manuscript prose before core claims are adequately supported.
 - An experiment without method, configuration, provenance, and validation is incomplete.

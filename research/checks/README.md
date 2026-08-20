@@ -27,6 +27,11 @@ research/checks/O001/
 Scaffolding never creates `result.json`. **No result file means the obligation
 has not run.**
 
+Scientific Computation owns `spec.yaml`, the representation and acceptance
+criterion, and the claim-specific entrypoint. Engineer may build reusable
+libraries or a research environment from a bounded contract, but cannot write
+the obligation runner.
+
 ## Execution
 
 ```bash
@@ -46,6 +51,12 @@ anything else, timeout, or a non-executable entrypoint -> error
 An implementation may print one structured JSON observation record to stdout
 prefixed with `##OBSERVATIONS##`. The wrapper stores that payload as data; it
 cannot select the outcome. The wrapper does not interpret the physics.
+
+Result schema version 2 records the current spec and entrypoint hashes plus a
+deterministic fingerprint for every path declared under
+`implementation.infrastructure`. Declare material reusable source directories,
+environment manifests/locks, container definitions, and build records. A
+content change makes the result stale until Scientific Computation reruns it.
 
 ## Status and the structural gate
 

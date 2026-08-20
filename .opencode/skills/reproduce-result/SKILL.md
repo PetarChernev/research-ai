@@ -27,11 +27,11 @@ Name the intended mode before starting, because the three are not interchangeabl
 
 ## 2. Audit the record
 
-Check that the target includes code or derivation, parameters, seeds, input provenance and checksums, environment, command, Git commit, observable definition, uncertainty, and acceptance tolerance. For a machine-check obligation, also check the declared question, encoded assumptions, predeclared acceptance criterion, and the recorded `spec_sha256` and `implementation_sha256`; a hash that no longer matches the current files means the recorded result is stale. Missing information is itself a reproducibility finding.
+Check that the target includes code or derivation, parameters, seeds, input provenance and checksums, research-environment manifest or lock, package and external executable versions, infrastructure tests, command, Git commit, observable definition, uncertainty, and acceptance tolerance. For a machine-check obligation, also check the declared question, encoded assumptions, predeclared acceptance criterion, `spec_sha256`, `implementation_sha256`, per-path infrastructure fingerprints, and aggregate `infrastructure_sha256`; any mismatch means the recorded result is stale. Missing information is itself a reproducibility finding.
 
 ## 3. Reconstruct the environment
 
-Use the lockfile and recorded domain-software versions where practical. Record unavoidable substitutions, platform differences, dirty worktree state, and any unavailable external inputs. Never silently fetch a mutable input.
+Use the declared research environment and recorded domain-software versions where practical, distinct from the root architecture/tooling environment. Record unavoidable substitutions, platform differences, dirty worktree state, unavailable external inputs, and any change to Engineer-authored infrastructure. Never silently fetch a mutable input.
 
 ## 4. Re-run the minimal case
 
@@ -43,7 +43,7 @@ Compare observables, uncertainty estimates, convergence behavior, and qualitativ
 
 ## 6. Increase independence when important
 
-Use a different derivation route, algorithm, library, discretization, or implementation language when the claim's importance warrants it. Shared tests can also encode the same mistake; add independent analytical checks.
+Use a different derivation route, algorithm, library, environment, discretization, or implementation language when the claim's importance warrants it. Shared Engineer-authored kernels and infrastructure tests can encode the same mistake; add independent analytical checks and distinguish contract compliance from scientific representation validity.
 
 ## 7. Report the outcome
 

@@ -6,7 +6,7 @@
   ],
   "share": "disabled",
   "autoupdate": "notify",
-  "subagent_depth": 1,
+  "subagent_depth": 2,
   "compaction": {
     "auto": true,
     "prune": true,

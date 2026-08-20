@@ -37,10 +37,11 @@ The architecture provides the place, process, provenance, and verification seman
 
 ```text
 research/computation/   reusable research-specific machinery
+research/environment/   research-scoped environment definitions
 research/checks/        claim-linked executable evidence (ONNN)
 research/experiments/   scientific computational experiments (ENNN)
 ```
 
-`scripts/run_check.py` is the only writer of `research/checks/ONNN/result.json` and derives the outcome from actual process execution. A passing computation is evidence for a declared assertion, not a verified scientific claim; sufficiency remains the independent verifier's judgment.
+Scientific Computation owns the representation, trust strategy, computational contract, and claim-specific `ONNN/run.py`. When reusable software or a research environment must be created or materially changed, it provisions the bounded Engineer; Engineer is implementation support, not a scientific peer or verifier. `scripts/run_check.py` is the only writer of `research/checks/ONNN/result.json`, fingerprints declared infrastructure and environment manifests, and derives the outcome from actual process execution. A passing computation is evidence for a declared assertion, not a verified scientific claim; sufficiency remains the independent verifier's judgment.
 
-See `docs/RESEARCH_WORKFLOW.md` for the workflow and `docs/REPRODUCIBILITY.md` for experiment and obligation requirements. The project binds verification roles to one OpenAI and one Anthropic model so the director can route review away from the model that produced a claim; other roles continue to use the invoking model.
+See `docs/RESEARCH_WORKFLOW.md` for the workflow and `docs/REPRODUCIBILITY.md` for experiment and obligation requirements. The project binds verification roles to one OpenAI and one Anthropic model so the director can route review away from every model that materially produced a claim or its computational substrate. Unpinned producer roles may use the invoking session model, so actual artifact provenance remains authoritative.
