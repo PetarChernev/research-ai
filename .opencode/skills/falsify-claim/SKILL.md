@@ -1,6 +1,6 @@
 ---
 name: falsify-claim
-description: Use to attack a precise scientific claim through counterexamples, limiting cases, symmetry tests, alternative derivations, independent numerics, and contradictory literature before any verified status.
+description: Use to attack a precise scientific claim through counterexamples, limiting cases, symmetry tests, alternative derivations, adversarial computational checks, independent implementations, and contradictory literature before any verified status.
 compatibility: OpenCode 1.18+
 metadata:
   domain: scientific-verification
@@ -25,10 +25,31 @@ Attempt applicable attacks independently:
 - boundary/initial-condition counterexample;
 - hidden parameter or regularization dependence;
 - alternate derivation from different starting assumptions;
-- alternate numerical method or clean implementation;
+- alternate computational method, representation, or clean implementation;
 - contradictory primary literature or data.
 
 Prioritize attacks that would decisively change the research conclusion.
+
+## 2a. Request adversarial computational obligations
+
+Inspect the active machine-check obligations under `research/checks/` that target
+the claim, together with their specs, implementations, encoded assumptions, and
+machine-recorded results. Ask whether they test the claim or only a narrower
+statement, whether plausible failure modes are untested, and whether their
+acceptance criteria are scientifically adequate.
+
+Where an attack is mechanical and decisive, recommend a new adversarial
+obligation to the director: a counterexample search over the stated domain, a
+limiting case the current checks avoid, a symmetry or conservation test, a
+perturbed-sign or perturbed-convention variant that should fail, or an
+independent implementation that does not share the existing code path. Specify
+the assertion, the expected outcome, and the acceptance criterion.
+
+Do not author canonical machine outcomes yourself. Obligations are implemented
+by the `scientific-computation` role and executed only through the deterministic
+runner, which alone writes `research/checks/ONNN/result.json`. Independent
+computation you perform for your own criticism is still evidence and should be
+described in the report, but it is not a canonical obligation result.
 
 ## 3. Separate failure classes
 

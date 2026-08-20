@@ -32,16 +32,16 @@ def compute(config: dict[str, Any]) -> dict[str, Any]:
 
 
 def environment_summary() -> dict[str, Any]:
+    """Record the installed environment without presuming a scientific stack."""
     packages: dict[str, str] = {}
-    for distribution in ("numpy", "scipy", "sympy", "mpmath", "jax", "PyYAML"):
-        try:
-            packages[distribution] = importlib.metadata.version(distribution)
-        except importlib.metadata.PackageNotFoundError:
-            continue
+    for distribution in importlib.metadata.distributions():
+        name = distribution.metadata["Name"] if distribution.metadata else None
+        if name and len(packages) < 500:
+            packages[name] = distribution.version or "unknown"
     return {
         "python": platform.python_version(),
         "platform": platform.platform(),
-        "packages": packages,
+        "packages": dict(sorted(packages.items())),
     }
 
 

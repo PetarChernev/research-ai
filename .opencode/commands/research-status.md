@@ -1,5 +1,5 @@
 ---
-description: Report the current question, hypotheses, claims, verification gaps, experiments, contradictions, and next actions from repository artifacts.
+description: Report the current question, hypotheses, claims, verification gaps, experiments, machine-check obligations, contradictions, and next actions from repository artifacts.
 agent: research-director
 ---
 
@@ -11,6 +11,6 @@ $ARGUMENTS
 
 1. Invoke `research_status` for the machine-derived summary.
 2. Run `research_validate_state`; include validation failures without trying to hide or reinterpret them.
-3. Read concise `research/STATE.md` for the working picture, strongest evidence, literature gaps, and next recommended actions.
-4. Report the question, active hypotheses, important claims grouped by status, unresolved independent verification, active experiments, major contradictions, and the top next actions.
+3. Read concise `research/STATE.md` for the working picture, strongest evidence, literature gaps, and next recommended actions, and `research/COMPUTATION.md` for the computational strategy the machine-derived counts cannot interpret.
+4. Report the question, active hypotheses, important claims grouped by status, unresolved independent verification, active experiments, machine-check obligations with failed, inconclusive, and pending required outcomes, claims blocked by the structural computational gate, major contradictions, and the top next actions.
 5. Flag stale or inconsistent state explicitly. Do not perform a research cycle or mutate artifacts unless the user asked for repair.

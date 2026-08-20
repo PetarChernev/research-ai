@@ -1,0 +1,61 @@
+schema_version: 1
+id: "{{OBLIGATION_ID}}"
+title: >-
+  {{TITLE}}
+
+# Scientific targets. At least one claim or derivation should be linked once the
+# obligation is attached to the research record.
+claims: {{CLAIMS_JSON}}
+derivations: {{DERIVATIONS_JSON}}
+
+# Generic, method-neutral classification. Allowed values:
+#   exact-symbolic | formal | numerical | convergence | independent-implementation
+#   limiting-case | symmetry | dimensional | counterexample | other
+# The class describes what kind of assertion is being tested. It does not select
+# a library, language, or tool; the research chooses the method.
+class: "{{CLASS}}"
+
+# required: true means this obligation is part of the currently declared
+# verification strategy for its target claims. A required active obligation
+# without a passing result blocks the structural computational gate.
+required: {{REQUIRED}}
+
+# active | superseded. Superseded obligations remain durable history and do not
+# block the current strategy. Do not delete failed history to clear the gate.
+status: active
+
+# The exact mathematical question tested, stated so that a reader can tell what
+# is NOT tested.
+question: >-
+  {{QUESTION}}
+
+# Assumptions the executable check encodes: conventions, normalizations, domains,
+# regularity, parameter ranges, representation choices, and anything the
+# implementation takes for granted.
+assumptions: []
+
+# Predeclared pass/fail/inconclusive criterion. Write this before implementing.
+acceptance_criterion: >-
+  {{ACCEPTANCE_CRITERION}}
+
+method:
+  description: >-
+    {{METHOD_DESCRIPTION}}
+  rationale: >-
+    {{METHOD_RATIONALE}}
+
+implementation:
+  # Repository-relative entrypoint executed by scripts/run_check.py.
+  entrypoint: "research/checks/{{OBLIGATION_ID}}/run.py"
+  # Repository-relative reusable machinery this obligation depends on, normally
+  # under research/computation/.
+  infrastructure: []
+
+independence:
+  # not-required | recommended | required
+  requirement: "{{INDEPENDENCE_REQUIREMENT}}"
+  rationale: >-
+    {{INDEPENDENCE_RATIONALE}}
+
+created_at: "{{DATE}}"
+updated_at: "{{DATE}}"

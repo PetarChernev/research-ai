@@ -15,6 +15,10 @@ import yaml
 from _research import PROJECT_ROOT, current_question, load_frontmatter, markdown_sections
 
 
+COMPUTATION_UNINITIALIZED_MARKER = "Status: not-started"
+BLOCKING_OUTCOMES = {"failed", "inconclusive", "error"}
+
+
 def load_claims(root: Path) -> list[dict[str, Any]]:
     path = root / "research" / "claims" / "ledger.yaml"
     data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
@@ -42,6 +46,126 @@ def scan_markdown_metadata(directory: Path, pattern: str) -> list[dict[str, Any]
         metadata, _ = load_frontmatter(target)
         artifacts.append(metadata)
     return artifacts
+
+
+def load_obligations(root: Path) -> list[dict[str, Any]]:
+    """Read machine-check obligations without judging their science."""
+    directory = root / "research" / "checks"
+    obligations: list[dict[str, Any]] = []
+    if not directory.exists():
+        return obligations
+    for path in sorted(directory.iterdir()):
+        if not path.is_dir() or not re.fullmatch(r"O\d{3}", path.name):
+            continue
+        spec_path = path / "spec.yaml"
+        if not spec_path.exists():
+            continue
+        try:
+            spec = yaml.safe_load(spec_path.read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, yaml.YAMLError) as exc:
+            raise ValueError(f"{spec_path}: {exc}") from exc
+        if not isinstance(spec, dict):
+            raise ValueError(f"{spec_path}: spec.yaml must be a mapping")
+        outcome = None
+        result_path = path / "result.json"
+        if result_path.exists():
+            try:
+                result = json.loads(result_path.read_text(encoding="utf-8"))
+            except (OSError, UnicodeError, ValueError) as exc:
+                raise ValueError(f"{result_path}: {exc}") from exc
+            if isinstance(result, dict) and isinstance(result.get("outcome"), str):
+                outcome = result["outcome"]
+        obligations.append(
+            {
+                "id": path.name,
+                "title": spec.get("title"),
+                "class": spec.get("class"),
+                "status": spec.get("status"),
+                "required": bool(spec.get("required")),
+                "claims": spec.get("claims") if isinstance(spec.get("claims"), list) else [],
+                "outcome": outcome or "pending",
+            }
+        )
+    return obligations
+
+
+def computational_status(root: Path, claims: list[dict[str, Any]]) -> dict[str, Any]:
+    """Summarize computational verification from structured artifacts only."""
+    plan = root / "research" / "COMPUTATION.md"
+    plan_exists = plan.is_file()
+    plan_initialized = False
+    if plan_exists:
+        try:
+            plan_initialized = COMPUTATION_UNINITIALIZED_MARKER not in plan.read_text(encoding="utf-8")
+        except (OSError, UnicodeError):
+            plan_initialized = False
+
+    obligations = load_obligations(root)
+    active = [item for item in obligations if item["status"] == "active"]
+    required_active = [item for item in active if item["required"]]
+    required_by_outcome: dict[str, list[str]] = {}
+    for item in required_active:
+        required_by_outcome.setdefault(item["outcome"], []).append(item["id"])
+
+    unsatisfied_by_claim: dict[str, list[str]] = {}
+    for item in required_active:
+        if item["outcome"] == "passed":
+            continue
+        for claim_id in item["claims"]:
+            if isinstance(claim_id, str):
+                unsatisfied_by_claim.setdefault(claim_id, []).append(item["id"])
+
+    gaps = []
+    for claim in claims:
+        claim_id = claim.get("id")
+        if not isinstance(claim_id, str):
+            continue
+        checks = claim.get("checks") if isinstance(claim.get("checks"), dict) else {}
+        state = checks.get("computational_verification")
+        blocking = sorted(unsatisfied_by_claim.get(claim_id, []))
+        if blocking:
+            gaps.append(
+                {
+                    "claim": claim_id,
+                    "computational_verification": state,
+                    "reason": "active required obligation without a passing result",
+                    "obligations": blocking,
+                }
+            )
+        elif state in {"pending", "failed", "inconclusive"}:
+            gaps.append(
+                {
+                    "claim": claim_id,
+                    "computational_verification": state,
+                    "reason": "claim-level computational verification is not settled",
+                    "obligations": [],
+                }
+            )
+
+    return {
+        "plan_exists": plan_exists,
+        "plan_initialized": plan_initialized,
+        "obligations_total": len(obligations),
+        "active_obligations": [item["id"] for item in active],
+        "superseded_obligations": [
+            item["id"] for item in obligations if item["status"] == "superseded"
+        ],
+        "required_active_by_outcome": {
+            name: sorted(values) for name, values in sorted(required_by_outcome.items())
+        },
+        "pending_required_obligations": sorted(
+            item["id"] for item in required_active if item["outcome"] == "pending"
+        ),
+        "failed_obligations": sorted(
+            item["id"] for item in active if item["outcome"] == "failed"
+        ),
+        "inconclusive_obligations": sorted(
+            item["id"] for item in active if item["outcome"] == "inconclusive"
+        ),
+        "error_obligations": sorted(item["id"] for item in active if item["outcome"] == "error"),
+        "claims_blocked_by_required_checks": sorted(unsatisfied_by_claim),
+        "computational_verification_gaps": gaps,
+    }
 
 
 def next_actions(root: Path) -> list[str]:
@@ -129,6 +253,7 @@ def build_status(root: Path) -> dict[str, Any]:
         "important_claims": important_claims,
         "unresolved_verification": unresolved_verification,
         "active_experiments": active_experiments,
+        "computational_verification": computational_status(root, claims),
         "major_contradictions": contradictions,
         "next_actions": next_actions(root),
     }
@@ -173,12 +298,46 @@ def main() -> int:
         for item in status["major_contradictions"]
     ) or "none"
     actions = "; ".join(status["next_actions"]) or "none recorded"
+    computation = status["computational_verification"]
+    if not computation["plan_exists"]:
+        plan_state = "missing"
+    elif computation["plan_initialized"]:
+        plan_state = "initialized"
+    else:
+        plan_state = "not initialized"
+    required = ", ".join(
+        f"{name}={','.join(values)}"
+        for name, values in computation["required_active_by_outcome"].items()
+    ) or "none"
+    gaps = "; ".join(
+        f"{item['claim']} [{item['computational_verification']}] {item['reason']}"
+        + (f" ({','.join(item['obligations'])})" if item["obligations"] else "")
+        for item in computation["computational_verification_gaps"]
+    ) or "none"
     print(f"Question: {status['question']}")
     print(f"Active hypotheses: {format_artifacts(status['active_hypotheses'])}")
     print(f"Claims by status: {claim_counts}")
     print(f"Highest-value claims: {important}")
     print(f"Unresolved verification: {verification}")
     print(f"Active experiments: {format_artifacts(status['active_experiments'])}")
+    print(f"Computation plan: {plan_state}")
+    print(
+        "Machine-check obligations: "
+        f"{len(computation['active_obligations'])} active, "
+        f"{len(computation['superseded_obligations'])} superseded"
+    )
+    print(f"Required active obligations by outcome: {required}")
+    print(
+        "Failed/inconclusive/error obligations: "
+        f"{', '.join(computation['failed_obligations']) or 'none'} / "
+        f"{', '.join(computation['inconclusive_obligations']) or 'none'} / "
+        f"{', '.join(computation['error_obligations']) or 'none'}"
+    )
+    print(
+        "Claims blocked by pending required checks: "
+        f"{', '.join(computation['claims_blocked_by_required_checks']) or 'none'}"
+    )
+    print(f"Computational verification gaps: {gaps}")
     print(f"Major contradictions: {contradictions}")
     print(f"Next actions: {actions}")
     return 0

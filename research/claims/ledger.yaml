@@ -387,3 +387,5 @@ claims:
     conflicts: []
     created_at: "2026-08-19T19:50:00Z"
     updated_at: "2026-08-19T19:50:00Z"
+schema_version: 2
+claims: []

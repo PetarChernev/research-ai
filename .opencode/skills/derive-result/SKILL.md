@@ -52,8 +52,27 @@ Perform applicable checks:
 - gauge or coordinate dependence;
 - comparison with convention-adjusted literature results.
 
-Use symbolic software only as a documented cross-check. Preserve commands and outputs that materially support the claim.
+## 8. Expose candidate machine-checkable obligations
 
-## 8. Conclude epistemically
+Fill the `Candidate machine-checkable obligations` section of the derivation.
+Identify concrete assertions from the argument that could be decided
+mechanically, state the expected result, the assumptions each test would encode,
+and what it would leave untested. Common candidates include exact identities,
+equation residuals, rank or dimension statements, symmetry statements, limiting
+cases, perturbative remainder orders, dimensional consistency, counterexamples,
+bounds, and numerical consequences; these are examples, not required categories.
+
+Link existing `ONNN` obligations under `research/checks/` where they already
+cover a step, and record their actual recorded outcomes. Recommending a method
+is allowed; deciding that your own proposed check is sufficient is not. The
+director owns `research/COMPUTATION.md` and adopts obligations; the
+`scientific-computation` role implements them through the
+`computational-verification` skill.
+
+Symbolic software used here is a documented cross-check, not the derivation.
+Preserve commands and outputs that materially support the claim; symbolic output
+is supporting evidence rather than automatically a proof.
+
+## 9. Conclude epistemically
 
 Record unresolved concerns and classify the output as a derived result only in its stated regime. Return the derivation path to the director for claim-ledger integration and, if important, independent verification.

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
@@ -42,6 +43,15 @@ def next_artifact_id(directory: Path, prefix: str) -> str:
     if number > 999:
         raise RuntimeError(f"No {prefix}NNN identifiers remain; extend the ID schema deliberately.")
     return f"{prefix}{number:03d}"
+
+
+def sha256_file(path: Path) -> str:
+    """Return the lowercase SHA-256 of a file's bytes."""
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(65536), b""):
+            digest.update(block)
+    return digest.hexdigest()
 
 
 def render_template(template: Path, replacements: dict[str, str]) -> str:
@@ -146,6 +156,7 @@ def append_provenance(root: Path, **event: Any) -> None:
         "tool",
         "operation",
         "experiment_id",
+        "obligation_id",
         "claim_id",
         "command",
         "relevant_paths",

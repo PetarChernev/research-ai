@@ -7,6 +7,8 @@ const RESEARCH_COMMANDS = new Set([
   "research-cycle",
   "new-hypothesis",
   "new-experiment",
+  "new-check",
+  "run-check",
   "verify-claim",
   "research-status",
 ])
@@ -126,10 +128,21 @@ export const ResearchProvenance = async ({ worktree }) => {
           operation = "experiment-command"
           relevantPaths = [`research/experiments/${experimentMatch[1]}`]
         }
+        const checkMatch =
+          typeof command === "string"
+            ? command.match(/(?:research\/checks\/|run_check\.py\s+)(O\d{3})(?:\/|\b)/)
+            : null
+        if (checkMatch) {
+          operation = "check-command"
+          relevantPaths = [`research/checks/${checkMatch[1]}`]
+        }
         if (!operation) return
 
         const experimentID = relevantPaths
           .map((item) => item.match(/(?:^|\/)(E\d{3})(?:\/|$)/)?.[1])
+          .find(Boolean)
+        const obligationID = relevantPaths
+          .map((item) => item.match(/(?:^|\/)(O\d{3})(?:\/|$)/)?.[1])
           .find(Boolean)
         const claimID = relevantPaths
           .map((item) => item.match(/(?:^|\/)(C\d{3})(?:[-/.]|$)/)?.[1])
@@ -142,6 +155,7 @@ export const ResearchProvenance = async ({ worktree }) => {
           tool: input.tool,
           operation,
           experiment_id: experimentID,
+          obligation_id: obligationID,
           claim_id: claimID,
           relevant_paths: relevantPaths,
           success:

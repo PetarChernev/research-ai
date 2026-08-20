@@ -9,6 +9,27 @@ metadata:
 
 # Reproducible Numerical Experiment
 
+## 0. Choose the right artifact first
+
+An experiment and a machine-check obligation serve different purposes and this
+skill covers only the first:
+
+- an **experiment** (`research/experiments/ENNN/`) explores a scientific
+  hypothesis or computes an observable, with a parameter range, baseline,
+  convergence study, and interpretation;
+- an **obligation** (`research/checks/ONNN/`) tests one concrete declared
+  assertion against a predeclared acceptance criterion, and its canonical
+  outcome is written only by the deterministic runner.
+
+Use `computational-verification` for an obligation. The same computation may
+motivate both artifacts — an experiment can reveal an assertion worth pinning
+down as an obligation, and an obligation can motivate a broader exploration —
+but do not collapse them, and do not use an experiment as a substitute for a
+claim-linked executable obligation.
+
+This skill is specifically about experiments. It is not the generic machine
+verification mechanism.
+
 ## 1. Define the test before coding
 
 Record the hypothesis or claim, measurable observable, units, baseline, parameter range, and outcomes that would support, disfavor, falsify, or fail to distinguish alternatives. State numerical and scientific failure criteria in advance.
@@ -35,6 +56,8 @@ Work only in the resulting `research/experiments/ENNN/` directory. Fill `README.
 
 Record equations, discretization, solver, tolerances, precision, boundary/initial conditions, random seeds, input provenance, software versions, and hardware-sensitive choices. Define reference or analytic limits.
 
+Follow the representations, methods, and evidence standards recorded in `research/COMPUTATION.md`; that plan, not this skill, decides which tooling this project uses. Reusable machinery shared with other experiments or obligations belongs in `research/computation/`, declared and justified in the plan.
+
 ## 5. Design convergence and robustness checks
 
 Choose applicable resolution, finite-size, timestep, basis-cutoff, tolerance, precision, seed, initial-condition, and parameter-sensitivity studies. Set quantitative acceptance thresholds. Include conservation and symmetry diagnostics.
@@ -50,3 +73,5 @@ Put observables and uncertainties in `result.json`; list generated artifacts. Ra
 ## 8. Interpret conservatively
 
 Compare against the predeclared outcomes, baselines, and known limits. Label the output a numerical observation or numerical support, not a derivation. Record failures and limitations, validate repository state, and return artifact paths to the director.
+
+If the experiment sharpens a specific assertion into something worth pinning down mechanically, say so and let the director decide whether to instantiate an `ONNN` obligation. Do not silently promote an experiment result into a claim-linked machine check.
