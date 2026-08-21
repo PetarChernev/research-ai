@@ -1,13 +1,15 @@
 # Computational Verification Strategy
 
-Status: active — legacy migration and revalidation
-Last updated: 2026-08-20T14:25:00Z
+Status: active — fixed-interface edge-sector discrimination and revalidation
+Last updated: 2026-08-21T00:00:00Z
 
 Research question: Does there exist a resolution-independent, Lorentz-covariant classical `4 <-> 5` framework, formulated without an inverse coframe at rank change, whose bulk and transition equations follow from one variational principle and whose linearized initial-value problem is free of an evident constraint inconsistency, ghost, or loss of predictivity?
 
-This is the project-specific methodology for testing research already recorded in
-`D001`–`D005`. It does not retroactively turn historical calculations into
-machine evidence, and it does not begin the proposed `D006` canonical analysis.
+This is the project-specific methodology for testing research recorded in
+`D001`–`D006`. It does not retroactively turn historical calculations into
+machine evidence. D006 has now completed the bounded interface-only canonical
+analysis, and O005 tests its finite exact assertions; neither artifact supplies
+the omitted bulk Gauss system required for a final gauge/physical classification.
 
 ## Current research phase
 
@@ -26,14 +28,14 @@ with two infinitely flat resolutions. The load-bearing derivations use:
 The strict derivational backbone of the present frontier is
 
 ```text
-C009 and C010 -> C012 -> C013 -> C014 -> C015,
+C009 and C010 -> C012 -> C013 -> C014 -> C015 -> C016,
 ```
 
 with C011 excluding an autonomous bare-quotient measure/incidence choice and
-C007–C008 fixing the local category benchmark. C015 is only an algebraic
-fixed-interface branch statement: it is not existence of a bulk-compatible
-solution or a result on constraint closure. The migration tests old work in
-this exact regime; it does not calculate the next edge-sector dynamics.
+C007–C008 fixing the local category benchmark. C016 establishes exact
+interface-only presymplectic ranks and a corner-charge witness on one planar
+branch, but deliberately leaves total constraint closure undecided because the
+bulk symplectic form and Lorentz Gauss generators are absent.
 
 ## Checkability map
 
@@ -53,14 +55,14 @@ this exact regime; it does not calculate the next edge-sector dynamics.
 | C012 | Palatini factorials, ordered-pair multiplicities, channel split, boundary signs, collapsed trace and fixed-radius control. | Broader Lovelock/transgression classes would require additional encodings. | Preference among potential representatives and enriched action classes. |
 | C013 | Pure-multiplier degeneracy and the displayed completion coefficient algebra. | Exhaustive boundary-action classification is not currently formalized. | The bounded conceptual classification beyond the explicitly varied families. |
 | C014 | Field-space curl and complete primitive on a certified nonzero mode. | A general formal calculus of local field-space functionals is unnecessary now. | A universal statement about every possible interface action (not claimed). |
-| C015 | Reference-branch gradients, coupling relation, rank/minor implication, `H(K)` rank/nullity and nonflat kernel witness. | The future canonical edge-sector test needs a new phase-specific representation. | Gauge-versus-physical status, corner charge, bulk compatibility, hyperbolicity and solution existence. |
+| C015 | Reference-branch gradients, coupling relation, rank/minor implication, `H(K)` rank/nullity and nonflat kernel witness. | The interface-only canonical follow-up is now represented by C016/O005; a complete bulk canonical system would need materially more structure. | Gauge-versus-physical status, bulk compatibility, hyperbolicity and solution existence. |
+| C016 | Exact `dQ`, off-shell and shell presymplectic ranks, null directions, moment-map signs, and a nonzero planar corner witness. | A completed bulk-plus-interface canonical formulation could expose total Gauss rank and constraint-closure obligations. | Whether the residual rank-ten block is physical, second class, or removed by first-class total gauge in the presently omitted bulk system. |
 
 ## Current machine-check obligations
 
-The migration adopts four required exact obligations, prioritized by the actual
-dependency graph rather than chronology. They were allocated on 2026-08-20;
-none had a result at allocation time, and all four now have current deterministic
-`passed` results.
+The program now has five required exact obligations, prioritized by the actual
+dependency graph rather than chronology. None had a result at allocation time,
+and all five now have current deterministic `passed` results.
 
 1. **O001 — D002 equalizer and curvature controls (C009/D002).** Exact
    branchwise pullback residuals for `eta`, `rho eta`, `A`, `F`, and mixed
@@ -76,6 +78,9 @@ none had a result at allocation time, and all four now have current deterministi
    Exact differentiation/elimination for reference-free, fixed-reference and
    freely varied reference branches; coupling normalization; coframe-minor
    implication; and rank/nullity/nonflat-kernel checks for `K -> H(K)`.
+5. **O005 — interface cut rank and moment maps (C016/D006).** Exact planar
+   `dQ`, fixed-reference and Stueckelberg presymplectic ranks, null directions,
+   Lorentz moment-map signs, shell pullback, and nonzero `Q_03` corner witness.
 
 Each obligation includes mutation/negative controls. A passing outcome is
 evidence only for the encoded finite exact assertions and does not establish
@@ -88,14 +93,19 @@ run.
 | O002 | `passed` | 71/71 | 2026-08-20T14:13:21Z | D003/D004 trace, orientation, Palatini, and fixed-radius controls |
 | O003 | `passed` | 44/44 | 2026-08-20T14:09:08Z | D005 one-mode field-space curl and complete primitive |
 | O004 | `passed` | 60/60 | 2026-08-20T14:08:32Z | D004/D005 reference branches, minors, and exact rank table |
+| O005 | `passed` | 40/40 | 2026-08-20T18:18:12Z | D006 cut ranks, null directions, moment maps, and corner witness |
 
 O002–O004 record the same aggregate shared-infrastructure SHA-256
 `0b4aeb783458e144f6b86641ad631d0cb62dcc12398b414a552434f00d211b97`
 and exact-kernel directory SHA-256
 `197024e3f37dff868c931141ce25949e26e2249bd4850d0213ff06e81449268b`.
-All results were produced on a dirty worktree at Git commit
+The O001–O004 results were produced on a dirty worktree at Git commit
 `29367ed1e5874e2f3c2aeb1e981f5dd689b3eea7`; their specs, implementations,
 and declared infrastructure remain fingerprinted for staleness detection.
+O005 reused the unchanged `exact_graded` directory at the same directory
+fingerprint but has its own claim-specific implementation and later full
+infrastructure fingerprint at Git commit
+`6eda62c0325e4feccff7148cb0da877bc028a46b`.
 
 ## Computational representations and methods
 
@@ -189,6 +199,27 @@ and declared infrastructure remain fingerprinted for staleness detection.
   action and derive the `H` kernel analytically from the adapted `M/S`
   decomposition rather than the shared row-reduction code.
 
+### Domain E — interface cut presymplectic matrices (O005)
+
+- **Mathematical domain:** rational `so(1,3)` structure constants and pairing,
+  the two-dimensional cut exterior algebra, the exact `6 x 8` coframe-to-`Q`
+  differential, and finite antisymmetric presymplectic matrices.
+- **Representation:** ordered Lorentz pairs `(01,02,03,12,13,23)`, basis
+  `dx1<dx2`, `Fraction` coefficients, canonical sparse forms, and deterministic
+  rational RREF. The nonzero common scale is set to `b=1` for ranks and restored
+  as `b/2` in the corner witness.
+- **Scientific rationale:** the load-bearing assertions are finite exact ranks,
+  null directions and signs; random matrices or floating-point sampling would
+  be weaker and could conceal convention errors.
+- **Trust surface:** the existing exterior, epsilon and rational-matrix
+  primitives plus short claim-specific Lorentz/block formulas. No new generic
+  presymplectic framework or Engineer work was justified.
+- **Cross-check:** five explicit `dQ` pivots, four displayed shell null vectors,
+  analytic block-rank addition, and a nonidentity rational Lorentz adjoint.
+- **Limitation:** every path omits the bulk kinetic form, total Gauss generators,
+  secondary constraints and polarization, so no final gauge/physical conclusion
+  is encoded.
+
 No general-purpose CAS is used as a conclusion-critical equality oracle. A CAS
 may be used later only as an explicitly independent targeted exact cross-check
 with its assumptions and normal form recorded.
@@ -225,8 +256,9 @@ self-contained to retain a materially different representation path.
   symbolic division, zero-divisor coefficient systems and numerical matrices.
 - **Non-goals:** smooth-germ/asymptotic algebra, quotient topology or diffeology,
   tensor automation, gauge-group solving, factorization/Groebner bases, theorem
-  proving, numerical linear algebra, Markdown parsing, and all D006 work.
-- **Dependent obligations:** O002, O003 and O004; each must fingerprint the entire
+  proving, numerical linear algebra, Markdown parsing, and generic canonical
+  dynamics. O005 reused only the already-contracted exterior and matrix API.
+- **Dependent obligations:** O002, O003, O004 and O005; each must fingerprint the entire
   kernel directory. The kernel is methodology, not evidence.
 
 Engineer is required because this reusable primitive set and its law tests are
@@ -268,8 +300,8 @@ implementation. A bad criterion is superseded rather than edited after output.
 
 ## Independence strategy
 
-All four migration obligations require an alternate method because they test
-load-bearing legacy reasoning. The primary implementations and exact kernel are
+All five required obligations use an alternate analytic path because they test
+load-bearing reasoning. The primary implementations and exact kernel are
 not mutually independent when they share `exact_graded/`.
 
 - O001: direct set-theoretic branch-table reconstruction, with no shared kernel.
@@ -278,6 +310,9 @@ not mutually independent when they share `exact_graded/`.
 - O003: direct evaluation on two variations versus polynomial field-space `d_F`.
 - O004: analytic branch elimination and `M/S` kernel decomposition versus action
   differentiation and rational row reduction.
+- O005: explicit pivots/null vectors and first-order block-rank reasoning versus
+  assembled presymplectic matrices and exact RREF. This is correlated, not an
+  independent verification.
 
 Fresh independent verification must review the old derivation, old reports,
 plan, contracts, infrastructure/tests, research-specific validation, specs,
@@ -295,8 +330,8 @@ Redesign this strategy if any of the following occurs:
    conclusion-critical identity or imposes an extra one;
 3. the state space moves beyond the basic fixed-interface sector to nonbasic
    circle modes, full `SO(1,4)` normal dynamics, moving interfaces or corners;
-4. the proposed `D006` canonical analysis begins, introducing presymplectic
-   matrices, primary/secondary constraints and charge classification;
+4. the interface-only D006 regime is extended to a complete bulk-plus-interface
+   Hamiltonian system with primary/secondary constraints and total Gauss generators;
 5. a concrete hyperbolic PDE is fixed, requiring principal-symbol and energy
    estimates;
 6. a defect solution is posed, requiring a research-scoped numerical
@@ -305,11 +340,11 @@ Redesign this strategy if any of the following occurs:
    requiring computational topology/formalization rather than this graded
    exterior kernel.
 
-At the immediate frontier, the expected new objects are exact finite
-presymplectic and constraint matrices for the fixed-reference and
-Stueckelberg-reference edge sectors. Existing exterior primitives may remain
-useful, but they are not assumed adequate; a new contract is created only when
-that forward work is authorized.
+At the immediate frontier, no additional finite interface matrix is expected to
+discriminate H002 from restricted H003. The next theory object would be the
+bulk-plus-interface Hamiltonian/Gauss system itself. New computation is deferred
+until that object exists; the present exact kernel is not presumed adequate for
+constraint closure or PDE questions.
 
 ## Deferred or non-machine-checkable issues
 
@@ -324,7 +359,7 @@ that forward work is authorized.
   classification.
 - C013’s statement is bounded to the three completion families varied in D004;
   no exhaustive automated search over local boundary actions is claimed.
-- Gauge-versus-physical status of the C015 edge/reference sector, moving-
+- Gauge-versus-physical status of the C015/C016 edge/reference sector, moving-
   interface variation, constraint closure, hyperbolicity and positivity remain
   outside migration. Existing derived results may be used exploratorily only
   with these dependencies and pending verification visible.
@@ -353,10 +388,14 @@ that forward work is authorized.
 - Legacy verification reports did not review this plan, infrastructure or
   obligations. Their scientific reconstructions remain evidence, but they do
   not satisfy the fresh computational evidential chain by themselves.
+- The attempted Anthropic verification of C016 was interrupted before a report
+  was produced. Tool access recorded in provenance is not a verification
+  artifact, and C016 remains independently unverified.
 
 ## Related decisions
 
 - `research/DECISIONS.md`, **2026-08-20: Adopt current computational-verification semantics for legacy work**.
 - `research/DECISIONS.md`, **2026-08-20: Use a minimal exact graded kernel for the migration obligations**.
+- `research/DECISIONS.md`, **2026-08-21: Treat the interrupted C016 audit as no evidence and stop at the missing bulk canonical system**.
 - Earlier scope and category choices remain recorded in the 2026-08-19 entries;
   the migration does not rewrite them.
