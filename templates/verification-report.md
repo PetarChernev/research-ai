@@ -16,15 +16,19 @@ Quote the exact ledger claim and status at the start of verification.
 
 ## Independence statement
 
-State the originating and verifier `provider/model` IDs, including every Scientific Computation and Engineer model that materially produced the environment or reusable infrastructure. Identify which reasoning, code, data, environments, and assumptions were reconstructed independently and which were shared.
+State the originating and verifier `provider/model` IDs, including every Scientific Computation and Engineer model that materially produced the load-bearing environment or reusable infrastructure. Identify which reasoning, code, data, environments, and assumptions were independently attacked and which were shared.
+
+## Scope and decisive bridge
+
+Name the single load-bearing inference selected for review, why its failure would change the claim, the packet inspected, and what was deliberately left outside this bounded audit.
 
 ## Reconstruction
 
-Re-derive or reproduce the claim from primary artifacts rather than an approving summary.
+Give one compact alternate reconstruction of the decisive bridge from primary artifacts. Do not reproduce the whole derivation or computation.
 
 ## Falsification attempts
 
-Record attempted counterexamples, extreme regimes, alternative interpretations, and literature conflicts.
+Record no more than three serious attacks selected for their ability to change the conclusion. Failed attacks are useful evidence; checklist completion is not the goal.
 
 ## Checks
 
@@ -32,51 +36,39 @@ Record attempted counterexamples, extreme regimes, alternative interpretations, 
 - Signs and normalization:
 - Symmetries and conservation laws:
 - Limiting or exactly soluble cases:
-- Computational reproducibility and convergence:
+- Computational representation or convergence:
 - Hidden parameter dependence:
 
 ## Computational evidence reviewed
 
-List the relevant `ONNN` obligations with, for each: the declared question, the
-method and representation, the assumptions the implementation encodes, the
-predeclared acceptance criterion, the entrypoint inspected, and the outcome
-actually recorded by the deterministic runner. Include failed, inconclusive,
-superseded, and never-run obligations. State plainly when the claim has no
-applicable machine-checkable component and where the computational plan records
-that judgment. For load-bearing computations, also list the computational
-contract, research-environment manifests and locks, dependency provenance,
-Engineer-authored reusable source and infrastructure tests, Scientific
-Computation's research-specific validation, and recorded infrastructure
-fingerprints.
+Summarize only the load-bearing `ONNN` obligations: declared question, encoded
+assumptions, acceptance criterion, implementation path inspected, and recorded
+outcome. Include a failed or superseded obligation only when it changes the
+claim's interpretation. State plainly when no machine-checkable component
+applies. Cite the relevant contract, environment, provenance, infrastructure
+tests, and fingerprints without exhaustively inventorying them.
 
 ## Sufficiency of computational obligations
 
-Explain whether the declared checks actually address the claim, or only a
-narrower statement. Assess whether the assumptions encoded in computation match
-the claim's stated assumptions and regime, whether the representation is
-faithful to the mathematics, whether normal forms and equality semantics are
-valid under the declared domain, whether dependencies or APIs add hidden
-assumptions, whether infrastructure tests cover the required primitives and
-invalid inputs, and whether the acceptance criteria are
-scientifically adequate rather than merely satisfiable. A passing computation is
-not by itself verification of the scientific claim.
+Explain whether the declared checks address the decisive bridge or only a
+narrower statement. Assess the highest-risk mismatch among assumptions,
+representation, conventions, equality semantics, dependencies, primitive
+tests, and acceptance criteria. Do not exhaustively audit low-risk machinery.
+A passing computation is not by itself verification of the scientific claim.
 
 ## Missing or adversarial checks
 
-Identify checks that could expose plausible failure modes and are currently
-absent: untested limits, sign or convention variants, counterexample searches,
-domains the criterion avoids, or a perturbed input the implementation should
-reject but may not. Recommend them; do not author canonical machine outcomes.
+Identify at most one missing check that could expose the most plausible
+remaining decisive failure mode. Recommend it; do not implement it or author a
+canonical machine outcome.
 
 ## Computational independence
 
-State which implementations, algorithms, libraries, representations,
-assumptions, data, research environments, Engineer-authored infrastructure,
-Scientific Computation validation, and code paths are shared with the
-originating work, and which are genuinely independent. Deterministic execution
-does not make either the scientific design or the engineering implementation
-independent of their producing models. Describe any computation you performed
-yourself and what it shares with the original.
+State which load-bearing implementations, representations, assumptions, data,
+environments, and infrastructure are shared, and what the focused alternate
+argument independently checks. Deterministic execution does not make the
+scientific design or implementation independent of its producing models. The
+ordinary verifier does not write a second implementation.
 
 ## Findings
 
@@ -88,4 +80,6 @@ Use exactly one: `verified`, `supported but not independently verified`, `inconc
 
 ## Required follow-up
 
-State what would resolve each remaining issue. Failed verification remains a durable result.
+State the single highest-value action that would resolve the principal remaining issue. Failed verification remains a durable result.
+
+Keep the complete report at or below 2,500 words.
