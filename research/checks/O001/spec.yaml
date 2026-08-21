@@ -1,0 +1,132 @@
+schema_version: 1
+id: "O001"
+title: >-
+  D002 equalizer and curvature controls
+
+# Scientific targets. At least one claim or derivation should be linked once the
+# obligation is attached to the research record.
+claims: ["C009"]
+derivations: ["D002"]
+
+# Generic, method-neutral classification. Allowed values:
+#   exact-symbolic | formal | numerical | convergence | independent-implementation
+#   limiting-case | symmetry | dimensional | counterexample | other
+# The class describes what kind of assertion is being tested. It does not select
+# a library, language, or tool; the research chooses the method.
+class: "exact-symbolic"
+
+# required: true means this obligation is part of the currently declared
+# verification strategy for its target claims. A required active obligation
+# without a passing result blocks the structural computational gate.
+required: true
+
+# active | superseded. Superseded obligations remain durable history and do not
+# block the current strategy. Do not delete failed history to clear the gate.
+status: active
+
+# The exact mathematical question tested, stated so that a reader can tell what
+# is NOT tested.
+question: >-
+  For the D002 kernel pair on the collapsed and resolved branches, do exact canonical pullback residuals classify eta=dtheta+A as non-descending while rho*eta, horizontal A, F=dA, and horizontal theta-independent mixed connection forms descend under the declared assumptions, and do the explicit exterior unit-jet curvature witnesses remain nonzero under ordinary invertible gauge transformations while leaving the collapsed coframe unchanged?
+
+# Assumptions the executable check encodes: conventions, normalizations, domains,
+# regularity, parameter ranges, representation choices, and anything the
+# implementation takes for granted.
+assumptions:
+  - >-
+    The local resolution is the D002 cylinder M=U x I x S1 and its kernel pair
+    has a diagonal branch for s>0 and an independent-angle branch for s<=0;
+    no other branch or quotient calculus is encoded.
+  - >-
+    The collapsed branch makes the exact substitutions rho=0 and drho=0.
+    The positive diagonal branch treats rho as a nonzero formal coefficient;
+    this finite check does not prove smooth flatness of a profile.
+  - >-
+    A and the displayed mixed connection are horizontal and theta-independent.
+    The negative controls deliberately violate verticality or theta independence.
+  - >-
+    Source coordinate one-forms are closed.  The declared unit jet is
+    A=chi*du1 with dchi=ds, so F=dA=ds wedge du1 exactly; no unspecified
+    derivative or smooth-function simplifier is used.
+  - >-
+    The exterior orientation/order is
+    du0 < du1 < du2 < ds < dtheta1 < dtheta2, with repeated legs zero and
+    wedge signs obtained by permutation parity.
+  - >-
+    Coefficients lie in the exact sparse polynomial ring over Fraction in only
+    the declared tags rho, drho, chi, theta, theta1, and theta2.  Equality is
+    equality of canonical coefficient maps, with no floating tolerance.
+  - >-
+    The U(1) convention is theta -> theta-alpha and A -> A+dalpha, with
+    d(dalpha)=0.  The Lorentz control uses eta_AB=diag(-,+,+,+,+), a constant
+    rational proper Lorentz boost, and n=e4 only for the nondegenerate
+    rank-four exterior coframe image.
+  - >-
+    Connections are independent data.  "Zero collapsed-coframe change" means
+    that adding the exterior-supported U(1) or mixed-connection unit jet leaves
+    the fixed collapsed coframe unchanged; it is not a claim that a nontrivial
+    Lorentz frame transformation fixes every coframe component.
+
+# Predeclared pass/fail/inconclusive criterion. Write this before implementing.
+acceptance_criterion: >-
+  Pass iff exact canonical exterior-form equality gives residuals (dtheta1-dtheta2,0,0,0,0) for (eta,rho*eta,A,F,horizontal mixed connection) on the collapsed branch; a unit vertical mixed term and a theta-dependent horizontal control are nonzero; rho*eta has zero diagonal-branch residual but nonzero contraction with the fiber vector for rho!=0; the unit-jet U(1) and Lorentz examples have nonzero curvature, zero collapsed-coframe change, and exact gauge round trips; and every predeclared mutation control is detected. Fail on any exact mismatch. Inconclusive only for a predeclared missing branch/coefficient tag or a gauge map lacking an exact inverse; implementation exceptions are errors.
+
+method:
+  description: >-
+    A self-contained sparse exact exterior-form branch table with explicit pullbacks, curvature jets, contractions, and invertible gauge substitutions; no shared custom kernel and no floating-point or heuristic simplification.
+  rationale: >-
+    The assertion lives in a finite branchwise kernel-pair sector with decidable exact equality. A self-contained representation minimizes trust and supplies a path materially separate from the shared graded kernel used by later obligations.
+  representation: >-
+    Sparse canonical maps from ordered wedge tuples to exact sparse rational
+    coefficient polynomials.  Pullback is an explicit two-row branch table;
+    exterior differentiation is restricted to the declared rho and chi jets;
+    Lorentz-valued forms are finite 5 x 5 matrices over the same form type.
+  equality: >-
+    Coefficients are collected exactly, zero coefficients are deleted, wedge
+    tuples are strictly ordered, and two objects are equal iff their canonical
+    maps (or matrices of such maps) are equal.
+  trust_surface: >-
+    Python integer arithmetic, fractions.Fraction, the small polynomial/form/
+    matrix primitives in O001/run.py, and the explicit branch and gauge tables.
+    No CAS, numerical library, shared research kernel, random sample, or
+    external executable is a scientific equality oracle.
+
+controls:
+  positive:
+    - "P01: exact collapsed residual vector for eta, rho*eta, A, F, and horizontal mixed connection"
+    - "P02: exact derivative d[rho*eta]=drho wedge eta+rho*F and its zero collapsed pullbacks"
+    - "P03: zero positive-diagonal residual for rho*eta with contraction i_(partial_theta)[rho*eta]=rho nonzero"
+    - "P04: nonzero unit-jet U(1) curvature, zero collapsed coframe/dcoframe change, invariant eta/F, and inverse round trip"
+    - "P05: nonzero unit-jet Lorentz mixed curvature, fixed independent collapsed coframe, covariant nonzero K, and exact matrix/connection/curvature/coframe round trips"
+  negative:
+    - "N01: a unit vertical mixed dtheta term has nonzero collapsed residual"
+    - "N02: theta*du0 has nonzero collapsed residual from theta1 versus theta2"
+    - "N03: a wrong U(1) sign fails eta invariance"
+    - "N04: zero U(1) or Lorentz curvature fails the nonzero witnesses"
+  mutations:
+    - "M01: reversing the ds wedge du1 canonical sign is detected"
+    - "M02: identifying the second collapsed angle with the first is detected"
+    - "M03: failing to set rho=0 on the collapsed branch is detected"
+    - "M04: failing to set drho=0 on the flat collapsed branch is detected"
+    - "M05: erasing theta coefficient dependence on the second pullback is detected"
+    - "M06: replacing the exact Lorentz inverse by the forward matrix is detected"
+
+implementation:
+  # Repository-relative entrypoint executed by scripts/run_check.py.
+  entrypoint: "research/checks/O001/run.py"
+  # Repository-relative reusable machinery this obligation depends on, normally
+  # under research/computation/. Also list material research-environment
+  # manifests, locks, container definitions, and build records under
+  # research/environment/. The runner fingerprints files and directories, so a
+  # change makes the recorded result stale.
+  infrastructure: ["pyproject.toml", "uv.lock"]
+  producer_models: ["openai/gpt-5.6-sol"]
+
+independence:
+  # not-required | recommended | required
+  requirement: "required"
+  rationale: >-
+    C009 is load-bearing and historically verified before current machine evidence. Independent review must reconstruct the kernel-pair conditions directly and use the positive-branch basicness control rather than trusting the claim runner.
+
+created_at: "2026-08-20T10:19:33Z"
+updated_at: "2026-08-20T12:05:00Z"

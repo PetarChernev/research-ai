@@ -1,0 +1,166 @@
+schema_version: 1
+id: "O002"
+title: >-
+  Collapsed Palatini boundary operator
+
+# Scientific targets. At least one claim or derivation should be linked once the
+# obligation is attached to the research record.
+claims: ["C010", "C012"]
+derivations: ["D003", "D004"]
+
+# Generic, method-neutral classification. Allowed values:
+#   exact-symbolic | formal | numerical | convergence | independent-implementation
+#   limiting-case | symmetry | dimensional | counterexample | other
+# The class describes what kind of assertion is being tested. It does not select
+# a library, language, or tool; the research chooses the method.
+class: "exact-symbolic"
+
+# required: true means this obligation is part of the currently declared
+# verification strategy for its target claims. A required active obligation
+# without a passing result blocks the structural computational gate.
+required: true
+
+# active | superseded. Superseded obligations remain durable history and do not
+# block the current strategy. Do not delete failed history to clear the gate.
+status: active
+
+# The exact mathematical question tested, stated so that a reader can tell what
+# is NOT tested.
+question: >-
+  Under the D002/D003 smooth equalizer and D004 ordered-index, epsilon, orientation, and circle conventions, does the exact boundary-incidence operator annihilate the descended degree-four core trace and reduce the bare five-plus-four-dimensional Einstein-Cartan interface variation to the negative exterior Palatini potential, with the declared planar witness and fixed-radius product-circle control?
+
+# Assumptions the executable check encodes: conventions, normalizations, domains,
+# regularity, parameter ranges, representation choices, and anything the
+# implementation takes for granted.
+assumptions:
+  - >-
+    The local geometry is only the fixed D002/D003 resolved interface
+    M_+=U x [0,epsilon) x S1, M_-=U x (-epsilon,0], with compact support
+    removing outer faces and corners.  No moving-interface term is encoded.
+  - >-
+    The common orientations are oSigma=du0 wedge du1 wedge du2,
+    o4=oSigma wedge ds, and o5=oSigma wedge ds wedge dtheta.  Boundary
+    orientation is outward-normal first, with n_+=-partial_s and
+    n_-=+partial_s, and the positive fiber form is written on the right.
+  - >-
+    Internal conventions are epsilon_01234=epsilon_0123=+1 and
+    epsilon_abcd=epsilon_abcd4.  Antisymmetric connection indices are summed
+    over ordered values, so both AB and BA occur before canonical collection.
+  - >-
+    The five- and four-dimensional bare Palatini potentials are exactly
+    Theta5=(kappa5_inv/12) epsilon_ABCDE deltaomega^AB wedge E^C wedge E^D
+    wedge E^E and Theta4=(kappa4_inv/4) epsilon_abcd deltavarpi^ab wedge e^c
+    wedge e^d.  No boundary, Holst, transgression, matter, or Lovelock term is
+    silently added.
+  - >-
+    The adapted core coframe has horizontal persistent legs and
+    E4=rho(dtheta+A), with A horizontal.  At the collapsed boundary rho0=0
+    exactly.  The vertical coefficient chi0 of a regular descended mixed
+    variation deltaomega^4a is also zero there; the script encodes these trace
+    consequences but does not prove C-infinity flatness from first principles.
+  - >-
+    A generic boundary-relevant alpha4=a4+b3 wedge dtheta is represented by
+    its only possible horizontal top coefficient a*oSigma wedge ds and tangent
+    vertical coefficient b0*oSigma wedge dtheta.  Descent supplies b0=0 at
+    s=0, while boundary pullback supplies ds=0.
+  - >-
+    Ordinary circle pushforward maps a rightmost dtheta coefficient to tau
+    times that coefficient, where tau is the exact formal period interpreted
+    as 2pi.  Normalized Haar pushforward maps it to the coefficient itself;
+    no symbolic division by tau or binary floating approximation to pi occurs.
+  - >-
+    The planar scientific witness is e0=du0, e1=du1, e2=du2, e3=0 with
+    deltavarpi^03=f du0.  The core persistent channel uses the same 03 mode,
+    and the mixed channel uses deltaomega^43=chi0 dtheta.
+  - >-
+    The fixed-radius control replaces rho0 by a nonzero formal R, sets the
+    mixed vertical mode to zero, and compares ordinary reduction under the
+    exact relation kappa4_inv=tau*R*kappa5_inv.  It is a regular product-circle
+    limit, not an approximation to the collapsed trace.
+  - >-
+    Coefficients lie in a free sparse polynomial ring over fractions.Fraction
+    in tau, R, rho0, chi0, f, a, b0, kappa4_inv, and kappa5_inv.  Exterior
+    equality is equality of canonical sparse coefficient maps on explicitly
+    ordered bases; there are no extra algebraic relations, tolerances, floats,
+    random samples, or heuristic simplification.
+
+# Predeclared pass/fail/inconclusive criterion. Write this before implementing.
+acceptance_criterion: >-
+  Pass iff exact canonical calculation gives the declared core and exterior boundary orientations; maps a generic descended alpha4=a4+b3 wedge dtheta to zero core trace and zero ordinary/Haar pushforward; derives the D004 five-dimensional potential split with coefficients kappa5_inv/4 and kappa5_inv/6; makes both collapsed core channels zero; gives j_-^*Theta4=f*kappa4_inv*oSigma and total collapsed residual -f*kappa4_inv*oSigma; gives fixed-radius residual (tau*R*kappa5_inv-kappa4_inv)*f*oSigma and exact zero after kappa4_inv=tau*R*kappa5_inv; removes exactly one tau under normalized Haar; and detects every sign, factor, trace, and orientation mutation. Fail on any exact mismatch. Inconclusive only when a term is predeclared outside the bare fixed-interface regular-descended sector or conventions are absent/contradictory; implementation exceptions are errors.
+
+method:
+  description: >-
+    Exact sparse polynomial exterior algebra, explicit ordered antisymmetric-index enumeration, boundary contraction/pullback, and formal circle-period extraction over a canonical basis.
+  rationale: >-
+    C010 and C012 depend on exact wedge signs, factorials, orientation, and a formal 2pi count. The finite algebra has a transparent normal form and needs no heuristic CAS operation.
+  representation: >-
+    The primary path uses the frozen exact_graded Polynomial, ExteriorAlgebra,
+    ExteriorForm, and levi_civita_sign API.  A universal free odd-generator
+    algebra represents deltaomega components and coframes for the split; small
+    spacetime algebras represent M_+, M_-, Sigma x S1, and Sigma.  A separate
+    local dense dictionary enumerates canonical unordered connection pairs and
+    independently reconstructs the boundary contractions, trace branch table,
+    planar multiplicities, and fixed-radius coefficient relations.
+  equality: >-
+    Polynomial monomials and wedge tuples are canonicalized explicitly and
+    compared by exact map equality.  Boundary pullback is a complete one-form
+    generator map with ds sent to zero.  Fiber pushforward extracts only a
+    rightmost dtheta leg and applies either tau or one exactly.
+  trust_surface: >-
+    Trusted components are Python integer/Fraction arithmetic, the complete
+    fingerprinted exact_graded kernel, the claim-local pullback/pushforward and
+    ordered-index tables in run.py, and the deterministic wrapper.  No CAS or
+    numerical library is an equality oracle.  Kernel law tests establish API
+    conformance, while O002 separately reconstructs the D003 contractions,
+    D004 multiplicities, planar witness, and product-circle limit.
+
+controls:
+  positive:
+    - "P01: D003 outward-normal contractions give +oSigma wedge dtheta for the core and -oSigma for the exterior"
+    - "P02: generic descended alpha4 has zero trace and zero ordinary and normalized-Haar pushforwards"
+    - "P03: full ordered five-index enumeration gives split coefficients 1/4 and 1/6, also recovered by an unordered-pair dense path"
+    - "P04: the E4/rho0 and mixed-connection/chi0 channels are separately nonzero before trace substitution and separately zero after collapse"
+    - "P05: the planar exterior potential is f*kappa4_inv*oSigma and the collapsed incidence residual has its negative"
+    - "P06: ordinary fixed-radius reduction gives (tau*R*kappa5_inv-kappa4_inv)*f*oSigma and vanishes under the declared product-circle relation"
+    - "P07: normalized Haar removes exactly the one ordinary-pushforward tau and obeys the correspondingly normalized relation"
+  negative:
+    - "N01: a non-descended resolution form with b0 nonzero has nonzero trace and nonzero ordinary/Haar pushforwards"
+    - "N02: the rank-three planar exterior witness is exactly nonzero"
+    - "N03: each unsubstituted core channel is nonzero, and an unmatched fixed-radius residual is nonzero"
+  mutations:
+    - "M01-M02: reverse the core or exterior boundary orientation"
+    - "M03: retain a forbidden descended vertical trace coefficient"
+    - "M04-M05: drop tau from ordinary pushforward or retain tau in normalized Haar"
+    - "M06-M07: alter the 1/4 or 1/6 split coefficient"
+    - "M08-M09: omit the rho0=0 or chi0=0 collapsed trace substitution"
+    - "M10: lose an ordered-pair multiplicity in the exterior planar potential"
+    - "M11: replace the core-minus-exterior incidence sign by a plus sign"
+    - "M12-M13: drop the fixed-radius tau or reverse the coupling relation sign"
+
+implementation:
+  # Repository-relative entrypoint executed by scripts/run_check.py.
+  entrypoint: "research/checks/O002/run.py"
+  # Repository-relative reusable machinery this obligation depends on, normally
+  # under research/computation/. Also list material research-environment
+  # manifests, locks, container definitions, and build records under
+  # research/environment/. The runner fingerprints files and directories, so a
+  # change makes the recorded result stale.
+  infrastructure:
+    - "research/computation/exact_graded"
+    - "pyproject.toml"
+    - "uv.lock"
+    - "scripts/run_check.py"
+    - "scripts/_research.py"
+  producer_models: ["openai/gpt-5.6-sol"]
+  producer_roles:
+    scientific_computation: "openai/gpt-5.6-sol"
+    exact_graded_engineer: "openai/gpt-5.6-sol"
+
+independence:
+  # not-required | recommended | required
+  requirement: "required"
+  rationale: >-
+    The result is load-bearing for all later interface claims. An alternate unordered-pair/dense coefficient reconstruction must recover the split, boundary sign, zero trace, and fixed-radius Kaluza-Klein normalization.
+
+created_at: "2026-08-20T10:19:44Z"
+updated_at: "2026-08-20T14:12:00Z"

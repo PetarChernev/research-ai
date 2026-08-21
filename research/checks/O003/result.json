@@ -1,0 +1,130 @@
+{
+  "schema_version": 2,
+  "obligation_id": "O003",
+  "claims": [
+    "C014"
+  ],
+  "derivations": [
+    "D005"
+  ],
+  "outcome": "passed",
+  "exit_code": 0,
+  "started_at": "2026-08-20T14:09:08Z",
+  "completed_at": "2026-08-20T14:09:08Z",
+  "command": "/home/petar/Projects/research-ai/.venv/bin/python3 /home/petar/Projects/research-ai/research/checks/O003/run.py",
+  "runner_command": "uv run --locked python scripts/run_check.py O003",
+  "implementation": "research/checks/O003/run.py",
+  "git_commit": "29367ed1e5874e2f3c2aeb1e981f5dd689b3eea7",
+  "dirty_worktree": true,
+  "spec_sha256": "9c5e742377fd743c439a232c68e4cfdf4ec311d4db615c6c448994d0196010dd",
+  "implementation_sha256": "7f930bd1d997e94f1606cdfbbc0f787b9c8b540e9cc51eb3157664db83b4f604",
+  "infrastructure": [
+    {
+      "path": "pyproject.toml",
+      "type": "file",
+      "sha256": "a83358c688c795208a1da1b9ee6b630afb791719baa9f72a2cb53e672417e07e"
+    },
+    {
+      "path": "research/computation/exact_graded",
+      "type": "directory",
+      "sha256": "197024e3f37dff868c931141ce25949e26e2249bd4850d0213ff06e81449268b"
+    },
+    {
+      "path": "scripts/_research.py",
+      "type": "file",
+      "sha256": "d651210158db51853658afd917ff616ae9c90ea95e4c2cfbc37f1427b04f8210"
+    },
+    {
+      "path": "scripts/run_check.py",
+      "type": "file",
+      "sha256": "1187837d94b89bf08ab2b9b7164a6c116930f7cb9c9e3a320f5f7b4117e4cf24"
+    },
+    {
+      "path": "uv.lock",
+      "type": "file",
+      "sha256": "e32bee08b2192dd59a9820a15bdf7cb914daf0a7136e594869e98e4c0ae7bea0"
+    }
+  ],
+  "infrastructure_sha256": "0b4aeb783458e144f6b86641ad631d0cb62dcc12398b414a552434f00d211b97",
+  "environment": {
+    "python": "3.12.12",
+    "python_implementation": "CPython",
+    "python_executable": "/home/petar/Projects/research-ai/.venv/bin/python3",
+    "platform": "Linux-6.17.0-41-generic-x86_64-with-glibc2.42",
+    "machine": "x86_64",
+    "packages": {
+      "PyYAML": "6.0.3"
+    }
+  },
+  "observations": {
+    "alternate_method": {
+      "algorithm": "direct dense ordered-index evaluation of D005 equation (28)",
+      "curl_partial_nu_partial_w": "9",
+      "curl_partial_q_partial_w": "6",
+      "curl_partial_w_partial_q": "-6",
+      "field_point": {
+        "nu": "1",
+        "q": "3"
+      },
+      "uses_field_derivative": false
+    },
+    "assertions": {
+      "failed": 0,
+      "failed_names": [],
+      "total": 44
+    },
+    "controls": {
+      "omission_detected": {
+        "coframe": true,
+        "connection": true,
+        "normalization": true,
+        "reference": true
+      },
+      "sign_reversal_detected": {
+        "coframe": true,
+        "connection": true,
+        "normalization": true,
+        "reference": true
+      }
+    },
+    "internal_mutation": "none",
+    "mode": {
+      "active_ordered_terms": 4,
+      "basic_persistent_legs": true,
+      "commuting_variations": true,
+      "compact_support_variations": true,
+      "eta0_period": "+2*pi",
+      "normalized_factor": "1",
+      "ordered_contraction_coefficient": "4",
+      "support_boxes": {
+        "chart": [
+          "-2",
+          "2"
+        ],
+        "cutoff": [
+          "-3/2",
+          "3/2"
+        ],
+        "mode": [
+          "-1",
+          "1"
+        ]
+      }
+    },
+    "primary": {
+      "d_F_A": "{\"basis\":[\"dw\",\"da\",\"dq\",\"dnu\"],\"terms\":[{\"coefficient\":{\"terms\":[{\"coefficient\":[-2,1],\"monomial\":[[\"nu\",1],[\"q\",1]]}],\"type\":\"polynomial\"},\"monomial\":[\"dw\",\"dq\"]},{\"coefficient\":{\"terms\":[{\"coefficient\":[-1,1],\"monomial\":[[\"q\",2]]}],\"type\":\"polynomial\"},\"monomial\":[\"dw\",\"dnu\"]}],\"type\":\"exterior_form\"}",
+      "d_F_B": "{\"basis\":[\"dw\",\"da\",\"dq\",\"dnu\"],\"terms\":[{\"coefficient\":{\"terms\":[{\"coefficient\":[1,1],\"monomial\":[[\"nu\",1],[\"q\",2]]}],\"type\":\"polynomial\"},\"monomial\":[\"dw\"]},{\"coefficient\":{\"terms\":[{\"coefficient\":[-1,1],\"monomial\":[[\"nu\",1],[\"q\",2]]}],\"type\":\"polynomial\"},\"monomial\":[\"da\"]},{\"coefficient\":{\"terms\":[{\"coefficient\":[-2,1],\"monomial\":[[\"a\",1],[\"nu\",1],[\"q\",1]]},{\"coefficient\":[2,1],\"monomial\":[[\"nu\",1],[\"q\",1],[\"w\",1]]}],\"type\":\"polynomial\"},\"monomial\":[\"dq\"]},{\"coefficient\":{\"terms\":[{\"coefficient\":[-1,1],\"monomial\":[[\"a\",1],[\"q\",2]]},{\"coefficient\":[1,1],\"monomial\":[[\"q\",2],[\"w\",1]]}],\"type\":\"polynomial\"},\"monomial\":[\"dnu\"]}],\"type\":\"exterior_form\"}",
+      "d_F_squared_B": "{\"basis\":[\"dw\",\"da\",\"dq\",\"dnu\"],\"terms\":[],\"type\":\"exterior_form\"}",
+      "fixed_q_nu_curl_zero": true,
+      "free_nu_curl_nonzero": true,
+      "free_q_curl_nonzero": true
+    },
+    "producer_model": "openai/gpt-5.6-sol"
+  },
+  "artifacts": [],
+  "logs": [
+    "research/checks/O003/logs/stdout.log",
+    "research/checks/O003/logs/stderr.log"
+  ],
+  "notes": "Canonical outcome derived from the recorded process exit status."
+}

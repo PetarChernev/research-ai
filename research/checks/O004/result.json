@@ -1,0 +1,151 @@
+{
+  "schema_version": 2,
+  "obligation_id": "O004",
+  "claims": [
+    "C013",
+    "C015"
+  ],
+  "derivations": [
+    "D004",
+    "D005"
+  ],
+  "outcome": "passed",
+  "exit_code": 0,
+  "started_at": "2026-08-20T14:08:32Z",
+  "completed_at": "2026-08-20T14:08:32Z",
+  "command": "/home/petar/Projects/research-ai/.venv/bin/python3 /home/petar/Projects/research-ai/research/checks/O004/run.py",
+  "runner_command": "uv run --locked python scripts/run_check.py O004",
+  "implementation": "research/checks/O004/run.py",
+  "git_commit": "29367ed1e5874e2f3c2aeb1e981f5dd689b3eea7",
+  "dirty_worktree": true,
+  "spec_sha256": "d9262fef7dbf02090e5c4e8fc695911e18befc9d734d4b4f3d083ec63a54ae60",
+  "implementation_sha256": "041f51ef5727b8575a20ab76e89f9b837ae9f8f1af4bc7850ff7bee44ef67479",
+  "infrastructure": [
+    {
+      "path": "pyproject.toml",
+      "type": "file",
+      "sha256": "a83358c688c795208a1da1b9ee6b630afb791719baa9f72a2cb53e672417e07e"
+    },
+    {
+      "path": "research/computation/exact_graded",
+      "type": "directory",
+      "sha256": "197024e3f37dff868c931141ce25949e26e2249bd4850d0213ff06e81449268b"
+    },
+    {
+      "path": "scripts/_research.py",
+      "type": "file",
+      "sha256": "d651210158db51853658afd917ff616ae9c90ea95e4c2cfbc37f1427b04f8210"
+    },
+    {
+      "path": "scripts/run_check.py",
+      "type": "file",
+      "sha256": "1187837d94b89bf08ab2b9b7164a6c116930f7cb9c9e3a320f5f7b4117e4cf24"
+    },
+    {
+      "path": "uv.lock",
+      "type": "file",
+      "sha256": "e32bee08b2192dd59a9820a15bdf7cb914daf0a7136e594869e98e4c0ae7bea0"
+    }
+  ],
+  "infrastructure_sha256": "0b4aeb783458e144f6b86641ad631d0cb62dcc12398b414a552434f00d211b97",
+  "environment": {
+    "python": "3.12.12",
+    "python_implementation": "CPython",
+    "python_executable": "/home/petar/Projects/research-ai/.venv/bin/python3",
+    "platform": "Linux-6.17.0-41-generic-x86_64-with-glibc2.42",
+    "machine": "x86_64",
+    "packages": {
+      "PyYAML": "6.0.3"
+    }
+  },
+  "observations": {
+    "H_map": {
+      "analytic_nullity": 6,
+      "analytic_rank": 12,
+      "basis": {
+        "codomain_c": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "codomain_forms": [
+          "du0^du1",
+          "du0^du2",
+          "du1^du2"
+        ],
+        "domain_forms": [
+          "du0",
+          "du1",
+          "du2"
+        ],
+        "domain_pairs": [
+          "01",
+          "02",
+          "03",
+          "12",
+          "13",
+          "23"
+        ]
+      },
+      "kernel_basis_size": 6,
+      "primary_nullity": 6,
+      "primary_rank": 12,
+      "shape": [
+        12,
+        18
+      ]
+    },
+    "assertions": {
+      "failed": 0,
+      "failed_names": [],
+      "passed": 60,
+      "total": 60
+    },
+    "branches": {
+      "fixed_reference_eliminant": "Q-Pminus",
+      "free_reference_gradient": "-Q",
+      "reference_free_eliminant": "-Pminus",
+      "substitution_timing": "a=varpi before variation only in reference-free branch"
+    },
+    "coframe_minors": {
+      "internal_hodge_rank": 6,
+      "minor_count": 18,
+      "pivot_identity_count": 144,
+      "rank_one_control": 1,
+      "rank_two_control": 2,
+      "rank_zero_control": 0
+    },
+    "infrastructure_producer_models": [
+      "openai/gpt-5.6-sol"
+    ],
+    "intentional_mutation": null,
+    "nonflat_kernel_witness": {
+      "K01": "du2",
+      "K02": "-du1",
+      "K12": "du0",
+      "R01": "-du0^du1",
+      "mixed_components": "0"
+    },
+    "obligation_id": "O004",
+    "planar_incidence": {
+      "P03_base_coefficient": "1/2",
+      "coupling_residual": "tau*ell_star*kappa5_inv-kappa4_inv",
+      "factor": "b-kappa4_inv"
+    },
+    "producer_model": "openai/gpt-5.6-sol",
+    "representation": {
+      "CAS": false,
+      "coefficients": "Fraction and canonical sparse polynomials over Q",
+      "equality": "exact canonical map/matrix equality",
+      "floats": false,
+      "random_sampling": false
+    }
+  },
+  "artifacts": [],
+  "logs": [
+    "research/checks/O004/logs/stdout.log",
+    "research/checks/O004/logs/stderr.log"
+  ],
+  "notes": "Canonical outcome derived from the recorded process exit status."
+}

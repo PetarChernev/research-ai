@@ -1,0 +1,128 @@
+schema_version: 1
+id: "O005"
+title: >-
+  D006 interface cut rank and moment maps
+
+# Scientific targets. At least one claim or derivation should be linked once the
+# obligation is attached to the research record.
+claims: ["C016"]
+derivations: ["D006"]
+
+# Generic, method-neutral classification. Allowed values:
+#   exact-symbolic | formal | numerical | convergence | independent-implementation
+#   limiting-case | symmetry | dimensional | counterexample | other
+# The class describes what kind of assertion is being tested. It does not select
+# a library, language, or tool; the research chooses the method.
+class: "exact-symbolic"
+
+# required: true means this obligation is part of the currently declared
+# verification strategy for its target claims. A required active obligation
+# without a passing result blocks the structural computational gate.
+required: true
+
+# active | superseded. Superseded obligations remain durable history and do not
+# block the current strategy. Do not delete failed history to clear the gate.
+status: active
+
+# The exact mathematical question tested, stated so that a reader can tell what
+# is NOT tested.
+question: >-
+  On the D006 planar rank-three interface background, do exact canonical Lorentz-algebra and exterior-form matrices give rank(dQ)=5, fixed-reference cut rank 12 off shell and zero after imposing Pi=delta Pi=0, Stueckelberg cut rank 22 off shell and rank 10/nullity 4 for its (v,e) block on shell, together with the stated Lorentz moment-map signs and a nonzero Q_03 corner-charge witness?
+
+# Assumptions the executable check encodes: conventions, normalizations, domains,
+# regularity, parameter ranges, representation choices, and anything the
+# implementation takes for granted.
+assumptions:
+  - >-
+    The calculation is pointwise on a temporal cut of the fixed timelike interface in the basic, horizontal, theta-independent persistent SO(1,3) sector. It represents only the interface/edge potential of D006; all bulk kinetic terms, bulk Gauss generators, secondary constraints, global topology, and boundary-polarization choices are absent.
+  - >-
+    Internal orientation is epsilon_0123=+1, eta=diag(-,+,+,+), canonical Lorentz pairs are (01,02,03,12,13,23), and the cut exterior basis is dx1<dx2. The planar pullback is e1=dx1, e2=dx2, e0=e3=0. The omitted temporal leg e0=dt is used only to certify that the full interface triad (dt,dx1,dx2) has rank three.
+  - >-
+    The exact nonzero scale b is set to the rational representative b=1 for rank and witness evaluation. Thus Q_ab=(1/4) epsilon_abcd e^c wedge e^d with both ordered c,d terms and Q_03=+1/2 dx1 wedge dx2. Multiplication by the declared nonzero b cannot change the tested ranks; the reported witness restores the factor b/2.
+  - >-
+    Lorentz generators T_ab (a<b) obey [T_ab,T_cd]=eta_ac T_bd-eta_ad T_bc-eta_bc T_ad+eta_bd T_ac, with antisymmetric pair canonicalization. The invariant bivector pairing is diag(eta_aa*eta_bb) in the canonical pair basis and is required to be nondegenerate.
+  - >-
+    Field-space convention is Omega=delta Theta and right Maurer-Cartan variables are used. A first-order potential <p,delta h h^-1> is encoded by the exact antisymmetric block [[A_p,-G],[G,0]], where (A_p)_IJ=<p,[T_I,T_J]> and G is the Lorentz pairing. Overall reversal of Omega is not made because the moment-map signs in the acceptance criterion fix this convention.
+  - >-
+    The derivative dQ is the exact 6x8 map from ordered cut coframe variations (delta e_1^0,...,delta e_1^3,delta e_2^0,...,delta e_2^3) to canonical Q-pair coefficients. The Stueckelberg block uses G*dQ in the pairing and variables ordered as six v directions followed by eight coframe directions.
+  - >-
+    Off shell, lambda makes Pi=Q+lambda and delta Pi arbitrary, so the fixed-reference (g,Pi) and Stueckelberg (g,lambda) first-order blocks each have six independent momentum directions. On the imported combined shell Pi=0 and tangent vectors obey delta Pi=0; in B, lambda=-Q cancels only the g block and leaves the (v,Q(e)) block.
+  - >-
+    Moment maps are tested by exact contraction with alpha_+ and alpha_- using a rational Lorentz boost as a nontrivial representative of Ad_g. Invariance of the pairing is checked exactly, so the coordinate identity G^-1 Ad_g^T G=Ad_(g^-1) justifies reading the contracted coefficients as the stated adjoint expressions; the signs are not inferred from rank.
+  - >-
+    Coefficients are fractions over Q. Equality, rank, nullity, matrix-vector products, exterior signs, and nonzero tests are exact; no floating point, tolerance, random sampling, heuristic simplification, inverse coframe, or general-purpose CAS is used.
+
+# Predeclared pass/fail/inconclusive criterion. Write this before implementing.
+acceptance_criterion: >-
+  Pass iff an exact rational implementation with eta=diag(-,+,+,+), epsilon_0123=+1, ordered planar basis, and Q_03=b/2 computes rank(dQ)=5; fixed-reference rank 12 off shell and rank 0 on Pi=delta Pi=0; Stueckelberg (v,e) block rank 10 and nullity 4, full off-shell rank 22, and shell rank 10; identifies T_12 plus three ker(dQ) null directions; reproduces J_+^A=Pi, J_-^A=-Ad_(g^-1)Pi, J_+^B=Pi, J_-^B=-Ad_(g^-1)lambda and hence shell J_-^B=Ad_(g^-1)Q; yields a nonzero exact planar Q_03 corner witness; and detects predeclared sign, factor, rank, and shell-pullback mutations. Fail on any exact mismatch. Inconclusive only if the declared planar triad is not rank three or the represented Lorentz pairing is degenerate; implementation exceptions are errors.
+
+method:
+  description: >-
+    Exact rational Lorentz-algebra/exterior-matrix construction with a materially different analytic block-rank path and explicit gauge-vector contractions. The alternate path is a correlated cross-check, not independent verification.
+  rationale: >-
+    The conclusion-critical finite assertions are exact ranks, null directions, signs, and a nonzero witness. Canonical rational matrices decide them without sampling, while the missing bulk Gauss interpretation remains explicitly outside the obligation.
+
+representation:
+  mathematical_domain: >-
+    The six-dimensional real Lorentz Lie algebra represented over Q on its ordered antisymmetric-pair basis, the two-generator cut exterior algebra, exact coframe-to-bivector linear maps, and finite antisymmetric presymplectic matrices.
+  operations_required:
+    - "Levi-Civita parity, exact wedge products, and extraction of the dx1 wedge dx2 coefficient"
+    - "Lorentz brackets, invariant-pairing contractions, and one rational adjoint/coadjoint calculation"
+    - "exact rational matrix assembly, rank, nullspace, matrix-vector products, transpose, and block sums"
+    - "direct sparse pivot/kernel certificates for the alternate rank path"
+  canonical_form_and_equality: >-
+    Exterior monomials use the declared dx1<dx2 order and exact_graded canonical sparse maps. Lie-algebra and matrix coordinates use the fixed pair order (01,02,03,12,13,23), Fraction entries, and deterministic RREF. Equality is exact entrywise or canonical-map equality.
+  trust_surface: >-
+    Trusted reusable primitives are Python Fraction and exact_graded ExteriorAlgebra, levi_civita_sign, and RationalMatrix. Claim-specific bracket, pairing, block-assembly, adjoint, and basis declarations plus the deterministic wrapper are also trusted. No CAS or numerical linear algebra is trusted. The alternate rank argument reads explicit dQ pivots, constructs four null vectors, and uses the canonical first-order pairing theorem rather than obtaining every conclusion from the full matrix RREF; it remains correlated through conventions and is not independent verification.
+  infrastructure_assessment: >-
+    The existing exact_graded kernel is adequate without modification: its public exterior, epsilon, and rational-matrix primitives exactly cover the required decidable operations. O005 needs only small claim-specific block/transpose helpers and Lorentz formulas. Adding a reusable presymplectic framework or provisioning Engineer would enlarge the trust surface for one 26x26 calculation, so no Engineer is used.
+  scientific_cross_checks:
+    - "Recover Q_03=+1/2 directly from the two ordered (c,d) terms and recover rank(dQ)=5 from five explicit pivot rows/columns."
+    - "Exhibit T_12 and three embedded ker(dQ) vectors in the Stueckelberg block kernel; dimension four plus a 10-dimensional nonzero minor/rank certificate fixes rank 10."
+    - "Assemble the full off-shell matrix as an explicit direct sum and also obtain rank 22 analytically as 12+2 rank(dQ)."
+    - "Check a nonidentity rational Lorentz adjoint preserves the pairing and converts the contracted minus-frame coefficient to -Ad_(g^-1)p."
+
+controls:
+  positive:
+    - "P01: the full planar triad has exact rank three and the Lorentz pairing has rank six"
+    - "P02: ordered exterior assembly gives Q_03=+1/2 and dQ shape 6x8, rank 5, with absent Q_12 variation"
+    - "P03: fixed-reference off-shell rank is 12 and shell pullback rank is zero"
+    - "P04: the Stueckelberg (v,e) block has rank 10/nullity 4 and explicitly accepts T_12 plus three ker(dQ) directions"
+    - "P05: explicit full direct-sum ranks are 22 off shell and 10 on shell, agreeing with the analytic block count"
+    - "P06: exact gauge-vector contractions recover all A/B moment-map signs and the shell substitution lambda=-Q"
+    - "P07: alpha_-=-T_03 gives the nonzero exact planar corner witness +b/2"
+  negative:
+    - "N01: a degenerate planar cut coframe lowers rank(dQ) and is distinguished from the target"
+    - "N02: deleting the Q_03 area coefficient makes the corner witness zero and is rejected"
+  mutations:
+    - "M01: reversing the minus-frame gauge-vector sign changes J_- and is detected"
+    - "M02: omitting one ordered (c,d) term changes Q_03 from 1/2 to 1/4 and is detected"
+    - "M03: zeroing a selected dQ pivot lowers rank from 5 to 4 and is detected"
+    - "M04: failing to impose delta Pi=0 leaves a nonzero fixed-reference shell pullback and is detected"
+    - "M05: process-local O005_INTENTIONAL_MUTATION values moment-sign, q-factor, dq-rank, and shell-pullback each inject the named defect and must make the entrypoint exit 1"
+
+implementation:
+  # Repository-relative entrypoint executed by scripts/run_check.py.
+  entrypoint: "research/checks/O005/run.py"
+  # Repository-relative reusable machinery this obligation depends on, normally
+  # under research/computation/. Also list material research-environment
+  # manifests, locks, container definitions, and build records under
+  # research/environment/. The runner fingerprints files and directories, so a
+  # change makes the recorded result stale.
+  infrastructure:
+    - "research/computation/exact_graded"
+    - "pyproject.toml"
+    - "scripts/_research.py"
+    - "scripts/run_check.py"
+    - "uv.lock"
+  producer_models: ["openai/gpt-5.6-sol"]
+  infrastructure_producer_models: ["openai/gpt-5.6-sol"]
+
+independence:
+  # not-required | recommended | required
+  requirement: "required"
+  rationale: >-
+    C016 is the current discriminator and originates from one OpenAI model. The check should include an alternate matrix assembly, and the full reasoning and representation must later be reconstructed by an eligible Anthropic verifier.
+
+created_at: "2026-08-20T17:11:51Z"
+updated_at: "2026-08-20T18:04:31Z"

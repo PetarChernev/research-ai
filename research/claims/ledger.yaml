@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 claims:
   - id: C001
     claim: >-
@@ -14,16 +14,17 @@ claims:
       derivations: []
       experiments: []
       literature: []
+      computational_checks: []
       verification: []
     checks:
       dimensional_analysis: not-applicable
       limiting_cases: pending
       independent_verification: pending
-      numerical_reproduction: not-applicable
+      computational_verification: pending
     dependencies: []
     conflicts: []
     created_at: "2026-08-19T10:57:00Z"
-    updated_at: "2026-08-19T10:57:00Z"
+    updated_at: "2026-08-20T10:16:05Z"
 
   - id: C002
     claim: >-
@@ -39,16 +40,17 @@ claims:
       derivations: []
       experiments: []
       literature: []
+      computational_checks: []
       verification: []
     checks:
       dimensional_analysis: pending
       limiting_cases: pending
       independent_verification: pending
-      numerical_reproduction: not-applicable
+      computational_verification: pending
     dependencies: [C001]
     conflicts: []
     created_at: "2026-08-19T10:57:00Z"
-    updated_at: "2026-08-19T10:57:00Z"
+    updated_at: "2026-08-20T10:16:05Z"
 
   - id: C003
     claim: >-
@@ -64,16 +66,17 @@ claims:
       derivations: []
       experiments: []
       literature: []
+      computational_checks: []
       verification: []
     checks:
       dimensional_analysis: pending
       limiting_cases: pending
       independent_verification: pending
-      numerical_reproduction: pending
+      computational_verification: pending
     dependencies: [C001, C002]
     conflicts: []
     created_at: "2026-08-19T10:57:00Z"
-    updated_at: "2026-08-19T11:12:00Z"
+    updated_at: "2026-08-20T10:16:05Z"
 
   - id: C004
     claim: >-
@@ -89,17 +92,18 @@ claims:
       derivations: []
       experiments: []
       literature: []
+      computational_checks: []
       verification:
         - research/results/verification/C004-2026-08-19.md
     checks:
       dimensional_analysis: not-applicable
       limiting_cases: pending
       independent_verification: inconclusive
-      numerical_reproduction: not-applicable
+      computational_verification: pending
     dependencies: [C001, C002, C003]
     conflicts: []
     created_at: "2026-08-19T10:57:00Z"
-    updated_at: "2026-08-19T11:05:00Z"
+    updated_at: "2026-08-20T10:16:05Z"
 
   - id: C005
     claim: >-
@@ -115,16 +119,17 @@ claims:
       derivations: []
       experiments: []
       literature: []
+      computational_checks: []
       verification: []
     checks:
       dimensional_analysis: pending
       limiting_cases: pending
       independent_verification: pending
-      numerical_reproduction: not-applicable
+      computational_verification: pending
     dependencies: [C002, C004]
     conflicts: []
     created_at: "2026-08-19T10:57:00Z"
-    updated_at: "2026-08-19T10:57:00Z"
+    updated_at: "2026-08-20T10:16:05Z"
 
   - id: C006
     claim: >-
@@ -140,16 +145,17 @@ claims:
       derivations: []
       experiments: []
       literature: []
+      computational_checks: []
       verification: []
     checks:
       dimensional_analysis: pending
       limiting_cases: pending
       independent_verification: pending
-      numerical_reproduction: pending
+      computational_verification: pending
     dependencies: [C001, C002, C003]
     conflicts: []
     created_at: "2026-08-19T10:57:00Z"
-    updated_at: "2026-08-19T10:57:00Z"
+    updated_at: "2026-08-20T10:16:05Z"
 
   - id: C007
     claim: >-
@@ -165,6 +171,7 @@ claims:
       derivations: [D002]
       experiments: []
       literature: []
+      computational_checks: []
       verification:
         - research/results/verification/C007-2026-08-19.md
         - research/results/verification/C007-2026-08-19-anthropic-r2.md
@@ -172,16 +179,16 @@ claims:
       dimensional_analysis: not-applicable
       limiting_cases: passed
       independent_verification: inconclusive
-      numerical_reproduction: not-applicable
+      computational_verification: pending
     dependencies: []
     conflicts: []
     created_at: "2026-08-19T13:34:00Z"
-    updated_at: "2026-08-19T16:36:00Z"
+    updated_at: "2026-08-20T10:16:05Z"
 
   - id: C008
     claim: >-
       For the benchmark in C007, the smooth-function algebras transported to the common topological quotient obey C_infinity,2 strictly contained in C_infinity,1 strictly contained in C_infinity,q; the canonical horn homeomorphism from profile rho_1 to rho_2 is smooth, but its inverse has no locally ambient C1 extension and fails the ambient-subdiffeology plot test, so the two embedding-induced differential spaces are not diffeomorphic under this canonical comparison.
-    status: verified
+    status: derived
     importance: high
     hypotheses: [H001, H002, H003]
     assumptions:
@@ -192,23 +199,24 @@ claims:
       derivations: [D002]
       experiments: []
       literature: []
+      computational_checks: []
       verification:
         - research/results/verification/C008-2026-08-19.md
         - research/results/verification/C008-2026-08-19-anthropic-r2.md
     checks:
       dimensional_analysis: not-applicable
       limiting_cases: passed
-      independent_verification: passed
-      numerical_reproduction: not-applicable
+      independent_verification: pending
+      computational_verification: pending
     dependencies: [C007]
     conflicts: []
     created_at: "2026-08-19T13:34:00Z"
-    updated_at: "2026-08-19T16:36:00Z"
+    updated_at: "2026-08-20T10:16:05Z"
 
   - id: C009
     claim: >-
       For the quotient-form equalizer and connection choices defined in the C007 benchmark, dtheta+A does not descend, whereas rho_i(dtheta+A), horizontal A, F=dA, and horizontal theta-independent mixed connection components do descend; if an Ehresmann or independent SO(1,4) connection is retained on the nondegenerate rank-four exterior, ordinary U(1) or Lorentz gauge cannot map the displayed nonzero F or coframe-relative mixed curvature to zero, while a coframe-only state omits those independent data, an explicitly enlarged exterior-forgetful equivalence discards them, and future equations or boundary conditions could exclude them.
-    status: verified
+    status: derived
     importance: critical
     hypotheses: [H001, H002, H003]
     assumptions:
@@ -221,18 +229,19 @@ claims:
       derivations: [D002]
       experiments: []
       literature: []
+      computational_checks: [O001]
       verification:
         - research/results/verification/C009-2026-08-19.md
         - research/results/verification/C009-2026-08-19-anthropic-r2.md
     checks:
       dimensional_analysis: passed
       limiting_cases: passed
-      independent_verification: passed
-      numerical_reproduction: not-applicable
+      independent_verification: pending
+      computational_verification: passed
     dependencies: [C007]
     conflicts: []
     created_at: "2026-08-19T13:34:00Z"
-    updated_at: "2026-08-19T16:36:00Z"
+    updated_at: "2026-08-20T14:25:00Z"
 
   - id: C010
     claim: >-
@@ -249,16 +258,17 @@ claims:
       derivations: [D003]
       experiments: []
       literature: []
+      computational_checks: [O002]
       verification: []
     checks:
       dimensional_analysis: passed
       limiting_cases: passed
       independent_verification: pending
-      numerical_reproduction: not-applicable
+      computational_verification: passed
     dependencies: [C007, C009]
     conflicts: []
     created_at: "2026-08-19T15:00:00Z"
-    updated_at: "2026-08-19T15:00:00Z"
+    updated_at: "2026-08-20T14:25:00Z"
 
   - id: C011
     claim: >-
@@ -274,16 +284,17 @@ claims:
       derivations: [D003]
       experiments: []
       literature: []
+      computational_checks: []
       verification: []
     checks:
       dimensional_analysis: passed
       limiting_cases: passed
       independent_verification: pending
-      numerical_reproduction: not-applicable
+      computational_verification: not-applicable
     dependencies: [C007, C008, C010]
     conflicts: []
     created_at: "2026-08-19T15:00:00Z"
-    updated_at: "2026-08-19T15:00:00Z"
+    updated_at: "2026-08-20T10:16:05Z"
 
   - id: C012
     claim: >-
@@ -300,16 +311,17 @@ claims:
       derivations: [D004]
       experiments: []
       literature: []
+      computational_checks: [O002]
       verification: []
     checks:
       dimensional_analysis: passed
       limiting_cases: passed
       independent_verification: pending
-      numerical_reproduction: not-applicable
+      computational_verification: passed
     dependencies: [C009, C010]
     conflicts: []
     created_at: "2026-08-19T16:35:00Z"
-    updated_at: "2026-08-19T16:35:00Z"
+    updated_at: "2026-08-20T14:25:00Z"
 
   - id: C013
     claim: >-
@@ -326,16 +338,17 @@ claims:
       derivations: [D004]
       experiments: []
       literature: []
+      computational_checks: [O004]
       verification: []
     checks:
       dimensional_analysis: passed
       limiting_cases: passed
       independent_verification: pending
-      numerical_reproduction: not-applicable
+      computational_verification: passed
     dependencies: [C011, C012]
     conflicts: []
     created_at: "2026-08-19T16:35:00Z"
-    updated_at: "2026-08-19T16:35:00Z"
+    updated_at: "2026-08-20T14:25:00Z"
 
   - id: C014
     claim: >-
@@ -351,16 +364,17 @@ claims:
       derivations: [D005]
       experiments: []
       literature: []
+      computational_checks: [O003]
       verification: []
     checks:
       dimensional_analysis: passed
       limiting_cases: passed
       independent_verification: pending
-      numerical_reproduction: not-applicable
+      computational_verification: passed
     dependencies: [C012, C013]
     conflicts: []
     created_at: "2026-08-19T19:50:00Z"
-    updated_at: "2026-08-19T19:50:00Z"
+    updated_at: "2026-08-20T14:25:00Z"
 
   - id: C015
     claim: >-
@@ -377,15 +391,42 @@ claims:
       derivations: [D005]
       experiments: []
       literature: []
+      computational_checks: [O004]
       verification: []
     checks:
       dimensional_analysis: passed
       limiting_cases: passed
       independent_verification: pending
-      numerical_reproduction: pending
+      computational_verification: passed
     dependencies: [C013, C014]
     conflicts: []
     created_at: "2026-08-19T19:50:00Z"
-    updated_at: "2026-08-19T19:50:00Z"
-schema_version: 2
-claims: []
+    updated_at: "2026-08-20T14:25:00Z"
+
+  - id: C016
+    claim: >-
+      In the fixed-interface basic persistent SO(1,3) sector of D005, restricted to the planar rank-three branch b=1/kappa_4 and H(K)=0, the interface/edge action has a fixed-reference cut presymplectic form of rank 12 off shell that pulls back to zero when Pi=Q+lambda=0, whereas the Stueckelberg gauge-orbit reference has an additional shell presymplectic block of rank 10 (five pairs) and a generically nonzero temporal-corner moment map proportional to Ad_(g^-1)Q; nevertheless these interface data alone do not decide whether that block is physical or removed by first-class gauge because the total bulk Lorentz Gauss generators, boundary polarization, and admissible reference/seed/corner transformations are not specified.
+    status: derived
+    importance: critical
+    hypotheses: [H002, H003]
+    assumptions:
+      - The interface is fixed and timelike, the marked circle period is fixed, and only basic theta-independent persistent SO(1,3) fields are retained.
+      - The planar pullback is e_+^0=dt, e_+^1=dx^1, e_+^2=dx^2, e_+^3=0 with b=1/kappa_4 and H(K)=0.
+      - The algebraic shell Delta e=Delta omega=0, lambda=-Q, mu=0 and Q=g.P^- is imported from the combined D005 bulk-plus-interface variation, while all bulk kinetic and Gauss terms are deliberately omitted from the cut-rank calculation.
+      - Rank is pointwise for small Lorentz transformations in a local trivialization; global topology, reducibility, moving interfaces, full SO(1,4), nonbasic modes, and hyperbolicity are excluded.
+      - Temporal and lateral corner conditions are not silently fixed; compact-support and nonvanishing-corner transformation classes are distinguished.
+    evidence:
+      derivations: [D006]
+      experiments: []
+      literature: []
+      computational_checks: [O005]
+      verification: []
+    checks:
+      dimensional_analysis: passed
+      limiting_cases: passed
+      independent_verification: pending
+      computational_verification: pending
+    dependencies: [C015]
+    conflicts: []
+    created_at: "2026-08-20T16:10:00Z"
+    updated_at: "2026-08-20T16:12:00Z"

@@ -1,0 +1,137 @@
+schema_version: 1
+id: "O004"
+title: >-
+  D005 reference branches and rank table
+
+# Scientific targets. At least one claim or derivation should be linked once the
+# obligation is attached to the research record.
+claims: ["C013", "C015"]
+derivations: ["D004", "D005"]
+
+# Generic, method-neutral classification. Allowed values:
+#   exact-symbolic | formal | numerical | convergence | independent-implementation
+#   limiting-case | symmetry | dimensional | counterexample | other
+# The class describes what kind of assertion is being tested. It does not select
+# a library, language, or tool; the research chooses the method.
+class: "exact-symbolic"
+
+# required: true means this obligation is part of the currently declared
+# verification strategy for its target claims. A required active obligation
+# without a passing result blocks the structural computational gate.
+required: true
+
+# active | superseded. Superseded obligations remain durable history and do not
+# block the current strategy. Do not delete failed history to clear the gate.
+status: active
+
+# The exact mathematical question tested, stated so that a reader can tell what
+# is NOT tested.
+question: >-
+  After dressing exterior quantities into the core frame and exactly differentiating the D005 basic planar connection-sector action, do the reference-free, distinct-fixed-reference, and distinct-freely-varied-reference treatments respectively imply Pminus=0, Q=Pminus with b=kappa4_inv on a rank-three triad, and Q=0; and does the companion map K to H(K) have exact rank 12, nullity 6, with a nonzero-curvature element in its kernel?
+
+# Assumptions the executable check encodes: conventions, normalizations, domains,
+# regularity, parameter ranges, representation choices, and anything the
+# implementation takes for granted.
+assumptions:
+  - >-
+    The fixed-interface, basic, horizontal, theta-independent persistent sector of D004-D005 is used after all exterior quantities have been dressed into the core SO(1,3) frame; existence of the local bundle isomorphism g is assumed, while its global topology and edge dynamics are not represented.
+  - >-
+    The summed bulk boundary sign is core minus exterior, so the scalar connection-sector representative is L=Q*(omega-a)+lambda*(omega-varpi)-Pminus*varpi. Coframes and connections remain independent first-order variables, and no torsion equation is imposed before variation.
+  - >-
+    The three and only three reference branches are: reference-free, where a=varpi is substituted in the action before variation and therefore delta(a)=delta(varpi); distinct fixed reference, where a transforms geometrically as connection data but delta(a)=0; and distinct freely varied reference, where delta(a) is independent and unrestricted.
+  - >-
+    Internal orientation is epsilon_0123=+1, canonical Lorentz pairs have a<b, every action formula sums both ordered values of an antisymmetric pair, the interface basis is du0<du1<du2, and the planar rank-three coframe is (e0,e1,e2,e3)=(du0,du1,du2,0) with internal normal n=3.
+  - >-
+    Ordinary positive circle integration is used. The exact formal symbols obey b=tau*gamma and gamma=ell_star*kappa5_inv, where tau denotes the oriented period +2pi without floating evaluation. kappa4_inv, kappa5_inv, and the desired-branch value of b are nonzero.
+  - >-
+    Coefficients lie in the integral-domain polynomial ring Q[b,kappa4_inv,tau,gamma,ell_star,kappa5_inv] (with additional free action/coframe generators when needed). Equality is canonical sparse-polynomial or sparse-form equality; pointwise coframe rank is taken over its fraction field, so there are no zero divisors.
+  - >-
+    Pminus_ab=(kappa4_inv/4)*epsilon_abcd*e^c wedge e^d and Q_ab=(b/4)*epsilon_abcd*e^c wedge e^d use ordered c,d. The implication from Pminus=0 strips the assumed nonzero kappa4_inv and uses the invertible internal bivector epsilon map.
+  - >-
+    H_c(K)=-(b/2)*epsilon_abcd*K^ab wedge e^d uses ordered a,b. Its rational 12x18 matrix is H/b in the domain basis ((01),(02),(03),(12),(13),(23)) tensor (du0,du1,du2) and codomain basis c=0,1,2,3 tensor (du0^du1,du0^du2,du1^du2).
+  - >-
+    For the nonflat witness the distinct reference is flat, the planar coframe legs are closed, and K has constant exact coefficients, so the represented curvature is R^ab=K^a_c wedge K^cb with metric diag(-,+,+,+); no derivative or reference-curvature term is hidden.
+  - >-
+    No inverse coframe, floating point, tolerance, random sampling, general-purpose CAS, implicit metric operation, or unrecorded symbolic relation is used.
+
+# Predeclared pass/fail/inconclusive criterion. Write this before implementing.
+acceptance_criterion: >-
+  Pass iff exact differentiation and elimination give reference-free gradients Q+lambda and -(Q+lambda)-Pminus and hence Pminus=0; fixed-reference gradients Q+lambda and -lambda-Pminus and hence Q=Pminus; freely varied reference gradient -Q and hence Q=0; the planar rank-three epsilon map gives the exact factor b-kappa4_inv and tau*ell_star*kappa5_inv=kappa4_inv; Pminus=0 is equivalent to vanishing 2x2 coframe minors and rank at most one; the rational H matrix has rank 12 and nullity 6; a certified nonzero kernel vector has a nonzero exact K wedge K curvature component; and all reference, sign, factor, rank, and mutation controls are detected. Fail on any exact mismatch. Inconclusive only if the triad is not exactly rank three, the coefficient domain has zero divisors, or the requested reference case lies outside the three declared branches; implementation exceptions are errors.
+
+method:
+  description: >-
+    Exact canonical polynomial differentiation of the scalar connection-sector action; explicit ordered-pair epsilon and universal coframe-minor identities in a three-generator exterior algebra; and an exact rational H matrix with wedge-curvature evaluation. A separate direct coefficient-balance reconstruction decides the three branch eliminants without polynomial differentiation, while a signed adapted M/S decomposition decides the H kernel dimension without using row reduction.
+  rationale: >-
+    The core distinction is whether a=varpi is substituted before variation or a remains an independent fixed/dynamical datum. Exact polynomial gradients and rational linear algebra expose that distinction and the claimed rank without random sampling.
+
+representation:
+  mathematical_domain: >-
+    Finite free commutative polynomial rings over Q, the exterior algebra on the ordered planar basis (du0,du1,du2), antisymmetric Lorentz-pair coefficient vectors, and rational finite matrices.
+  operations_required:
+    - "formal polynomial differentiation and explicit sequential substitution"
+    - "exact addition, multiplication, epsilon parity, wedge canonicalization, and coefficient extraction"
+    - "all 2x2 coframe minors and a finite pivot-factorization certificate"
+    - "exact rational rank, RREF/nullspace, and matrix-vector multiplication"
+    - "direct Lorentz-index contraction for one exact K wedge K curvature witness"
+  canonical_form_and_equality: >-
+    Polynomial monomials and exterior monomials use the exact_graded canonical sparse maps; matrices use Fraction entries and deterministic RREF. Every equality and nonzero test is exact. No simplifier, numerical evaluation, branch heuristic, or tolerance acts as an equality oracle.
+  branch_semantics: >-
+    Substitution a=varpi before differentiation ties the variations and adds the -Q reference derivative to the varpi gradient. Holding an independent a fixed deletes only its Euler equation. Freely varying an independent a retains the separate gradient -Q. Substituting only after independent differentiation would therefore encode the wrong reference-free variational problem and is an explicit negative control.
+  trust_surface: >-
+    Trusted reusable primitives are Python Fraction plus exact_graded Polynomial, ExteriorAlgebra, levi_civita_sign, and RationalMatrix. Claim-specific ordered-index loops, basis declarations, and the deterministic wrapper are also trusted. No CAS is trusted. The conclusion-critical alternate branch balance uses plain exact coefficient maps rather than Polynomial.differentiate, and the adapted M/S kernel proof uses a signed permutation, trace identity, and symmetric-matrix parametrization rather than RationalMatrix.rref; these reduce but do not eliminate correlated transcription risk.
+  infrastructure_assessment: >-
+    The frozen exact_graded contract already supplies every required primitive and its recorded law tests, so additional custom infrastructure or Engineer delegation would increase rather than reduce risk. O004 adds only claim-specific construction and controls.
+  scientific_cross_checks:
+    - "Recover Q+lambda, -(Q+lambda)-Pminus only when a=varpi is imposed before variation."
+    - "Recover (b-kappa4_inv)/2 on P_03 in the planar frame and factor it as (b-kappa4_inv) times the nonzero ordered epsilon base form."
+    - "Recover every wedge coefficient as a 2x2 coframe minor and certify the pivot factorization used for rank<=1."
+    - "Transform H_i by (h_12,-h_02,h_01) to M^m_i-tr(M)delta^m_i and H_3 to the three antisymmetric parts of S."
+    - "Verify the explicit kernel witness K^01=du2, K^02=-du1, K^12=du0 has R^01=-du0 wedge du1."
+
+controls:
+  positive:
+    - "P01: all three polynomial branch gradients and eliminants agree with the direct coefficient-balance reconstruction"
+    - "P02: the ordered planar epsilon map has P_03 base coefficient +1/2 and exact factor b-kappa4_inv"
+    - "P03: sequential b=tau*gamma and gamma=ell_star*kappa5_inv substitution gives tau*ell_star*kappa5_inv=kappa4_inv"
+    - "P04: the internal bivector epsilon map is invertible and universal wedge coefficients equal all 18 coframe minors"
+    - "P05: universal pivot identities plus exact rank-zero/rank-one controls certify all-minors-zero iff pointwise rank<=1"
+    - "P06: the explicit H/b matrix has shape 12x18, rank 12, nullity 6, and agrees entrywise with the independent M/S formula"
+    - "P07: six signed symmetric-S vectors form an analytic kernel basis"
+    - "P08: a nonzero kernel vector has exact curvature component R^01=-du0 wedge du1"
+  negative:
+    - "N01: differentiating first and only then identifying a with varpi is detected as the fixed-reference, not reference-free, gradient"
+    - "N02: reversing the exterior Palatini sign changes the varpi gradients and is rejected"
+    - "N03: a rational rank-two coframe has a nonzero minor and nonzero normalized Pminus"
+    - "N04: a nonzero one-generator H-kernel vector with K wedge K=0 is rejected as the required nonflat witness"
+  mutations:
+    - "M01: omitting the second ordered antisymmetric term halves the planar epsilon and H coefficients and is detected"
+    - "M02: reversing the H sign is detected by exact entries even though rank and kernel are unchanged"
+    - "M03: zeroing one independent H row lowers rank to 11 and is detected"
+    - "M04: breaking one off-diagonal S symmetry produces a nonzero H image and is detected"
+    - "M05: process-local O004_INTENTIONAL_MUTATION=exterior-sign reverses the bulk exterior sign and must make the entrypoint exit 1"
+
+implementation:
+  # Repository-relative entrypoint executed by scripts/run_check.py.
+  entrypoint: "research/checks/O004/run.py"
+  # Repository-relative reusable machinery this obligation depends on, normally
+  # under research/computation/. Also list material research-environment
+  # manifests, locks, container definitions, and build records under
+  # research/environment/. The runner fingerprints files and directories, so a
+  # change makes the recorded result stale.
+  infrastructure:
+    - "research/computation/exact_graded"
+    - "pyproject.toml"
+    - "scripts/_research.py"
+    - "scripts/run_check.py"
+    - "uv.lock"
+  producer_models: ["openai/gpt-5.6-sol"]
+  infrastructure_producer_models: ["openai/gpt-5.6-sol"]
+
+independence:
+  # not-required | recommended | required
+  requirement: "required"
+  rationale: >-
+    C015 is the current frontier's load-bearing legacy result. Alternate reconstruction must derive the branch equations without differentiating the encoded action and derive the H kernel from the adapted M/S decomposition rather than shared row-reduction code.
+
+created_at: "2026-08-20T10:20:05Z"
+updated_at: "2026-08-20T14:08:13Z"

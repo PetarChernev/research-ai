@@ -1,0 +1,149 @@
+{
+  "schema_version": 2,
+  "obligation_id": "O005",
+  "claims": [
+    "C016"
+  ],
+  "derivations": [
+    "D006"
+  ],
+  "outcome": "passed",
+  "exit_code": 0,
+  "started_at": "2026-08-20T18:18:12Z",
+  "completed_at": "2026-08-20T18:18:12Z",
+  "command": "/home/petar/Projects/research-ai/.venv/bin/python3 /home/petar/Projects/research-ai/research/checks/O005/run.py",
+  "runner_command": "uv run --locked python scripts/run_check.py O005",
+  "implementation": "research/checks/O005/run.py",
+  "git_commit": "6eda62c0325e4feccff7148cb0da877bc028a46b",
+  "dirty_worktree": true,
+  "spec_sha256": "ec261a8fbb03a77571d20154aed1460cbb45ae093e632c8f54ebd9308409c738",
+  "implementation_sha256": "648ba561390033cef6a98f89af860f6473aec0e56cb7925d17b76f8084c99590",
+  "infrastructure": [
+    {
+      "path": "pyproject.toml",
+      "type": "file",
+      "sha256": "a83358c688c795208a1da1b9ee6b630afb791719baa9f72a2cb53e672417e07e"
+    },
+    {
+      "path": "research/computation/exact_graded",
+      "type": "directory",
+      "sha256": "197024e3f37dff868c931141ce25949e26e2249bd4850d0213ff06e81449268b"
+    },
+    {
+      "path": "scripts/_research.py",
+      "type": "file",
+      "sha256": "d651210158db51853658afd917ff616ae9c90ea95e4c2cfbc37f1427b04f8210"
+    },
+    {
+      "path": "scripts/run_check.py",
+      "type": "file",
+      "sha256": "1187837d94b89bf08ab2b9b7164a6c116930f7cb9c9e3a320f5f7b4117e4cf24"
+    },
+    {
+      "path": "uv.lock",
+      "type": "file",
+      "sha256": "e32bee08b2192dd59a9820a15bdf7cb914daf0a7136e594869e98e4c0ae7bea0"
+    }
+  ],
+  "infrastructure_sha256": "0b4aeb783458e144f6b86641ad631d0cb62dcc12398b414a552434f00d211b97",
+  "environment": {
+    "python": "3.12.12",
+    "python_implementation": "CPython",
+    "python_executable": "/home/petar/Projects/research-ai/.venv/bin/python3",
+    "platform": "Linux-6.17.0-41-generic-x86_64-with-glibc2.42",
+    "machine": "x86_64",
+    "packages": {
+      "PyYAML": "6.0.3"
+    }
+  },
+  "observations": {
+    "assertions": {
+      "failed": 0,
+      "failed_names": [],
+      "passed": 40,
+      "total": 40
+    },
+    "basis": {
+      "coframe_variations": [
+        "de1^0",
+        "de1^1",
+        "de1^2",
+        "de1^3",
+        "de2^0",
+        "de2^1",
+        "de2^2",
+        "de2^3"
+      ],
+      "cut_forms": [
+        "dx1",
+        "dx2"
+      ],
+      "lorentz_pairs": [
+        "01",
+        "02",
+        "03",
+        "12",
+        "13",
+        "23"
+      ]
+    },
+    "infrastructure_producer_models": [
+      "openai/gpt-5.6-sol"
+    ],
+    "intentional_mutation": null,
+    "moment_maps": {
+      "A": {
+        "Jminus": "-Ad_(g^-1)Pi",
+        "Jplus": "Pi"
+      },
+      "B": {
+        "Jminus": "-Ad_(g^-1)lambda",
+        "Jplus": "Pi",
+        "shell_Jminus": "+Ad_(g^-1)Q"
+      },
+      "adjoint_test": "rational 01 boost cosh=5/3 sinh=4/3"
+    },
+    "null_directions": [
+      "T12",
+      "de1^2",
+      "de2^1",
+      "de1^1-de2^2"
+    ],
+    "obligation_id": "O005",
+    "planar": {
+      "Q03_at_b_1": "1/2",
+      "corner_witness": "1/2",
+      "dQ_nullity": 3,
+      "dQ_rank": 5,
+      "dQ_shape": [
+        6,
+        8
+      ]
+    },
+    "producer_model": "openai/gpt-5.6-sol",
+    "ranks": {
+      "alternate_full_off_shell": 22,
+      "alternate_residual": 10,
+      "fixed_off_shell": 12,
+      "fixed_shell": 0,
+      "stueckelberg_full_off_shell": 22,
+      "stueckelberg_shell": 10,
+      "stueckelberg_v_e": 10,
+      "stueckelberg_v_e_nullity": 4
+    },
+    "representation": {
+      "CAS": false,
+      "alternate_path_is_independent_verification": false,
+      "coefficients": "fractions.Fraction",
+      "equality": "canonical sparse-form and exact matrix equality",
+      "floats": false,
+      "random_sampling": false
+    }
+  },
+  "artifacts": [],
+  "logs": [
+    "research/checks/O005/logs/stdout.log",
+    "research/checks/O005/logs/stderr.log"
+  ],
+  "notes": "Canonical outcome derived from the recorded process exit status."
+}
