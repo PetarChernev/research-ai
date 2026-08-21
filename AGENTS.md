@@ -37,6 +37,8 @@ Label statements as one of: assumption, conjecture, derived result, numerical ob
 
 Use `verified` only after an independent verifier has reconstructed or attacked the claim by an alternate method or comparably strong independent check and a substantive report is linked from the ledger. Failed verification remains part of the record.
 
+Verification is a bounded adversarial audit, not a duplicate production stream. Most intermediate claims should remain below `verified`; reserve model-separated review for narrow claims whose verification changes an immediate decision or unlocks a conclusion. The default verifier reconstructs one load-bearing inference, attempts at most three decisive attacks, reviews only the computational paths needed to judge the claim-to-representation bridge, writes no code, and does not rerun obligations. Full reproduction or an independent implementation is a separate exceptional task requiring explicit user approval.
+
 ## Model Assignment
 
 Each agent's model is configured independently in its file under `.opencode/agents/`, but an unpinned role may use the invoking session model. A single claim may therefore have heterogeneous or shared model provenance. Establish the actual producing model per artifact rather than inferring it from hierarchy. Engineer-authored environments and reusable infrastructure count as material production when they support a claim.
@@ -116,7 +118,7 @@ An important computational result must be reproducible without its originating c
 - Start with analytic estimates or tiny numerical diagnostics before expensive computation.
 - Reason about what needs checking, then build the smallest useful executable diagnostic, then stronger machinery only when scientifically justified.
 - Bound delegated work and integrate its artifacts. The only nested edge is `scientific-computation -> engineer` for a declared substrate task; Engineer cannot delegate.
-- Give important claims and their originating model IDs to a model-separated verifier with primary artifacts, not an approving summary.
+- Give narrow, gate-critical claims and their originating model IDs to a model-separated verifier through a curated primary-artifact packet, not an approving summary or an exhaustive repository assignment.
 - Do not optimize manuscript prose before core claims are adequately supported.
 - An experiment without method, configuration, provenance, and validation is incomplete.
 - Never fabricate citations, results, checks, consensus, or verification.

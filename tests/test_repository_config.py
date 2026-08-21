@@ -118,6 +118,24 @@ class ScientificComputationScopeTests(unittest.TestCase):
             self.assertNotIn("research_run_check", permission)
             self.assertNotIn("research_new_check", permission)
 
+    def test_verifiers_are_bounded_read_only_auditors(self) -> None:
+        for name in ("verifier-anthropic.md", "verifier-openai.md"):
+            path = AGENTS / name
+            metadata = frontmatter(path)
+            permission = metadata["permission"]
+            self.assertEqual(permission["bash"], "deny")
+            self.assertEqual(permission["webfetch"], "deny")
+            self.assertEqual(permission["websearch"], "deny")
+            self.assertNotIn("reproduce-result", permission["skill"])
+            text = " ".join(path.read_text(encoding="utf-8").split())
+            for marker in (
+                "no more than twelve investigative tool calls",
+                "at most three serious falsification attacks",
+                "Do not write code",
+                "at most 2,500 words",
+            ):
+                self.assertIn(marker, text)
+
 
 class EngineerScopeTests(unittest.TestCase):
     def setUp(self) -> None:
@@ -231,6 +249,7 @@ class ArtifactSurfaceTests(unittest.TestCase):
             "## Sufficiency of computational obligations",
             "## Missing or adversarial checks",
             "## Computational independence",
+            "## Scope and decisive bridge",
             "## Reconstruction",
             "## Falsification attempts",
         ):
