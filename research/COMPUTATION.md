@@ -1,15 +1,17 @@
 # Computational Verification Strategy
 
-Status: active — fixed-interface edge-sector discrimination and revalidation
-Last updated: 2026-08-21T00:00:00Z
+Status: active — corrected fixed-interface shell verification; bulk Gauss phase deferred
+Last updated: 2026-08-21T21:05:00Z
 
 Research question: Does there exist a resolution-independent, Lorentz-covariant classical `4 <-> 5` framework, formulated without an inverse coframe at rank change, whose bulk and transition equations follow from one variational principle and whose linearized initial-value problem is free of an evident constraint inconsistency, ghost, or loss of predictivity?
 
 This is the project-specific methodology for testing research recorded in
 `D001`–`D006`. It does not retroactively turn historical calculations into
-machine evidence. D006 has now completed the bounded interface-only canonical
-analysis, and O005 tests its finite exact assertions; neither artifact supplies
-the omitted bulk Gauss system required for a final gauge/physical classification.
+machine evidence. D006 has completed the bounded interface-only canonical
+analysis. O005 tests its off-shell and residual-block algebra; a model-separated
+audit found O005's shell shortcut under-discriminating, and O006 now constructs
+the honest pulled-back shell form. None supplies the omitted bulk Gauss system
+required for a final gauge/physical classification.
 
 ## Current research phase
 
@@ -56,13 +58,13 @@ bulk symplectic form and Lorentz Gauss generators are absent.
 | C013 | Pure-multiplier degeneracy and the displayed completion coefficient algebra. | Exhaustive boundary-action classification is not currently formalized. | The bounded conceptual classification beyond the explicitly varied families. |
 | C014 | Field-space curl and complete primitive on a certified nonzero mode. | A general formal calculus of local field-space functionals is unnecessary now. | A universal statement about every possible interface action (not claimed). |
 | C015 | Reference-branch gradients, coupling relation, rank/minor implication, `H(K)` rank/nullity and nonflat kernel witness. | The interface-only canonical follow-up is now represented by C016/O005; a complete bulk canonical system would need materially more structure. | Gauge-versus-physical status, bulk compatibility, hyperbolicity and solution existence. |
-| C016 | Exact `dQ`, off-shell and shell presymplectic ranks, null directions, moment-map signs, and a nonzero planar corner witness. | A completed bulk-plus-interface canonical formulation could expose total Gauss rank and constraint-closure obligations. | Whether the residual rank-ten block is physical, second class, or removed by first-class total gauge in the presently omitted bulk system. |
+| C016 | O005 checks exact `dQ`, off-shell ranks and residual-block algebra; O006 checks the honest 20-dimensional shell pullback, cross blocks, nullity, moment-map sign, and planar witness. | A completed bulk-plus-interface canonical formulation could expose total Gauss rank and constraint-closure obligations. | Whether the residual rank-ten block is physical, second class, or removed by first-class total gauge in the presently omitted bulk system. |
 
 ## Current machine-check obligations
 
-The program now has five required exact obligations, prioritized by the actual
+The program now has six required exact obligations, prioritized by the actual
 dependency graph rather than chronology. None had a result at allocation time,
-and all five now have current deterministic `passed` results.
+and all six now have current deterministic `passed` results.
 
 1. **O001 — D002 equalizer and curvature controls (C009/D002).** Exact
    branchwise pullback residuals for `eta`, `rho eta`, `A`, `F`, and mixed
@@ -80,7 +82,14 @@ and all five now have current deterministic `passed` results.
    implication; and rank/nullity/nonflat-kernel checks for `K -> H(K)`.
 5. **O005 — interface cut rank and moment maps (C016/D006).** Exact planar
    `dQ`, fixed-reference and Stueckelberg presymplectic ranks, null directions,
-   Lorentz moment-map signs, shell pullback, and nonzero `Q_03` corner witness.
+   Lorentz moment-map signs, and nonzero `Q_03` corner witness. Its off-shell
+   and residual-block assertions remain useful, but an independent audit found
+   its shell direct-sum and shell-moment assertions assumption-encoded.
+6. **O006 — honest C016 shell pullback (C016/D006).** Substitutes
+   `lambda=-Q(e)` before field-space differentiation, constructs the full
+   20-dimensional `(chi_v,xi,delta e)` shell form including cross blocks, and
+   checks rank/nullity, explicit null certificates, fixed-reference pullback,
+   moment-map contraction, and mutations targeting the O005 shortcut.
 
 Each obligation includes mutation/negative controls. A passing outcome is
 evidence only for the encoded finite exact assertions and does not establish
@@ -94,6 +103,7 @@ run.
 | O003 | `passed` | 44/44 | 2026-08-20T14:09:08Z | D005 one-mode field-space curl and complete primitive |
 | O004 | `passed` | 60/60 | 2026-08-20T14:08:32Z | D004/D005 reference branches, minors, and exact rank table |
 | O005 | `passed` | 40/40 | 2026-08-20T18:18:12Z | D006 cut ranks, null directions, moment maps, and corner witness |
+| O006 | `passed` | 36/36 | 2026-08-21T20:58:46Z | Honest D006 shell pullback, cross blocks, null certificates, and moment map |
 
 O002–O004 record the same aggregate shared-infrastructure SHA-256
 `0b4aeb783458e144f6b86641ad631d0cb62dcc12398b414a552434f00d211b97`
@@ -106,6 +116,10 @@ O005 reused the unchanged `exact_graded` directory at the same directory
 fingerprint but has its own claim-specific implementation and later full
 infrastructure fingerprint at Git commit
 `6eda62c0325e4feccff7148cb0da877bc028a46b`.
+O006 reused that same unchanged kernel and aggregate infrastructure fingerprint
+at Git commit `ba26507511bca36d84ad2cfcfdef624292fb0eac`; its canonical result was
+recorded from a dirty worktree and fingerprints its distinct claim-specific
+implementation.
 
 ## Computational representations and methods
 
@@ -220,6 +234,28 @@ infrastructure fingerprint at Git commit
   secondary constraints and polarization, so no final gauge/physical conclusion
   is encoded.
 
+### Domain F — honest shell pullback (O006)
+
+- **Mathematical domain:** the same rational Lorentz/cut exterior data as O005,
+  but with the shell imposed before differentiation on the 20 coordinates
+  `(chi_v[6],xi[6],delta e[8])`.
+- **Representation:** the pulled-back potential
+  `Theta_B|shell=<Q(e),chi_v-xi>` is differentiated term by term into one exact
+  `20 x 20` alternating matrix. `lambda` and `delta lambda` are eliminated;
+  the `xi`–`delta e` block is explicit and nonzero.
+- **Scientific rationale:** an independent verifier showed that O005's shell
+  direct sum had the correct rank but the wrong entrywise form. Equal rank is
+  therefore not an adequate acceptance test; O006 requires the honest entries,
+  ten null certificates, and inequality from the shortcut.
+- **Trust surface:** unchanged `exact_graded` exterior/epsilon/rational-matrix
+  primitives plus short claim-specific potential-term and Lorentz formulas. No
+  new reusable kernel, environment, CAS, or Engineer work is justified.
+- **Cross-checks:** explicit `Q,dQ`; exact antisymmetry; ten named null vectors;
+  separately assembled equal-rank shortcut; direct gauge contraction; and four
+  process-local semantic mutations.
+- **Limitation:** O006 still imports D005's action, shell, and temporal-boundary
+  potential and omits all bulk Gauss and polarization data.
+
 No general-purpose CAS is used as a conclusion-critical equality oracle. A CAS
 may be used later only as an explicitly independent targeted exact cross-check
 with its assumptions and normal form recorded.
@@ -258,7 +294,7 @@ self-contained to retain a materially different representation path.
   tensor automation, gauge-group solving, factorization/Groebner bases, theorem
   proving, numerical linear algebra, Markdown parsing, and generic canonical
   dynamics. O005 reused only the already-contracted exterior and matrix API.
-- **Dependent obligations:** O002, O003, O004 and O005; each must fingerprint the entire
+- **Dependent obligations:** O002, O003, O004, O005 and O006; each must fingerprint the entire
   kernel directory. The kernel is methodology, not evidence.
 
 Engineer is required because this reusable primitive set and its law tests are
@@ -300,7 +336,7 @@ implementation. A bad criterion is superseded rather than edited after output.
 
 ## Independence strategy
 
-All five required obligations use an alternate analytic path because they test
+All six required obligations use an alternate analytic path because they test
 load-bearing reasoning. The primary implementations and exact kernel are
 not mutually independent when they share `exact_graded/`.
 
@@ -313,6 +349,10 @@ not mutually independent when they share `exact_graded/`.
 - O005: explicit pivots/null vectors and first-order block-rank reasoning versus
   assembled presymplectic matrices and exact RREF. This is correlated, not an
   independent verification.
+- O006: explicit potential-first shell assembly and ten null certificates versus
+  RREF, with the O005 equal-rank shortcut retained as an entrywise negative
+  control. The model-separated C016 verifier supplied the independent hand path;
+  O006 itself is correlated machine evidence.
 
 Fresh independent verification must review the old derivation, old reports,
 plan, contracts, infrastructure/tests, research-specific validation, specs,
@@ -340,8 +380,9 @@ Redesign this strategy if any of the following occurs:
    requiring computational topology/formalization rather than this graded
    exterior kernel.
 
-At the immediate frontier, no additional finite interface matrix is expected to
-discriminate H002 from restricted H003. The next theory object would be the
+At the immediate frontier, O006 closes the known finite shell-representation
+gap, and no additional finite interface matrix is expected to discriminate H002
+from restricted H003. The next theory object would be the
 bulk-plus-interface Hamiltonian/Gauss system itself. New computation is deferred
 until that object exists; the present exact kernel is not presumed adequate for
 constraint closure or PDE questions.
@@ -390,12 +431,18 @@ constraint closure or PDE questions.
   not satisfy the fresh computational evidential chain by themselves.
 - The attempted Anthropic verification of C016 was interrupted before a report
   was produced. Tool access recorded in provenance is not a verification
-  artifact, and C016 remains independently unverified.
+  artifact. A later bounded `anthropic/claude-opus-5` audit produced a qualifying
+  report and independently reconstructed C016.
+- O005's hard-coded fixed-shell zero, direct-sum shell form, and self-comparison
+  shell moment-map assertion do not discriminate the honest pullback. O006 is
+  the adopted machine evidence for those shell clauses; O005 remains durable
+  rather than being deleted or silently rewritten.
 
 ## Related decisions
 
 - `research/DECISIONS.md`, **2026-08-20: Adopt current computational-verification semantics for legacy work**.
 - `research/DECISIONS.md`, **2026-08-20: Use a minimal exact graded kernel for the migration obligations**.
 - `research/DECISIONS.md`, **2026-08-21: Treat the interrupted C016 audit as no evidence and stop at the missing bulk canonical system**.
+- `research/DECISIONS.md`, **2026-08-21: Verify C016 and replace its shell shortcut with O006**.
 - Earlier scope and category choices remain recorded in the 2026-08-19 entries;
   the migration does not rewrite them.

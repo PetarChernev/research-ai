@@ -1,6 +1,6 @@
 # Research State
 
-Last updated: 2026-08-21T00:00:00Z
+Last updated: 2026-08-21T21:05:00Z
 
 ## Current question
 
@@ -21,6 +21,8 @@ does it retain physical/second-class edge structure?
   cut form has rank 12 off shell and vanishes on `Pi=delta Pi=0`; the
   Stueckelberg-reference shell retains an exact rank-ten block and a generically
   nonzero temporal-corner moment map proportional to `Ad_(g^-1)Q` (C016).
+  A model-separated Anthropic audit independently reconstructed the decisive
+  rank/sign bridge and C016 is now `verified` in this restricted regime.
 - The advertised H002-versus-restricted-H003 classification remains
   **inconclusive**. D006 lacks the bulk symplectic form, total Lorentz Gauss
   generators, secondary constraints, and boundary polarization needed to tell
@@ -46,25 +48,33 @@ does it retain physical/second-class edge structure?
 
 | Category | Claims / evidence |
 |---|---|
+| Independently verified | C016/D006 with `anthropic/claude-opus-5` report, plus passing O005 and corrective O006. Verification covers the restricted interface result and its explicit non-decision clause, not a gauge/physical classification. |
 | Historical cross-provider verification | C008 and C009 have 2026-08-19 `anthropic/claude-sonnet-4-6` reports, but those reports predate and did not review the later computational architecture. The ledger conservatively keeps both `derived` pending fresh end-to-end review. |
-| Derived, computationally passed | C009/O001, C010+C012/O002, C014/O003, C013+C015/O004, and C016/O005. A pass establishes only each obligation's encoded finite assertion. |
+| Derived, computationally passed | C009/O001, C010+C012/O002, C014/O003, and C013+C015/O004. A pass establishes only each obligation's encoded finite assertion. |
 | Derived, no adopted machine gate | C007, C008, C011 and the conceptual remainders of the claims above. |
 | Conjectural | C001–C006: complete F0 gates, Hopf configuration topology, microscopic holonomy selection, and a stable defect. |
 
-The strongest current frontier evidence is `D006` plus passing O005 (40/40 exact
-assertions). O005 checks `rank(dQ)=5`, fixed-reference ranks `12 -> 0`,
-Stueckelberg ranks `22 -> 10`, four shell null directions, moment-map signs, and
-the nonzero `Q_03=b/2` witness. It explicitly does **not** decide the physical
-classification. All O001–O005 implementations and their shared exact substrate
-were materially produced by `openai/gpt-5.6-sol`.
+The strongest current frontier evidence is the C016 Anthropic report plus O006
+(36/36 exact assertions). The verifier reconstructed `rank(dQ)=5`, the honest
+20-dimensional shell pullback with rank 10, the moment-map sign, and the
+`Q_03=b/2` witness by hand. It found that O005's shell matrix and shell moment
+assertions were assumption-encoded rather than discriminating; O006 now builds
+the nonzero `xi`–`delta e` cross block explicitly and obtains rank/nullity
+`10/10`. Neither report nor check decides the physical classification. All
+O001–O006 implementations and the shared exact substrate were materially
+produced by `openai/gpt-5.6-sol`.
 
 ## Strongest evidence
 
-- `D006` gives the complete bounded interface-only presymplectic derivation for
-  C016, including assumptions, exact ranks, charge expressions, consistency
-  checks, and the explicit reason the total Dirac classification is unavailable.
-- O005 has canonical outcome `passed` with 40/40 exact assertions and mutation,
-  sign, factor, shell-pullback, rank, and degenerate-background controls.
+- `research/results/verification/C016-2026-08-21-anthropic-r3.md` independently
+  reconstructs the decisive C016 bridge and records three failed falsification
+  attacks. It also identifies O005's under-discriminating shell representation.
+- O006 has canonical outcome `passed` with 36/36 assertions and explicitly
+  constructs the honest shell form, its cross block, ten null certificates,
+  moment-map contraction, and four discriminating semantic mutations.
+- `D006` remains the primary restricted interface-only derivation. O005 remains
+  valid for its off-shell and residual-block assertions but is not treated as
+  machine support for the honest shell pullback by itself.
 - D002–D005 and O001–O004 remain the exact upstream chain for quotient descent,
   Palatini mismatch, integrability, completion branches, and the enriched action.
 - The 2026-08-19 Anthropic reports independently reconstructed C008/C009 in the
@@ -73,11 +83,9 @@ were materially produced by `openai/gpt-5.6-sol`.
 
 ## Open verification tasks
 
-- C016 has no independent verification report. An attempted
-  `anthropic/claude-opus-5` audit was interrupted after repository/check access
-  and before any report was produced. Those provenance records are not evidence;
-  `independent_verification` remains `pending`.
-- C010–C016 remain the main unverified critical chain. C007 has supportive but
+- C016 now has a qualifying `anthropic/claude-opus-5` verification report and
+  is `verified`; the earlier interrupted attempt remains non-evidence.
+- C010–C015 remain the main unverified critical chain. C007 has supportive but
   non-verifying reports; C004 remains inconclusive because the full physical
   configuration space is undefined.
 - Seven legacy reports predate the mandatory computational-review sections.
@@ -87,12 +95,15 @@ were materially produced by `openai/gpt-5.6-sol`.
 
 ## Computational state
 
-- Required obligations O001–O005 all have deterministic `passed` results.
-- C016 now correctly links D006 and O005 and records
-  `computational_verification: passed`; independent verification is pending.
-- O002–O005 share the `exact_graded` substrate and therefore share a material
+- Required obligations O001–O006 all have deterministic `passed` results.
+- C016 now links D006, O005, O006, and the independent report and records
+  both `computational_verification: passed` and
+  `independent_verification: passed`.
+- O002–O006 share the `exact_graded` substrate and therefore share a material
   trust surface. Their alternate analytic paths reduce implementation risk but
   are not independent verification.
+- O005's finite off-shell checks remain useful, but its shortcut shell form is
+  entrywise wrong despite the same rank. O006 is the adopted shell obligation.
 - No new computation is currently warranted. Another finite interface rank
   calculation cannot supply the omitted total Gauss system.
 
@@ -100,8 +111,7 @@ were materially produced by `openai/gpt-5.6-sol`.
 
 - **Running:** none. No `ENNN` experiment exists.
 - **Next computation:** none until a complete bulk-plus-interface canonical
-  system is derived. O005 already exhausts the useful finite interface-only
-  rank/sign diagnostic.
+  system is derived. O006 closes the finite interface-only shell diagnostic.
 - **Later numerical work:** a defect boundary-value problem, convergence study,
   or hyperbolicity calculation remains premature because no complete equations,
   gauge fixing, boundary data, or stable background have been specified.
@@ -133,11 +143,9 @@ category or interpretation conflicts and must not be averaged away.
 
 ## Next recommended actions
 
-1. If verification is resumed, send one narrow C016 packet to an eligible
-   model-separated verifier: C016, D006, O005 spec/README/result, the relevant
-   D005 interface definitions, and exact assumptions. Require one reconstructed
-   load-bearing inference and at most three decisive attacks; no code or reruns.
-2. Do not add another obligation until theory supplies a complete
+1. Derive the minimum total bulk-plus-interface cut Lorentz generator and
+   boundary polarization needed to classify the verified C016 rank-ten block.
+2. Do not add another obligation until theory supplies that complete
    bulk-plus-interface symplectic form and total Lorentz Gauss generators. That
    would trigger a new representation/trust assessment and likely a new phase.
 3. Return to C004–C006 and Hopf-sector work only after the F0 action and
@@ -147,6 +155,7 @@ category or interpretation conflicts and must not be averaged away.
 
 The active branch is `reseach/hopf-solitons`. The wrong-branch verifier incident
 and deletion of its void reports remain documented in `research/DECISIONS.md`.
-Current repair work preserves the later genuine `-anthropic-r2` reports and all
+Current work preserves the later genuine `-anthropic-r2` reports and all
 failing/inconclusive history. The default research-state validator passes with
-zero errors; eight expected warnings disclose the four same-model reports.
+zero errors; eight warnings continue to disclose the four legacy same-model
+reports.

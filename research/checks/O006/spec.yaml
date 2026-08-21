@@ -1,0 +1,198 @@
+schema_version: 1
+id: "O006"
+title: >-
+  Honest C016 shell pullback
+
+# Scientific targets. At least one claim or derivation should be linked once the
+# obligation is attached to the research record.
+claims: ["C016"]
+derivations: ["D006"]
+
+# Generic, method-neutral classification. Allowed values:
+#   exact-symbolic | formal | numerical | convergence | independent-implementation
+#   limiting-case | symmetry | dimensional | counterexample | other
+# The class describes what kind of assertion is being tested. It does not select
+# a library, language, or tool; the research chooses the method.
+class: "exact-symbolic"
+
+# required: true means this obligation is part of the currently declared
+# verification strategy for its target claims. A required active obligation
+# without a passing result blocks the structural computational gate.
+required: true
+
+# active | superseded. Superseded obligations remain durable history and do not
+# block the current strategy. Do not delete failed history to clear the gate.
+status: active
+
+# The exact mathematical question tested, stated so that a reader can tell what
+# is NOT tested.
+question: >-
+  On the D006 planar rank-three branch, if the Stueckelberg shell is imposed by substituting lambda=-Q(e) before field-space differentiation, does the explicitly assembled 20-dimensional presymplectic matrix on independent tangent coordinates (chi_v, xi, delta e) include the required xi-delta e cross block yet have exact rank 10 and nullity 10, while the fixed-reference pullback at Pi=0, delta Pi=0 is zero and direct contraction gives the shell minus-frame moment map +Ad_(g^-1)Q with a nonzero +b/2 planar witness?
+
+# Assumptions the executable check encodes: conventions, normalizations, domains,
+# regularity, parameter ranges, representation choices, and anything the
+# implementation takes for granted.
+assumptions:
+  - >-
+    The calculation is pointwise on a temporal cut of the fixed timelike
+    interface, in the basic horizontal theta-independent persistent SO(1,3)
+    sector and on D006's planar rank-three branch.  It represents only the
+    finite interface shell form.  Bulk kinetic terms, total Lorentz Gauss
+    generators, secondary constraints, global modes, and boundary polarization
+    are absent.
+  - >-
+    Internal orientation is epsilon_0123=+1, eta=diag(-,+,+,+), Lorentz pairs
+    are ordered (01,02,03,12,13,23), and dx1<dx2.  The cut coframe is
+    e^0=e^3=0, e^1=dx1, e^2=dx2; the full interface triad (dt,dx1,dx2) is
+    required to have rank three.
+  - >-
+    The nonzero common scale b is represented by b=1.  Therefore
+    Q_ab=(1/4) epsilon_abcd e^c wedge e^d and Q_03=+1/2.  Scale-independent
+    ranks are evaluated at b=1 and the corner witness is reported as +b/2.
+  - >-
+    Lorentz generators satisfy
+    [T_ab,T_cd]=eta_ac T_bd-eta_ad T_bc-eta_bc T_ad+eta_bd T_ac after
+    antisymmetric-pair canonicalization.  The invariant bivector pairing is
+    G=diag(eta_aa eta_bb) in the declared pair order and must be nondegenerate.
+  - >-
+    Field-space convention is Omega=delta Theta with right Maurer-Cartan
+    variables.  For a term <p(e),delta h h^-1>, differentiation is encoded
+    exactly by [[A_p,-G dp],[(G dp)^T,0]], where
+    (A_p)_IJ=<p,[T_I,T_J]>.  This is the only shell-form assembly primitive.
+  - >-
+    The shell is imposed before differentiation: lambda=-Q(e), so
+    Theta_B|shell=<Q(e),chi_v-xi>.  Its independent tangent coordinates are
+    ordered as chi_v[6], xi[6], delta e[8].  There is no independent
+    delta-lambda coordinate and the xi-delta e block is not assumed zero.
+  - >-
+    Fixed-reference shell tangency is Pi=0 and delta Pi=dQ+delta lambda=0,
+    represented by delta lambda=-dQ.  Its zero two-form must follow from these
+    substituted coefficient and derivative maps rather than from a literal
+    predeclared zero matrix.
+  - >-
+    The shell minus-frame gauge vector has chi_v=0 and
+    xi=-Ad_g(alpha_-), so direct contraction of the same pulled-back potential
+    is compared with +Ad_(g^-1)Q.  A nonidentity exact rational boost checks the
+    adjoint identity; g=1 and alpha_-=-T_03 give the +b/2 witness.
+  - >-
+    All coefficients are fractions over Q.  Equality, rank, nullity,
+    matrix-vector products, exterior signs, and nonzero tests are exact.  No
+    floats, tolerance, random sampling, CAS, or heuristic simplifier is used.
+
+# Predeclared pass/fail/inconclusive criterion. Write this before implementing.
+acceptance_criterion: >-
+  Pass iff an exact rational implementation using epsilon_0123=+1,
+  eta=diag(-,+,+,+), Lorentz-pair order (01,02,03,12,13,23), planar cut
+  e1=dx1, e2=dx2, and Omega=delta Theta: (1) constructs Q_03=+1/2 and the
+  exact rank-five 6x8 dQ map; (2) differentiates the pulled-back potential
+  Theta_B|shell=<Q(e),chi_v-xi> into the full 20x20 antisymmetric matrix rather
+  than an assumed direct sum; (3) finds a nonzero xi-delta e cross block, exact
+  rank 10, nullity 10, and ten explicit independent null vectors satisfying the
+  honest matrix; (4) proves entrywise that the honest matrix is not the O005
+  shortcut direct-sum embedding even though both ranks are 10; (5) constructs
+  the fixed-reference pullback from Pi=0 and delta Pi=0 and obtains the zero
+  form; (6) contracts the declared shell gauge vector through the same
+  potential to obtain J_-^B=+Ad_(g^-1)Q and the exact +b/2 planar witness; and
+  (7) detects predeclared process-local mutations deleting the xi-delta e cross
+  block, reversing the shell moment-map sign, changing the ordered-pair factor,
+  and retaining an independent delta-lambda after shell substitution.  Fail on
+  any exact mismatch or any mutation not rejected.  Inconclusive only if the
+  declared planar triad is not rank three or the represented Lorentz pairing is
+  degenerate; implementation exceptions are errors.
+
+method:
+  description: >-
+    Exact rational assembly of the pulled-back field-space two-form directly from the shell potential, with explicit cross blocks, null-vector certificates, gauge-vector contraction, and mutation controls.
+  rationale: >-
+    The verifier identified a finite representation defect in O005. The corrected assertion is a small decidable matrix problem; direct construction from the pulled-back potential is cheaper and more discriminating than new infrastructure or a general CAS.
+
+representation:
+  mathematical_domain: >-
+    A finite rational model of the planar cut: the ordered six-dimensional
+    Lorentz Lie algebra and invariant pairing, the two-generator cut exterior
+    algebra, the exact map dQ:Q^8->Q^6, and alternating bilinear forms on the
+    20-dimensional tangent space Q^6_chi_v + Q^6_xi + Q^8_deltae.
+  operations_required:
+    - "Levi-Civita parity, exact wedge products, and extraction of the dx1 wedge dx2 coefficient"
+    - "Lorentz brackets, invariant-pairing contractions, and exact rational adjoint maps"
+    - "substitution lambda=-Q and delta lambda=-dQ before two-form assembly"
+    - "exact block insertion, transpose, entrywise comparison, RREF rank/nullspace, and matrix-vector products"
+  exact_and_canonical_representation: >-
+    The domain admits exact coordinates over Q.  Exterior monomials have the
+    canonical order dx1<dx2; Lorentz coefficients use the fixed pair order;
+    matrices contain Fraction entries.  No quotient relation or symbolic
+    simplification is needed.
+  equality_semantics: >-
+    Equality is decidable as canonical sparse-form equality or exact entrywise
+    matrix/vector equality.  Rank and independence use deterministic rational
+    RREF; no tolerance or sampled proxy is accepted.
+  encoded_conventions: >-
+    The implementation explicitly encodes orientation, metric signature,
+    Lorentz bracket and pairing, pair and tangent-coordinate orders,
+    Omega=delta Theta, right Maurer-Cartan signs, b=1 as a nonzero rational
+    representative, shell-before-differentiation, and the declared gauge vector.
+  cas_trust_if_used: >-
+    A general CAS would add its expression parser, assumption engine,
+    simplifier, and matrix algorithms to the trusted surface.  None is needed
+    or used because every required operation is finite and exactly decidable.
+  domain_specific_kernel_assessment: >-
+    A new shell or presymplectic kernel would not materially reduce trust: the
+    claim-specific universal first-order block formula and block insertion are
+    short enough to audit directly.  Building reusable canonical machinery for
+    one 20x20 form would introduce more implementation risk than it removes.
+  existing_implementation_adequacy: >-
+    Python Fraction plus exact_graded's already tested ExteriorAlgebra,
+    levi_civita_sign, and RationalMatrix exactly support the required exterior,
+    epsilon, rank, nullspace, and matvec operations.  O006 adds only
+    claim-specific Lorentz, adjoint, potential-term, and mutation formulas.
+  custom_infrastructure_risk: >-
+    No dependency, environment, compatibility layer, reusable API, or solver is
+    missing.  New infrastructure or Engineer delegation would enlarge the
+    producer and trust surfaces without adding scientific capability.
+  independent_checks:
+    - "Recover Q_03=+1/2 and the six explicit dQ rows from ordered epsilon terms."
+    - "Check antisymmetry and compare the honest matrix entrywise with the separately assembled O005 shortcut of equal rank."
+    - "Verify ten named null certificates independently of the matrix nullspace basis and check their exact independence."
+    - "Contract six alpha_- basis vectors directly and compare with a separately constructed Ad_(g^-1)Q coefficient vector."
+    - "Require four process-local semantic mutations to make the entrypoint fail."
+
+controls:
+  positive:
+    - "P01: planar triad rank three and invariant Lorentz pairing rank six"
+    - "P02: Q_03=+1/2 and the explicit 6x8 dQ matrix has rank five/nullity three"
+    - "P03: direct shell-potential differentiation gives an antisymmetric 20x20 matrix with nonzero xi-delta e block"
+    - "P04: honest shell rank/nullity is 10/10 and ten named exact null vectors are independent"
+    - "P05: the O005 shortcut has rank ten but is entrywise unequal to the honest shell matrix"
+    - "P06: Pi=0 and delta Pi=dQ-dQ=0 derive the fixed-reference zero pullback"
+    - "P07: direct gauge-vector contraction gives +Ad_(g^-1)Q and alpha_-=-T_03 gives +b/2"
+  mutations:
+    - "M01 cross-block-delete: zero the honest xi-delta e and transpose blocks; expected honest entries must reject it"
+    - "M02 moment-sign: use xi=+Ad_g(alpha_-) instead of the declared minus-frame vector; direct contractions must reject it"
+    - "M03 q-factor: replace the ordered Q prefactor 1/4 by 1/8; Q and dQ entries must reject it"
+    - "M04 independent-dlambda: differentiate before eliminating lambda and retain six delta-lambda coordinates; shell dimension/form semantics must reject it"
+
+implementation:
+  # Repository-relative entrypoint executed by scripts/run_check.py.
+  entrypoint: "research/checks/O006/run.py"
+  # Repository-relative reusable machinery this obligation depends on, normally
+  # under research/computation/. Also list material research-environment
+  # manifests, locks, container definitions, and build records under
+  # research/environment/. The runner fingerprints files and directories, so a
+  # change makes the recorded result stale.
+  infrastructure:
+    - "research/computation/exact_graded"
+    - "pyproject.toml"
+    - "scripts/_research.py"
+    - "scripts/run_check.py"
+    - "uv.lock"
+  producer_models: ["openai/gpt-5.6-sol"]
+  infrastructure_producer_models: ["openai/gpt-5.6-sol"]
+
+independence:
+  # not-required | recommended | required
+  requirement: "recommended"
+  rationale: >-
+    O006 should use the existing exact rational substrate but a new claim-specific honest-shell construction. It repairs machine discrimination; independent scientific verification is already supplied by the model-separated C016 hand reconstruction and the implementation is not itself independent.
+
+created_at: "2026-08-21T11:13:45Z"
+updated_at: "2026-08-21T00:00:00Z"

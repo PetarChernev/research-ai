@@ -1,0 +1,170 @@
+{
+  "schema_version": 2,
+  "obligation_id": "O006",
+  "claims": [
+    "C016"
+  ],
+  "derivations": [
+    "D006"
+  ],
+  "outcome": "passed",
+  "exit_code": 0,
+  "started_at": "2026-08-21T20:58:46Z",
+  "completed_at": "2026-08-21T20:58:46Z",
+  "command": "/home/petar/Projects/research-ai/.venv/bin/python3 /home/petar/Projects/research-ai/research/checks/O006/run.py",
+  "runner_command": "uv run --locked python scripts/run_check.py O006",
+  "implementation": "research/checks/O006/run.py",
+  "git_commit": "ba26507511bca36d84ad2cfcfdef624292fb0eac",
+  "dirty_worktree": true,
+  "spec_sha256": "7c959616bac21f6114d43ef029552615d8bc94db9fbd34dff34acdb7942efadc",
+  "implementation_sha256": "3a64d0d7dd876b6f3b9cd2641a683b507db23d5b2bf6409178c41593f030e568",
+  "infrastructure": [
+    {
+      "path": "pyproject.toml",
+      "type": "file",
+      "sha256": "a83358c688c795208a1da1b9ee6b630afb791719baa9f72a2cb53e672417e07e"
+    },
+    {
+      "path": "research/computation/exact_graded",
+      "type": "directory",
+      "sha256": "197024e3f37dff868c931141ce25949e26e2249bd4850d0213ff06e81449268b"
+    },
+    {
+      "path": "scripts/_research.py",
+      "type": "file",
+      "sha256": "d651210158db51853658afd917ff616ae9c90ea95e4c2cfbc37f1427b04f8210"
+    },
+    {
+      "path": "scripts/run_check.py",
+      "type": "file",
+      "sha256": "1187837d94b89bf08ab2b9b7164a6c116930f7cb9c9e3a320f5f7b4117e4cf24"
+    },
+    {
+      "path": "uv.lock",
+      "type": "file",
+      "sha256": "e32bee08b2192dd59a9820a15bdf7cb914daf0a7136e594869e98e4c0ae7bea0"
+    }
+  ],
+  "infrastructure_sha256": "0b4aeb783458e144f6b86641ad631d0cb62dcc12398b414a552434f00d211b97",
+  "environment": {
+    "python": "3.12.12",
+    "python_implementation": "CPython",
+    "python_executable": "/home/petar/Projects/research-ai/.venv/bin/python3",
+    "platform": "Linux-6.17.0-41-generic-x86_64-with-glibc2.42",
+    "machine": "x86_64",
+    "packages": {
+      "PyYAML": "6.0.3"
+    }
+  },
+  "observations": {
+    "assertions": {
+      "failed": 0,
+      "failed_names": [],
+      "passed": 36,
+      "total": 36
+    },
+    "basis": {
+      "lorentz_pairs": [
+        "01",
+        "02",
+        "03",
+        "12",
+        "13",
+        "23"
+      ],
+      "shell_coordinates": [
+        "chi_v_01",
+        "chi_v_02",
+        "chi_v_03",
+        "chi_v_12",
+        "chi_v_13",
+        "chi_v_23",
+        "xi_01",
+        "xi_02",
+        "xi_03",
+        "xi_12",
+        "xi_13",
+        "xi_23",
+        "de1^0",
+        "de1^1",
+        "de1^2",
+        "de1^3",
+        "de2^0",
+        "de2^1",
+        "de2^2",
+        "de2^3"
+      ]
+    },
+    "infrastructure_producer_models": [
+      "openai/gpt-5.6-sol"
+    ],
+    "intentional_mutation": null,
+    "moment_map": {
+      "adjoint_test": "rational 01 boost cosh=5/3 sinh=4/3",
+      "direct_result": "+Ad_(g^-1)Q",
+      "gauge_vector": "chi_v=0, xi=-Ad_g(alpha_-)"
+    },
+    "mutation_controls": {
+      "cross-block-delete": "detected",
+      "independent-dlambda": "detected",
+      "moment-sign": "detected",
+      "q-factor": "detected"
+    },
+    "obligation_id": "O006",
+    "planar": {
+      "Q03_at_b_1": "1/2",
+      "corner_witness": "1/2",
+      "dQ_nullity": 3,
+      "dQ_rank": 5,
+      "dQ_shape": [
+        6,
+        8
+      ]
+    },
+    "producer_model": "openai/gpt-5.6-sol",
+    "representation": {
+      "CAS": false,
+      "assembly": "lambda=-Q and dlambda=-dQ substituted before differentiation",
+      "coefficients": "fractions.Fraction",
+      "equality": "canonical sparse-form and exact entrywise matrix equality",
+      "floats": false,
+      "independent_verification": false,
+      "random_sampling": false
+    },
+    "shell": {
+      "candidate_nullity": 10,
+      "candidate_rank": 10,
+      "candidate_shape": [
+        20,
+        20
+      ],
+      "fixed_reference_rank": 0,
+      "honest_equals_shortcut": false,
+      "honest_rank": 10,
+      "honest_shape": [
+        20,
+        20
+      ],
+      "null_certificates": [
+        "chi_T12",
+        "common_T03",
+        "xi_T12",
+        "common_T01_plus_de1^0",
+        "de1^2",
+        "common_T13_plus_de1^3",
+        "common_T02_plus_de2^0",
+        "de2^1",
+        "de2^2_minus_de1^1",
+        "common_T23_plus_de2^3"
+      ],
+      "shortcut_rank": 10,
+      "xi_deltae_nonzero_entries": 6
+    }
+  },
+  "artifacts": [],
+  "logs": [
+    "research/checks/O006/logs/stdout.log",
+    "research/checks/O006/logs/stderr.log"
+  ],
+  "notes": "Canonical outcome derived from the recorded process exit status."
+}
