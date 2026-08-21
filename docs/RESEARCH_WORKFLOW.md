@@ -42,16 +42,33 @@ No symbolic, formal, numerical, or environment package is prescribed globally. T
 
 ## Run a Bounded Cycle
 
+For broad, ambitious, or weakly mapped questions, explore before converging:
+
+```text
+/research-explore --width 8 optional focus
+```
+
+The director creates genuinely distinct branch charters, preallocates every
+`DNNN` path, launches sibling GPT-5.6 Sol theorists concurrently, waits for the
+first-pass barrier, and then launches fresh GPT internal critics concurrently.
+The critics write under `research/critiques/`, are explicitly same-model, and
+cannot independently verify a claim. The director synthesizes and prunes only
+after both barriers, then sends cheap decisive assertions from surviving
+branches to Scientific Computation. Opus is never invoked by this command.
+
+Use a focused convergence cycle after a shortlist exists:
+
 ```text
 /research-cycle
 ```
 
-The director begins each cycle by reading `research/COMPUTATION.md` alongside the question, state, ledger, and hypotheses. One cycle selects the highest-information unresolved issue, decides whether it needs analytic, literature, experimental, or machine-check work, delegates a small number of specialized tasks, requires evidence artifacts, integrates disagreements, and updates state. It requests at most one independent verification only when a narrow claim is immediately gate-critical; ordinary intermediate claims remain below `verified`. Scientific Computation may provision Engineer for one bounded substrate task; the Director does not invoke Engineer directly and Engineer cannot delegate. The cycle stops rather than automatically launching another cycle.
+The director begins each cycle by reading `research/COMPUTATION.md` alongside the question, state, ledger, and hypotheses. One cycle selects the highest-information unresolved issue, decides whether it needs analytic, literature, experimental, or machine-check work, delegates a small number of specialized tasks, may request a fresh GPT internal critique, integrates disagreements, and updates state. It never invokes Opus. Scientific Computation may provision Engineer for one bounded substrate task; the Director does not invoke Engineer directly and Engineer cannot delegate. The cycle stops rather than automatically launching another cycle.
 
 Typical outputs are:
 
 - `research/literature/notes/<source>.md` for exact source evidence;
 - `research/derivations/DNNN.md` for an analytical argument;
+- `research/critiques/<target>-<date>-openai-NN.md` for same-model internal review;
 - `research/experiments/ENNN/` for a computational experiment;
 - `research/checks/ONNN/` for a claim-linked machine-check obligation;
 - a new or updated `CNNN` ledger entry;
@@ -114,7 +131,9 @@ scientific computation validates substrate and writes claim check
                       |
 deterministic runner executes
                       |
-independent verifier judges sufficiency
+GPT internal critic attacks the result during ordinary convergence
+                      |
+optional late, user-approved Opus verifier audits a final critical claim
 ```
 
 Engineer-owned tests answer whether software satisfies the supplied contract.
@@ -137,6 +156,9 @@ From the shell:
 
 ```bash
 uv run --locked python scripts/new_hypothesis.py --title "Boundary-layer mechanism"
+uv run --locked python scripts/new_derivations.py \
+  --wave "initial-map" \
+  --branches-json '[{"title":"Direct route","charter":"Derive from the stated axioms."}]'
 uv run --locked python scripts/new_experiment.py --title "Finite-size scaling diagnostic" --claim C003
 uv run --locked python scripts/new_check.py \
   --title "Residual identity" --claim C003 \
@@ -158,30 +180,35 @@ anything else, timeout, or a non-executable entrypoint -> error
 
 An implementation may print one `##OBSERVATIONS## {...}` line of structured metrics; the wrapper stores it as data and it cannot choose the outcome.
 
-## Verify Before Acceptance
+## Independently Verify Only Final Critical Claims
 
 ```text
 /verify-claim C003
 ```
 
-The director combines `provider_id` and `model_id` from artifact provenance, including every Scientific Computation and Engineer model that materially produced the evidence, excludes a verifier with exact-model overlap, and prefers a provider absent from the originating set. This normally selects `verifier-anthropic` for OpenAI-originated work or `verifier-openai` for Anthropic-originated work. The selected verifier receives a curated packet: the exact narrow claim, originating model IDs, primary evidence, load-bearing obligation spec/result and implementation path, and concise contract, environment, infrastructure, and fingerprint records needed to judge the claim-to-representation bridge. Broader paths are escalation references rather than an instruction to audit the repository. If provenance is missing or overlaps the selected verifier model, the report cannot qualify as `verified`.
+Direct invocation is explicit approval for one bounded Opus audit. The director first requires a mature, critical, narrowly frozen claim, settled applicable checks, passing required obligations, stable dependencies, a prior GPT internal critique, complete producer provenance, and a recorded load-bearing/error-risk rationale. It then confirms that `anthropic/claude-opus-5` produced none of the claim or primary evidence. If readiness, approval, provenance, or model separation is missing, no independent audit runs.
+
+The sole verifier is `verifier-anthropic` on `anthropic/claude-opus-5`. It receives a curated packet: the exact claim, originating model IDs, primary evidence, internal critiques, load-bearing obligation spec/result and implementation path, and concise contract, environment, infrastructure, and fingerprint records needed to judge the decisive bridge. Broader paths are escalation references rather than an instruction to audit the repository.
 
 The verifier's task is not to observe that checks passed or reproduce the producer's effort. It identifies the single most load-bearing inference, reconstructs that point by a compact alternate hand argument, and attempts at most three falsification attacks. It inspects only enough implementation and infrastructure to judge whether the representation and acceptance criterion faithfully test that inference. It has no Bash or web access, writes no code, does not rerun obligations or the validator, uses no more than twelve investigative tool calls, and writes one report of at most 2,500 words. If this budget cannot support `verified`, it returns a conservative outcome and recommends at most one next action.
 
 Full reproduction or a clean independent implementation is a separate expensive workflow. Launch it only with explicit user approval after a bounded verifier identifies a concrete need; do not make it an implicit condition of every verification report.
 
-Because each agent's model is configured independently, provenance is heterogeneous and this pairing is a default rather than a rule. A producer configured on a verifier's model makes that verifier ineligible for the affected claim, so eligibility is checked per claim from recorded model IDs. If no eligible verifier remains, the claim stays below `verified` until a model is reassigned.
+Core producers and the internal critic are pinned to GPT-5.6 Sol; Opus 5 is reserved for independent verification. Actual provenance remains authoritative. Historical or exceptional Opus production makes Opus ineligible for that claim, which must then remain below `verified`; GPT critique cannot substitute for independence.
 
 A different model, preferably from a different provider, is required but not sufficient. Only a genuinely independent `verified` report using alternate reasoning, code, data, or comparably strong checks can support ledger status `verified`; supportive work sharing assumptions or implementations remains below that threshold.
 
 The normal lifecycle is:
 
 ```text
-hypothesis
-    -> derivation / literature / experiment / machine-check obligation
-    -> claim entry
-    -> recorded checks
-    -> independent verifier
+hypothesis or broad question
+    -> parallel derivation branches
+    -> GPT internal critiques
+    -> synthesis / pruning / machine checks
+    -> supported claim entry
+    -> final critical nomination
+    -> explicit user approval
+    -> Opus independent verifier
     -> verified / inconclusive / contradicted
 ```
 
@@ -195,7 +222,7 @@ Failed verification and failed obligations remain in the repository.
 /research-status
 ```
 
-This reports the question, active hypotheses, claims by status, verification gaps, experiments, machine-check obligations, claims blocked by the computational gate, contradictions, and next actions from files. The equivalent shell commands are:
+This reports the question, exploration portfolio, active hypotheses, internal critiques, claims by status, explicitly nominated final audits, experiments, machine-check obligations, claims blocked by the computational gate, contradictions, and next actions from files. Ordinary `not-requested` independent checks are not reported as verification debt. The equivalent shell commands are:
 
 ```bash
 uv run --locked python scripts/research_status.py
@@ -204,3 +231,9 @@ uv run --locked python scripts/validate_research_state.py
 ```
 
 Use `research/STATE.md` as concise durable memory, not a raw lab notebook. Use `research/COMPUTATION.md` as the evolving record of how this project decides what to check by machine, its representation and trust strategy, computational contracts, environment identity, infrastructure tests, scientific validation, and independent cross-checks; it is not an Engineer backlog. Put consequential changes of scope, conventions, methods, substrate, or interpretation in `research/DECISIONS.md`.
+
+Inside OpenCode, use `read` rather than shell `cat`, `research_safe_search`
+rather than shell `grep` or `rg`, and typed `research_*` helpers for standard
+operations. Generic `uv` and `python` stay approval-gated because command-level
+allowlists cannot prevent an interpreter from writing outside a role's artifact
+directory.

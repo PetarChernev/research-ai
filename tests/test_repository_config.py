@@ -73,6 +73,9 @@ class AgentRenameTests(unittest.TestCase):
         self.assertIn("scientific-computation", permission["task"])
         self.assertNotIn("engineer", permission["task"])
         self.assertNotIn("numerics", permission["task"])
+        self.assertEqual(permission["task"]["internal-critic-openai"], "allow")
+        self.assertEqual(permission["task"]["verifier-anthropic"], "allow")
+        self.assertNotIn("verifier-openai", permission["task"])
         for tool in ("research_new_check", "research_run_check", "research_init_computation_plan"):
             self.assertEqual(permission[tool], "allow")
         self.assertEqual(permission["skill"]["computational-verification"], "allow")
@@ -98,7 +101,13 @@ class ScientificComputationScopeTests(unittest.TestCase):
         )
 
     def test_tool_scope(self) -> None:
-        for tool in ("research_new_experiment", "research_new_check", "research_run_check"):
+        for tool in (
+            "research_new_experiment",
+            "research_new_check",
+            "research_run_check",
+            "research_run_experiment",
+            "research_run_infrastructure_tests",
+        ):
             self.assertEqual(self.permission[tool], "allow")
 
     def test_skill_scope(self) -> None:
@@ -113,28 +122,55 @@ class ScientificComputationScopeTests(unittest.TestCase):
         self.assertNotIn("research/results/verification/**", self.permission["edit"])
 
     def test_verifiers_cannot_run_checks(self) -> None:
-        for name in ("verifier-anthropic.md", "verifier-openai.md"):
+        for name in ("verifier-anthropic.md", "internal-critic-openai.md"):
             permission = frontmatter(AGENTS / name)["permission"]
             self.assertNotIn("research_run_check", permission)
             self.assertNotIn("research_new_check", permission)
 
     def test_verifiers_are_bounded_read_only_auditors(self) -> None:
-        for name in ("verifier-anthropic.md", "verifier-openai.md"):
-            path = AGENTS / name
-            metadata = frontmatter(path)
-            permission = metadata["permission"]
-            self.assertEqual(permission["bash"], "deny")
-            self.assertEqual(permission["webfetch"], "deny")
-            self.assertEqual(permission["websearch"], "deny")
-            self.assertNotIn("reproduce-result", permission["skill"])
-            text = " ".join(path.read_text(encoding="utf-8").split())
-            for marker in (
-                "no more than twelve investigative tool calls",
-                "at most three serious falsification attacks",
-                "Do not write code",
-                "at most 2,500 words",
-            ):
-                self.assertIn(marker, text)
+        path = AGENTS / "verifier-anthropic.md"
+        permission = frontmatter(path)["permission"]
+        self.assertEqual(permission["bash"], "deny")
+        self.assertEqual(permission["webfetch"], "deny")
+        self.assertEqual(permission["websearch"], "deny")
+        self.assertNotIn("reproduce-result", permission["skill"])
+        text = " ".join(path.read_text(encoding="utf-8").split())
+        for marker in (
+            "no more than twelve investigative tool calls",
+            "at most three serious falsification attacks",
+            "Do not write code",
+            "at most 2,500 words",
+            "user approved",
+        ):
+            self.assertIn(marker, text)
+
+    def test_internal_critic_is_non_independent_and_separately_scoped(self) -> None:
+        path = AGENTS / "internal-critic-openai.md"
+        metadata = frontmatter(path)
+        self.assertEqual(metadata["model"], "openai/gpt-5.6-sol")
+        permission = metadata["permission"]
+        self.assertEqual(
+            permission["edit"], {"*": "deny", "research/critiques/**": "allow"}
+        )
+        self.assertNotIn("research/results/verification/**", permission["edit"])
+        text = " ".join(path.read_text(encoding="utf-8").split())
+        self.assertIn("not model-independent", text)
+        self.assertIn("Never use `verified`", text)
+
+    def test_opus_is_reserved_for_the_sole_verifier(self) -> None:
+        opus_agents = []
+        for path in AGENTS.glob("*.md"):
+            if frontmatter(path).get("model") == "anthropic/claude-opus-5":
+                opus_agents.append(path.name)
+        self.assertEqual(opus_agents, ["verifier-anthropic.md"])
+        for name in (
+            "research-director.md",
+            "theorist.md",
+            "literature.md",
+            "scientific-computation.md",
+            "engineer.md",
+        ):
+            self.assertEqual(frontmatter(AGENTS / name)["model"], "openai/gpt-5.6-sol")
 
 
 class EngineerScopeTests(unittest.TestCase):
@@ -172,6 +208,7 @@ class EngineerScopeTests(unittest.TestCase):
         self.assertEqual(
             self.permission["skill"], {"*": "deny", "research-engineering": "allow"}
         )
+        self.assertEqual(self.permission["research_run_infrastructure_tests"], "allow")
 
     def test_engineer_is_not_a_verifier(self) -> None:
         text = " ".join(self.path.read_text(encoding="utf-8").split())
@@ -194,7 +231,7 @@ class DelegationDepthTests(unittest.TestCase):
 
 class ArtifactSurfaceTests(unittest.TestCase):
     def test_commands_exist(self) -> None:
-        for name in ("new-check.md", "run-check.md"):
+        for name in ("new-check.md", "run-check.md", "research-explore.md"):
             path = COMMANDS / name
             self.assertTrue(path.is_file(), f"missing command {name}")
             self.assertEqual(frontmatter(path)["agent"], "research-director")
@@ -218,22 +255,45 @@ class ArtifactSurfaceTests(unittest.TestCase):
 
     def test_tools_export_the_new_helpers(self) -> None:
         text = (PROJECT_ROOT / ".opencode" / "tools" / "research.ts").read_text(encoding="utf-8")
-        for export in ("export const new_check", "export const run_check", "export const init_computation_plan"):
+        for export in (
+            "export const new_check",
+            "export const run_check",
+            "export const init_computation_plan",
+            "export const new_derivations",
+            "export const safe_search",
+            "export const git_inspect",
+            "export const run_tests",
+            "export const run_experiment",
+            "export const run_infrastructure_tests",
+        ):
             self.assertIn(export, text)
         self.assertIn('runHelper("run_check.py"', text)
         self.assertIn('runHelper("new_check.py"', text)
+        for marker in (
+            "isSensitive",
+            "confinedTarget",
+            "SKIPPED_DIRECTORIES",
+            '["status", "diff", "diff-stat", "log", "head"]',
+            '["all", "configuration", "research-state", "checks"]',
+            '"--no-sync"',
+            'tool.schema.enum(["run", "analysis"])',
+        ):
+            self.assertIn(marker, text)
 
     def test_provenance_plugin_records_engineering_handoffs(self) -> None:
         text = (PROJECT_ROOT / ".opencode" / "plugins" / "research-provenance.js").read_text(
             encoding="utf-8"
         )
         for marker in (
-            'input.args?.subagent_type === "engineer"',
+            'delegatedAgent === "engineer"',
             'operation = "engineer-provisioned"',
-            'delegated_agent: engineerTask ? "engineer"',
-            'engineerTask.description.slice(0, 240)',
+            "delegated_agent: delegatedAgent",
+            "delegatedTask.description.slice(0, 240)",
             'operation = "research-environment-write"',
             'operation = "research-infrastructure-write"',
+            'operation = "theory-branch-delegated"',
+            'operation = "internal-critique-delegated"',
+            'operation = "internal-critique-write"',
         ):
             self.assertIn(marker, text)
 
@@ -254,6 +314,15 @@ class ArtifactSurfaceTests(unittest.TestCase):
             "## Falsification attempts",
         ):
             self.assertIn(section, text)
+        self.assertIn("user_approved: true", text)
+
+    def test_internal_critique_template_is_explicitly_non_independent(self) -> None:
+        text = (PROJECT_ROOT / "templates" / "internal-critique.md").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("review_kind: internal-critique", text)
+        self.assertIn("independent: false", text)
+        self.assertNotIn("failed verification", text)
 
     def test_agents_document_the_directory_boundary(self) -> None:
         text = (PROJECT_ROOT / "AGENTS.md").read_text(encoding="utf-8")
@@ -269,8 +338,28 @@ class ArtifactSurfaceTests(unittest.TestCase):
         text = (PROJECT_ROOT / "docs" / "AGENT_ARCHITECTURE.md").read_text(encoding="utf-8")
         self.assertIn("|-- Scientific Computation", text)
         self.assertIn("|   `-- Engineer", text)
-        self.assertIn("five conceptual scientific roles", text.lower())
-        self.assertIn("Engineer is bounded implementation support", text)
+        self.assertIn("bounded breadth", text.lower())
+        self.assertIn("provisioned implementation subagent", text)
+
+    def test_shell_permissions_do_not_broadly_allow_interpreters_or_read_commands(self) -> None:
+        forbidden = ("uv *", "python *", "python3 *", "cat *", "grep *", "rg *")
+        for path in AGENTS.glob("*.md"):
+            permission = frontmatter(path)["permission"]
+            self.assertEqual(permission.get("grep"), "deny")
+            self.assertEqual(permission.get("research_safe_search"), "allow")
+            bash = permission.get("bash")
+            if not isinstance(bash, dict):
+                continue
+            for pattern in forbidden:
+                self.assertNotEqual(
+                    bash.get(pattern), "allow", f"{path.name} broadly allows {pattern}"
+                )
+
+    def test_exploration_never_routes_to_opus(self) -> None:
+        explore = (COMMANDS / "research-explore.md").read_text(encoding="utf-8")
+        cycle = (COMMANDS / "research-cycle.md").read_text(encoding="utf-8")
+        self.assertIn("Do not route any task to Opus", explore)
+        self.assertIn("Never invoke Opus", cycle)
 
     def test_scientific_computation_retains_claim_check_ownership(self) -> None:
         text = " ".join(

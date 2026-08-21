@@ -1,5 +1,5 @@
 ---
-description: Independently attack a CNNN claim, save a verification report, and update its ledger status only as supported by the report.
+description: With explicit user approval, route one mature critical CNNN claim to the sole Opus 5 independent verifier.
 agent: research-director
 ---
 
@@ -9,31 +9,22 @@ Verify the claim ID supplied here:
 $ARGUMENTS
 </claim-id>
 
-Require exactly one existing `CNNN` ID. Then:
+Require exactly one existing `CNNN` ID. Direct invocation of this command is
+explicit user approval for one bounded Opus audit. It is not approval for full
+reproduction or an independent implementation. Then:
 
-1. Read the exact ledger entry and inventory its linked evidence, dependencies, conflicts, and prior reports. Identify the single load-bearing inference whose failure would change the claim. Read the primary artifacts for that inference; do not recursively read every dependency unless a concrete inconsistency requires it.
-2. Determine every known model that materially produced the claim or its primary evidence by combining `provider_id` and `model_id` from relevant entries in `research/provenance.jsonl`. Include Scientific Computation and every Engineer that materially produced the research environment, dependency lock, reusable kernel, or infrastructure tests. Do not count a ledger-only integration edit as substantive authorship, and do not treat deterministic execution as removing implementation authorship.
-3. Exclude a verifier when its exact configured model appears among the originating models. Of the remaining candidates, prefer a provider absent from the originating set: normally `verifier-anthropic` for OpenAI work or `verifier-openai` for Anthropic work. For mixed or other-provider work, choose the least-overlapping candidate. If provenance is unknown or both verifier models contributed, use the least-overlapping verifier but require that limitation in the report and do not treat the attempt as model-independent.
-4. Decide the verification tier before delegation:
-   - **bounded audit**, the default: one decisive alternate reconstruction plus at most three attacks;
-   - **full reproduction**, exceptional and launched only when the user explicitly approved its additional cost.
+1. Read the exact ledger entry, relevant `research/STATE.md` nomination, linked evidence, dependencies, conflicts, internal critiques, and prior verification reports. Identify the single load-bearing inference whose failure would change the conclusion. Do not recursively read every dependency without a concrete reason.
+2. Apply the readiness gate. The claim must be narrow, mature, and `importance: critical`, or have an explicit user-approved exception recorded in `research/DECISIONS.md`. Applicable dimensional, limiting-case, and computational checks must be `passed` or justified `not-applicable`; every active required obligation must pass; material dependencies must be settled; and at least one fresh GPT internal critique must have attacked the primary result. If the gate fails, do not invoke Opus. Report the missing item and recommend convergence work instead.
+3. Determine every model that materially produced the claim or primary evidence by combining artifact metadata with relevant `provider_id` and `model_id` records from `research/provenance.jsonl`. Include Scientific Computation and every Engineer that produced an environment, lock, reusable kernel, or infrastructure test used by the claim. Deterministic execution does not erase implementation authorship.
+4. Confirm that `anthropic/claude-opus-5` is absent from all originating models and that provenance is complete enough for a model-separated judgment. If Opus contributed materially or provenance is unknown, stop and keep the claim below `verified`.
+5. Use `update-claim-ledger` to set `checks.independent_verification: pending` only now that the user has approved a ready claim. Record the load-bearing and error-risk rationale in `research/DECISIONS.md`.
+6. Assemble a minimal packet as paths: the frozen claim and assumptions; one primary derivation or evidence artifact; relevant internal critiques; the load-bearing `ONNN` spec, result, and claim-specific entrypoint when applicable; directly relevant failed or superseded obligations; and concise representation, contract, environment, infrastructure, fingerprint, and provenance records. Give broader paths only as escalation references.
+7. Delegate only to `verifier-anthropic`. State explicitly that the user approved the audit. Supply the full originating model IDs, exact decisive inference, source paths, and a unique destination under `research/results/verification/`. Do not give an approving summary.
+8. Impose the bounded audit: no code, scratch implementation, obligation reruns, repository validation, or web research; no more than twelve investigative tool calls; one compact alternate reconstruction; at most three serious falsification attacks; one report of at most 2,500 words; then stop. Allowed outcomes are `verified`, `supported but not independently verified`, `inconclusive`, `failed verification`, or `contradicted`.
+9. Inspect the report and update the ledger conservatively. Set `checks.independent_verification: passed` and ledger status `verified` only for a substantive Opus report with outcome `verified`, complete originating models, genuine alternate reasoning or a comparably strong attack, and no unresolved failed report. Set failed or inconclusive check state from the actual outcome otherwise.
+10. Preserve every negative report and failing obligation. A recommendation for another obligation, full reproduction, or independent implementation is unsatisfied future work; the latter two require separate explicit approval.
+11. Update `research/STATE.md`, `research/COMPUTATION.md` when strategy changed, and `research/DECISIONS.md`. Run `research_validate_state` and fix structural errors.
 
-   If the claim is too broad for the bounded audit, split it or accept a conservative outcome. Do not silently turn `/verify-claim` into full reproduction.
-5. Assemble a minimal computational packet as paths, not an exhaustive reading assignment:
-   - the relevant section of `research/COMPUTATION.md`;
-   - the load-bearing `ONNN` spec, result, and claim-specific entrypoint;
-   - any failed or superseded obligation that directly changes interpretation;
-   - concise computational-contract, representation, environment, provenance, and infrastructure-fingerprint records;
-   - only the reusable primitive source or tests needed to examine a specific representation risk;
-   - the primary experiment artifact when the claim is empirical.
-
-   Give broader environment, infrastructure, and dependency paths as escalation references. Do not require exhaustive inspection of whole directories or unrelated obligations. State explicitly when the claim has no applicable machine-checkable component and where the computational plan records that judgment.
-6. Give the verifier the frozen claim text, assumptions, regime, primary artifact paths, full originating `provider/model` IDs, the single load-bearing inference, and a request for one uniquely named report under `research/results/verification/`. Do not give an approving summary.
-7. Impose a hard task budget: no code or scratch implementation; no obligation reruns, repository validation, or web research; no more than twelve investigative tool calls; one compact alternate reconstruction; at most three serious falsification attacks; one report of at most 2,500 words; then stop. The verifier must use only: `verified`, `supported but not independently verified`, `inconclusive`, `failed verification`, or `contradicted`. If the packet or budget is insufficient, it must choose a conservative outcome and recommend at most one next action rather than expanding scope.
-8. Inspect the completed report. Use `update-claim-ledger` to link it and record the actual check outcomes. Set ledger status `verified` only for a different-model, genuinely independent `verified` report; different-model review alone is insufficient, a green computational gate is insufficient, and shared code or assumptions must remain visible. A claim with no applicable machine checks may still be verified with `checks.computational_verification: not-applicable`.
-9. If the verifier recommends a further obligation, create it with `/new-check` rather than treating the recommendation as satisfied. If it recommends full reproduction or independent implementation, obtain explicit user approval before launching the additional work. If it raises an infrastructure concern, route it to Scientific Computation for scientific triage; Scientific Computation provisions Engineer if warranted. The verifier never provisions Engineer directly.
-10. For failure or contradiction, preserve the report, the failing obligations, and their results; update conflicts/status as warranted, and add follow-up tasks. Do not delete the originating evidence.
-11. Update `research/STATE.md`, `research/COMPUTATION.md` if the review changed the declared strategy, and any consequential `research/DECISIONS.md` entry.
-12. Run `research_validate_state` and fix structural errors.
-
-Report the verification outcome, independence limitations including computational dependence, failed attacks, untested failure modes, ledger transition, report path, and required follow-up.
+Report the Opus outcome, independence limitations including computational
+dependence, failed attacks, untested failure modes, ledger transition, report
+path, and required follow-up.

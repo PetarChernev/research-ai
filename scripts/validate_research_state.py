@@ -39,6 +39,7 @@ CLAIM_STATUSES = {
 }
 IMPORTANCE_LEVELS = {"low", "medium", "high", "critical"}
 CHECK_STATUSES = {"pending", "passed", "failed", "inconclusive", "not-applicable"}
+INDEPENDENT_CHECK_STATUSES = CHECK_STATUSES | {"not-requested"}
 HYPOTHESIS_STATUSES = {
     "proposed",
     "active",
@@ -88,10 +89,19 @@ VERIFICATION_OUTCOMES = {
     "failed verification",
     "contradicted",
 }
+INDEPENDENT_VERIFIER = "verifier-anthropic"
+INDEPENDENT_VERIFIER_MODEL = "anthropic/claude-opus-5"
+CRITIQUE_OUTCOMES = {
+    "no-blocking-issue-found",
+    "revision-required",
+    "blocking-issue-found",
+    "inconclusive",
+}
 EXPLICIT_CHECK_OUTCOMES = {"passed", "failed", "inconclusive", "not-applicable"}
 VERIFICATION_SECTIONS = [
     "Claim tested",
     "Independence statement",
+    "Scope and decisive bridge",
     "Reconstruction",
     "Falsification attempts",
     "Checks",
@@ -103,9 +113,20 @@ VERIFICATION_SECTIONS = [
     "Outcome",
     "Required follow-up",
 ]
+CRITIQUE_SECTIONS = [
+    "Scope and independence",
+    "Frozen target",
+    "Load-bearing inference",
+    "Reconstruction",
+    "Falsification attempts",
+    "Findings",
+    "Machine-check candidates",
+    "Outcome",
+]
 REPORT_PLACEHOLDER_PREFIXES = (
     "quote the exact",
     "state which",
+    "name the single",
     "re-derive or reproduce",
     "record attempted",
     "list failures",
@@ -360,6 +381,9 @@ def validate_markdown_artifacts(
         require_sections(body, hypothesis_sections, location, report)
 
     derivation_sections = [
+        "Question addressed",
+        "Branch charter",
+        "Distinction from sibling branches",
         "Target claim",
         "Assumptions",
         "Notation",
@@ -383,7 +407,16 @@ def validate_markdown_artifacts(
             continue
         require_fields(
             metadata,
-            {"id", "title", "status", "target_claims", "created_at", "updated_at"},
+            {
+                "id",
+                "title",
+                "status",
+                "target_claims",
+                "exploration_wave",
+                "producer_model",
+                "created_at",
+                "updated_at",
+            },
             location,
             report,
         )
@@ -391,6 +424,11 @@ def validate_markdown_artifacts(
             report.error(location, f"frontmatter id must be '{artifact_id}'")
         if not valid_choice(metadata.get("status"), DERIVATION_STATUSES):
             report.error(location, f"invalid derivation status '{metadata.get('status')}'")
+        wave = metadata.get("exploration_wave")
+        if wave is not None and (not isinstance(wave, str) or not wave.strip()):
+            report.error(location, "exploration_wave must be null or a nonempty string")
+        if not valid_model_id(metadata.get("producer_model")):
+            report.error(location, "producer_model must be a full provider/model ID")
         for timestamp in ("created_at", "updated_at"):
             if not valid_timestamp(metadata.get(timestamp)):
                 report.error(location, f"{timestamp} must be a timezone-aware ISO-8601 timestamp")
@@ -703,6 +741,11 @@ def validate_obligations(
                     relative(root, entry), "unexpected file in research/checks/; obligations are directories"
                 )
             continue
+        children = list(entry.iterdir()) if entry.is_dir() else []
+        if children and all(child.name == "__pycache__" for child in children):
+            # Ignore interpreter cache shells left by prior local runs; they are
+            # not allocated obligations and are excluded from version control.
+            continue
         if not OBLIGATION_ID.fullmatch(entry.name):
             report.error(
                 relative(root, entry),
@@ -872,9 +915,15 @@ def validate_ledger(
             "independent_verification",
         }
         require_fields(checks, check_fields, entry_location + ":checks", report)
-        for name in check_fields:
+        for name in check_fields - {"independent_verification"}:
             if not valid_choice(checks.get(name), CHECK_STATUSES):
                 report.error(entry_location, f"invalid checks.{name} value '{checks.get(name)}'")
+        if not valid_choice(checks.get("independent_verification"), INDEPENDENT_CHECK_STATUSES):
+            report.error(
+                entry_location,
+                "invalid checks.independent_verification value "
+                f"'{checks.get('independent_verification')}'",
+            )
 
         for hypothesis_id in entry.get("hypotheses", []) if isinstance(entry.get("hypotheses"), list) else []:
             validate_id_reference(
@@ -1012,12 +1061,22 @@ def validate_ledger(
                 verification_outcomes.append(outcome)
                 if (
                     outcome == "verified"
+                    and report_metadata.get("verifier") == INDEPENDENT_VERIFIER
+                    and report_metadata.get("verifier_model") == INDEPENDENT_VERIFIER_MODEL
+                    and report_metadata.get("user_approved") is True
                     and isinstance(report_metadata.get("source_artifacts"), list)
                     and bool(report_metadata["source_artifacts"])
                     and verification_has_model_separation(report_metadata)
                     and verification_report_is_substantive(report_body)
                 ):
                     qualifying_verified_reports += 1
+
+        if checks.get("independent_verification") == "passed" and not qualifying_verified_reports:
+            report.error(
+                entry_location,
+                "checks.independent_verification: passed requires a substantive linked "
+                "Opus verification report with outcome verified",
+            )
 
         status = entry.get("status")
         if status == "derived" and not qualifying_derivations:
@@ -1379,6 +1438,89 @@ def validate_literature_notes(root: Path, report: Report) -> None:
         require_sections(body, LITERATURE_SECTIONS, location, report)
 
 
+def validate_internal_critiques(root: Path, report: Report) -> int:
+    directory = root / "research" / "critiques"
+    if not directory.exists():
+        return 0
+    count = 0
+    filename = re.compile(r"(?:C|D|H)\d{3}-\d{4}-\d{2}-\d{2}-openai-\d{2}\.md")
+    for path in directory.rglob("*.md"):
+        if path.name == "README.md":
+            continue
+        count += 1
+        location = relative(root, path)
+        try:
+            path.resolve().relative_to(directory.resolve())
+        except ValueError:
+            report.error(location, "internal critique resolves outside its designated directory")
+            continue
+        if not filename.fullmatch(path.name):
+            report.error(
+                location,
+                "internal critique filename must be TARGET-YYYY-MM-DD-openai-NN.md",
+            )
+        try:
+            metadata, body = load_frontmatter(path)
+        except (OSError, ValueError, yaml.YAMLError) as exc:
+            report.error(location, str(exc))
+            continue
+        require_fields(
+            metadata,
+            {
+                "review_kind",
+                "target_artifacts",
+                "outcome",
+                "independent",
+                "reviewer",
+                "reviewer_model",
+                "originating_models",
+                "created_at",
+            },
+            location,
+            report,
+        )
+        if metadata.get("review_kind") != "internal-critique":
+            report.error(location, "review_kind must be internal-critique")
+        if metadata.get("independent") is not False:
+            report.error(location, "internal critiques must set independent: false")
+        if metadata.get("reviewer") != "internal-critic-openai":
+            report.error(location, "reviewer must be internal-critic-openai")
+        if metadata.get("reviewer_model") != "openai/gpt-5.6-sol":
+            report.error(location, "reviewer_model must be openai/gpt-5.6-sol")
+        if not valid_choice(metadata.get("outcome"), CRITIQUE_OUTCOMES):
+            report.error(location, f"invalid internal critique outcome '{metadata.get('outcome')}'")
+        if not valid_timestamp(metadata.get("created_at")):
+            report.error(location, "created_at must be a timezone-aware ISO-8601 timestamp")
+        originating = metadata.get("originating_models")
+        if not isinstance(originating, list) or not originating:
+            report.error(location, "originating_models must be a nonempty list")
+        else:
+            for model in originating:
+                if not valid_model_id(model):
+                    report.error(location, f"invalid originating model ID '{model}'")
+        targets = metadata.get("target_artifacts")
+        if not isinstance(targets, list) or not targets:
+            report.error(location, "target_artifacts must be a nonempty list")
+        else:
+            for target in targets:
+                if not isinstance(target, str) or not target.startswith("research/"):
+                    report.error(location, f"invalid target artifact '{target}'")
+                    continue
+                candidate = (root / target).resolve()
+                try:
+                    candidate.relative_to(root.resolve())
+                except ValueError:
+                    report.error(location, f"target artifact escapes repository: '{target}'")
+                else:
+                    if not candidate.is_file():
+                        report.error(location, f"target artifact does not exist: '{target}'")
+        require_sections(body, CRITIQUE_SECTIONS, location, report)
+        outcome_section = markdown_sections(body).get("Outcome", "").lower()
+        if isinstance(metadata.get("outcome"), str) and metadata["outcome"] not in outcome_section:
+            report.error(location, "Outcome section must state the frontmatter outcome")
+    return count
+
+
 def validate_verification_reports(root: Path, report: Report, claims: set[str]) -> None:
     directory = root / "research" / "results" / "verification"
     if not directory.exists():
@@ -1407,6 +1549,7 @@ def validate_verification_reports(root: Path, report: Report, claims: set[str]) 
                 "date",
                 "verifier",
                 "verifier_model",
+                "user_approved",
                 "originating_models",
                 "source_artifacts",
             },
@@ -1423,16 +1566,13 @@ def validate_verification_reports(root: Path, report: Report, claims: set[str]) 
         except ValueError:
             report.error(location, "date must be ISO-8601")
         verifier = metadata.get("verifier")
-        if (
-            not isinstance(verifier, str)
-            or not verifier.strip()
-            or verifier == "independent-verifier"
-            or "{{" in verifier
-        ):
-            report.error(location, "verifier must identify the actual verification agent or method")
+        if verifier != INDEPENDENT_VERIFIER:
+            report.error(location, f"verifier must be {INDEPENDENT_VERIFIER}")
         verifier_model = metadata.get("verifier_model")
-        if not valid_model_id(verifier_model):
-            report.error(location, "verifier_model must be a full provider/model ID")
+        if verifier_model != INDEPENDENT_VERIFIER_MODEL:
+            report.error(location, f"verifier_model must be {INDEPENDENT_VERIFIER_MODEL}")
+        if metadata.get("user_approved") is not True:
+            report.error(location, "independent verification reports require user_approved: true")
         originating_models = metadata.get("originating_models")
         if not isinstance(originating_models, list) or not originating_models:
             report.error(location, "originating_models must be a nonempty list")
@@ -1495,11 +1635,13 @@ def validate_supporting_state(root: Path, report: Report) -> None:
         "research/STATE.md": [
             "Current question",
             "Current working picture",
+            "Active exploration portfolio",
             "Active hypotheses",
             "Highest-value claims",
             "Strongest evidence",
             "Known contradictions",
-            "Open verification tasks",
+            "Internal critique queue",
+            "Final independent-verification nominations",
             "Running/next experiments",
             "Literature gaps",
             "Next recommended actions",
@@ -1664,6 +1806,7 @@ def main() -> int:
     validate_markdown_artifacts(root, report, claim_ids, hypotheses, derivations)
     validate_experiments(root, report, claim_ids, experiments)
     validate_literature_notes(root, report)
+    critique_count = validate_internal_critiques(root, report)
     validate_verification_reports(root, report, claim_ids)
     validate_supporting_state(root, report)
 
@@ -1677,6 +1820,7 @@ def main() -> int:
             "derivations": len(derivations),
             "experiments": len(experiments),
             "obligations": len(obligations),
+            "critiques": critique_count,
             "active_obligations": sum(1 for item in obligations.values() if item.is_active),
         },
     }

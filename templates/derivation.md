@@ -4,11 +4,27 @@ title: >-
   {{TITLE}}
 status: draft
 target_claims: {{TARGET_CLAIMS_JSON}}
+exploration_wave: {{EXPLORATION_WAVE_JSON}}
+producer_model: {{PRODUCER_MODEL_JSON}}
 created_at: "{{DATE}}"
 updated_at: "{{DATE}}"
 ---
 
 # {{DERIVATION_ID}}: {{TITLE}}
+
+## Question addressed
+
+{{QUESTION}}
+
+## Branch charter
+
+{{BRANCH_CHARTER}}
+
+## Distinction from sibling branches
+
+State which assumptions, formalism, regime, or attack strategy make this branch
+non-duplicative. Distinct GPT sessions are parallel work, not independent
+evidence.
 
 ## Target claim
 

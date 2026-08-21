@@ -10,6 +10,10 @@ Not set.
 
 No research synthesis exists yet.
 
+## Active exploration portfolio
+
+None.
+
 ## Active hypotheses
 
 None.
@@ -26,9 +30,13 @@ None.
 
 None.
 
-## Open verification tasks
+## Internal critique queue
 
 None.
+
+## Final independent-verification nominations
+
+None nominated.
 
 ## Running/next experiments
 

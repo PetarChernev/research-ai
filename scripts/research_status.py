@@ -183,6 +183,44 @@ def next_actions(root: Path) -> list[str]:
     return actions
 
 
+def state_items(root: Path, section_name: str) -> list[str]:
+    state = root / "research" / "STATE.md"
+    if not state.exists():
+        return []
+    section = markdown_sections(state.read_text(encoding="utf-8")).get(section_name, "")
+    items = []
+    for line in section.splitlines():
+        cleaned = re.sub(r"^(?:[-*]|\d+\.)\s+", "", line.strip())
+        if cleaned and cleaned.lower() not in {
+            "none.",
+            "none recorded.",
+            "none nominated.",
+            "not set.",
+        }:
+            items.append(cleaned)
+    return items
+
+
+def load_internal_critiques(root: Path) -> list[dict[str, Any]]:
+    directory = root / "research" / "critiques"
+    critiques = []
+    if not directory.exists():
+        return critiques
+    for path in sorted(directory.glob("*.md")):
+        if path.name == "README.md":
+            continue
+        metadata, _ = load_frontmatter(path)
+        critiques.append(
+            {
+                "path": path.relative_to(root).as_posix(),
+                "targets": metadata.get("target_artifacts", []),
+                "outcome": metadata.get("outcome", "unknown"),
+                "independent": metadata.get("independent"),
+            }
+        )
+    return critiques
+
+
 def build_status(root: Path) -> dict[str, Any]:
     claims = load_claims(root)
     hypotheses = scan_markdown_metadata(root / "research" / "hypotheses", r"H\d{3}\.md")
@@ -207,7 +245,7 @@ def build_status(root: Path) -> dict[str, Any]:
         for claim in claims
         if claim.get("importance") in {"high", "critical"}
     ]
-    unresolved_verification = [
+    approved_independent_verification_claims = [
         claim.get("id")
         for claim in claims
         if isinstance(claim.get("checks"), dict)
@@ -248,10 +286,16 @@ def build_status(root: Path) -> dict[str, Any]:
     ]
     return {
         "question": current_question(root) or "Not set. Run /research-start <question>.",
+        "active_exploration_portfolio": state_items(root, "Active exploration portfolio"),
         "active_hypotheses": active_hypotheses,
         "claims_by_status": dict(sorted(Counter(status_names).items())),
         "important_claims": important_claims,
-        "unresolved_verification": unresolved_verification,
+        "internal_critiques": load_internal_critiques(root),
+        "internal_critique_queue": state_items(root, "Internal critique queue"),
+        "final_independent_verification_nominations": state_items(
+            root, "Final independent-verification nominations"
+        ),
+        "approved_independent_verification_claims": approved_independent_verification_claims,
         "active_experiments": active_experiments,
         "computational_verification": computational_status(root, claims),
         "major_contradictions": contradictions,
@@ -292,7 +336,16 @@ def main() -> int:
         f"{claim['id']} [{claim['status']}]: {claim['claim']}"
         for claim in status["important_claims"]
     ) or "none"
-    verification = ", ".join(status["unresolved_verification"]) or "none"
+    nominations = "; ".join(status["final_independent_verification_nominations"]) or "none"
+    approved_verification = (
+        ", ".join(status["approved_independent_verification_claims"]) or "none"
+    )
+    exploration = "; ".join(status["active_exploration_portfolio"]) or "none"
+    critique_outcomes = Counter(item["outcome"] for item in status["internal_critiques"])
+    critiques = ", ".join(
+        f"{name}={count}" for name, count in sorted(critique_outcomes.items())
+    ) or "none"
+    critique_queue = "; ".join(status["internal_critique_queue"]) or "none"
     contradictions = "; ".join(
         f"{item['id']} [{item['status']}] conflicts={','.join(item['conflicts']) or 'unspecified'}"
         for item in status["major_contradictions"]
@@ -315,10 +368,14 @@ def main() -> int:
         for item in computation["computational_verification_gaps"]
     ) or "none"
     print(f"Question: {status['question']}")
+    print(f"Active exploration portfolio: {exploration}")
     print(f"Active hypotheses: {format_artifacts(status['active_hypotheses'])}")
     print(f"Claims by status: {claim_counts}")
     print(f"Highest-value claims: {important}")
-    print(f"Unresolved verification: {verification}")
+    print(f"Internal critiques: {critiques}")
+    print(f"Internal critique queue: {critique_queue}")
+    print(f"Final independent-verification nominations: {nominations}")
+    print(f"Approved Opus verification claims: {approved_verification}")
     print(f"Active experiments: {format_artifacts(status['active_experiments'])}")
     print(f"Computation plan: {plan_state}")
     print(

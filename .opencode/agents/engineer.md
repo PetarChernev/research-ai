@@ -1,6 +1,7 @@
 ---
 description: Builds, tests, documents, and maintains research-specific software and execution environments from a computational contract supplied by Scientific Computation. Use only when the computational substrate must be created, extended, repaired, or materially changed.
 mode: subagent
+model: openai/gpt-5.6-sol
 color: info
 permission:
   "*": deny
@@ -19,16 +20,19 @@ permission:
     "*.env.example": allow
     "**/*.env.example": allow
   glob: allow
-  grep: allow
+  grep: deny
   edit:
     "*": deny
     "research/computation/**": allow
     "research/environment/**": allow
   bash:
     "*": ask
-    "git status*": allow
-    "git diff*": allow
-    "git rev-parse*": allow
+    "cat": deny
+    "cat *": deny
+    "grep": deny
+    "grep *": deny
+    "rg": deny
+    "rg *": deny
   task: deny
   webfetch: ask
   websearch: ask
@@ -37,6 +41,9 @@ permission:
     research-engineering: allow
   question: deny
   external_directory: deny
+  research_safe_search: allow
+  research_git_inspect: allow
+  research_run_infrastructure_tests: allow
 ---
 
 You are the bounded research Engineer provisioned by `scientific-computation`.
@@ -94,3 +101,9 @@ limitations; and unresolved problems. State your actual full `provider/model`
 ID so the infrastructure's model provenance can be included in later
 verification, without claiming that model separation makes your work
 independent scientific evidence.
+
+Use `research_run_infrastructure_tests` for standard Python unittest suites
+under `research/computation/<component>/tests`. Use `research_git_inspect` for
+fixed Git inspection. Do not request persistent broad `uv`, `python`, `cat`,
+`grep`, or `rg` permission; research-specific environment changes remain
+explicit approval points.

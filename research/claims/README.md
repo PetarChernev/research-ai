@@ -9,7 +9,7 @@
 - `numerically-supported`: supported by a recorded experiment; not thereby derived.
 - `literature-supported`: directly supported by cited primary-source evidence in the same regime.
 - `reproduced`: an existing computational result was independently reproduced from durable artifacts.
-- `verified`: an independent verifier passed the claim and a verification report is linked.
+- `verified`: the reserved Opus 5 independent verifier passed the mature claim and a verification report is linked.
 - `inconclusive`: available evidence does not decide the claim.
 - `contradicted`: evidence directly conflicts with the claim.
 - `rejected`: no longer treated as viable; the history remains.
@@ -37,14 +37,19 @@ Schema version 2. The following is schema documentation only, not an actual rese
     dimensional_analysis: pending
     limiting_cases: pending
     computational_verification: pending
-    independent_verification: pending
+    independent_verification: not-requested
   dependencies: []         # CNNN IDs
   conflicts: []            # CNNN IDs
   created_at: "<ISO-8601 timestamp>"
   updated_at: "<ISO-8601 timestamp>"
 ```
 
-Check values are `pending`, `passed`, `failed`, `inconclusive`, or `not-applicable`.
+Dimensional, limiting-case, and computational check values are `pending`,
+`passed`, `failed`, `inconclusive`, or `not-applicable`.
+`checks.independent_verification` additionally allows `not-requested`, which is
+the default for exploratory and intermediate claims. `pending` means a mature
+critical claim has been approved and queued for an Opus audit; it is not a
+default debt attached to every claim.
 
 ## Computational checks
 
@@ -62,6 +67,6 @@ passed required obligation       -> that obligation is satisfied
 superseded obligation            -> does not block the current strategy
 ```
 
-A claim cannot reach `verified` while an active `required: true` obligation lacks a passing result. That gate says only that the project's own declared strategy is incomplete; it makes no claim that the chosen obligations are scientifically adequate. A claim with no applicable machine-checkable component may still be verified, with `computational_verification: not-applicable` and the absence explained in `research/COMPUTATION.md`.
+A claim cannot reach `verified` while an active `required: true` obligation lacks a passing result. That gate says only that the project's own declared strategy is incomplete; it makes no claim that the chosen obligations are scientifically adequate. A claim with no applicable machine-checkable component may still be verified, with `computational_verification: not-applicable` and the absence explained in `research/COMPUTATION.md`. Same-model GPT critiques live under `research/critiques/`; they may revise or contradict a claim but never satisfy independent verification.
 
-Run `uv run --locked python scripts/validate_research_state.py` after edits. The validator rejects a `verified` claim without passing dimensional, limiting-case, and computational-verification checks, a passed independent-verification check, and a substantive linked report; linked failed or contradicted reports block promotion.
+Run `uv run --locked python scripts/validate_research_state.py` after edits. The validator rejects `checks.independent_verification: passed` or a `verified` claim without passing applicable gates and a substantive linked report authored by `verifier-anthropic` on `anthropic/claude-opus-5`; linked failed or contradicted reports block promotion.

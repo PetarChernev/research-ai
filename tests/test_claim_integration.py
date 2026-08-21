@@ -19,6 +19,7 @@ outcome: "verified"
 date: "2026-02-01"
 verifier: "verifier-anthropic"
 verifier_model: "anthropic/claude-opus-5"
+user_approved: true
 originating_models: ["openai/gpt-5.6-sol"]
 source_artifacts: ["research/claims/ledger.yaml"]
 ---
@@ -32,6 +33,10 @@ The frozen ledger statement was quoted verbatim at the start of the attempt.
 ## Independence statement
 
 Originating model differs from the verifier model; no code or data was shared.
+
+## Scope and decisive bridge
+
+The audit targets the single definitional bridge that controls the exact claim.
 
 ## Reconstruction
 
@@ -242,6 +247,50 @@ class VerifiedStatusTests(WorkspaceTestCase):
         self.run_check("O001")
         payload = validate(self.root)
         self.assertTrue(payload["valid"], payload["errors"])
+
+    def test_not_requested_is_valid_for_an_ordinary_claim(self) -> None:
+        self.write_ledger(independent="not-requested")
+        payload = validate(self.root)
+        self.assertTrue(payload["valid"], payload["errors"])
+
+    def test_passed_independent_check_always_requires_opus_report(self) -> None:
+        self.write_ledger(independent="passed")
+        payload = validate(self.root)
+        self.assertFalse(payload["valid"])
+        self.assert_error_matching(
+            payload, "checks.independent_verification: passed requires a substantive linked Opus"
+        )
+
+    def test_non_opus_report_cannot_qualify(self) -> None:
+        self._write_report()
+        path = self.root / "research" / "results" / "verification" / "C001-2026-02-01.md"
+        path.write_text(
+            path.read_text(encoding="utf-8")
+            .replace("verifier-anthropic", "internal-critic-openai")
+            .replace("anthropic/claude-opus-5", "openai/gpt-5.6-sol"),
+            encoding="utf-8",
+        )
+        self.write_ledger(
+            verification='["research/results/verification/C001-2026-02-01.md"]',
+            independent="passed",
+        )
+        payload = validate(self.root)
+        self.assertFalse(payload["valid"])
+        self.assert_error_matching(payload, "verifier must be verifier-anthropic")
+
+    def test_independent_report_requires_user_approval(self) -> None:
+        self._write_report()
+        path = self.root / "research" / "results" / "verification" / "C001-2026-02-01.md"
+        path.write_text(
+            path.read_text(encoding="utf-8").replace("user_approved: true", "user_approved: false"),
+            encoding="utf-8",
+        )
+        self.write_ledger(
+            verification='["research/results/verification/C001-2026-02-01.md"]'
+        )
+        payload = validate(self.root)
+        self.assertFalse(payload["valid"])
+        self.assert_error_matching(payload, "require user_approved: true")
 
 
 class LedgerSchemaTests(WorkspaceTestCase):

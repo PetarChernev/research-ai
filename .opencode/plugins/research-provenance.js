@@ -4,6 +4,7 @@ import path from "node:path"
 
 const RESEARCH_COMMANDS = new Set([
   "research-start",
+  "research-explore",
   "research-cycle",
   "new-hypothesis",
   "new-experiment",
@@ -119,7 +120,9 @@ export const ResearchProvenance = async ({ worktree }) => {
         }
 
         let operation = relevantPaths.length ? "research-artifact-write" : null
-        if (relevantPaths.some((item) => item.startsWith("research/environment/"))) {
+        if (relevantPaths.some((item) => item.startsWith("research/critiques/"))) {
+          operation = "internal-critique-write"
+        } else if (relevantPaths.some((item) => item.startsWith("research/environment/"))) {
           operation = "research-environment-write"
         } else if (relevantPaths.some((item) => item.startsWith("research/computation/"))) {
           operation = "research-infrastructure-write"
@@ -141,12 +144,18 @@ export const ResearchProvenance = async ({ worktree }) => {
           operation = "check-command"
           relevantPaths = [`research/checks/${checkMatch[1]}`]
         }
-        const engineerTask =
-          input.tool === "task" && input.args?.subagent_type === "engineer"
-            ? input.args
-            : null
-        if (engineerTask) {
+        const delegatedTask = input.tool === "task" ? input.args : null
+        const delegatedAgent = delegatedTask?.subagent_type
+        if (delegatedAgent === "engineer") {
           operation = "engineer-provisioned"
+        } else if (delegatedAgent === "theorist") {
+          operation = "theory-branch-delegated"
+          const match = delegatedTask.prompt?.match(/research\/derivations\/(D\d{3})\.md/)
+          if (match) relevantPaths = [`research/derivations/${match[1]}.md`]
+        } else if (delegatedAgent === "internal-critic-openai") {
+          operation = "internal-critique-delegated"
+          const match = delegatedTask.prompt?.match(/research\/critiques\/[A-Za-z0-9._/-]+\.md/)
+          if (match) relevantPaths = [match[0]]
         }
         if (!operation) return
 
@@ -160,8 +169,8 @@ export const ResearchProvenance = async ({ worktree }) => {
           .map((item) => item.match(/(?:^|\/)(C\d{3})(?:[-/.]|$)/)?.[1])
           .find(Boolean)
         const delegatedObligationID =
-          typeof engineerTask?.prompt === "string"
-            ? engineerTask.prompt.match(/\b(O\d{3})\b/)?.[1]
+          typeof delegatedTask?.prompt === "string" && delegatedAgent === "engineer"
+            ? delegatedTask.prompt.match(/\b(O\d{3})\b/)?.[1]
             : undefined
         const session = sessions.get(input.sessionID)
         await append({
@@ -170,10 +179,10 @@ export const ResearchProvenance = async ({ worktree }) => {
           model_id: session?.modelID,
           tool: input.tool,
           operation,
-          delegated_agent: engineerTask ? "engineer" : undefined,
+          delegated_agent: delegatedAgent,
           task:
-            typeof engineerTask?.description === "string"
-              ? engineerTask.description.slice(0, 240)
+            typeof delegatedTask?.description === "string"
+              ? delegatedTask.description.slice(0, 240)
               : undefined,
           experiment_id: experimentID,
           obligation_id: obligationID || delegatedObligationID,

@@ -122,9 +122,16 @@ class WorkspaceTestCase(unittest.TestCase):
         )
         # The scaffold on main carries no research artifacts; make that explicit
         # so a stray local artifact cannot influence a test.
-        for pattern in ("checks/O*", "experiments/E*", "derivations/D*", "hypotheses/H*"):
+        for pattern in (
+            "checks/O*",
+            "experiments/E*",
+            "derivations/D*",
+            "hypotheses/H*",
+            "critiques/*.md",
+        ):
             for path in (self.root / "research").glob(pattern):
-                shutil.rmtree(path) if path.is_dir() else path.unlink()
+                if path.name != "README.md":
+                    shutil.rmtree(path) if path.is_dir() else path.unlink()
         (self.root / "research" / "provenance.jsonl").write_text("", encoding="utf-8")
 
     # -- convenience builders -------------------------------------------------
@@ -143,6 +150,15 @@ class WorkspaceTestCase(unittest.TestCase):
         completed = run_script("new_check.py", args, self.root)
         if not expect_success:
             return {"returncode": completed.returncode, "stderr": completed.stderr}
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        return json.loads(completed.stdout)
+
+    def new_derivations(self, branches: list[dict[str, Any]], wave: str = "W-test") -> dict[str, Any]:
+        completed = run_script(
+            "new_derivations.py",
+            ["--wave", wave, "--branches-json", json.dumps(branches), "--json"],
+            self.root,
+        )
         self.assertEqual(completed.returncode, 0, completed.stderr)
         return json.loads(completed.stdout)
 
@@ -177,7 +193,7 @@ class WorkspaceTestCase(unittest.TestCase):
         dimensional: str = "pending",
         limiting: str = "pending",
         computational: str = "pending",
-        independent: str = "pending",
+        independent: str = "not-requested",
     ) -> None:
         (self.root / "research" / "claims" / "ledger.yaml").write_text(
             CLAIM_TEMPLATE.format(

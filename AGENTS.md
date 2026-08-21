@@ -12,6 +12,7 @@ Record important conclusions in files:
 - `research/hypotheses/`: explicit competing hypotheses (`HNNN`)
 - `research/claims/ledger.yaml`: canonical claim registry (`CNNN`)
 - `research/derivations/`: auditable derivations (`DNNN`)
+- `research/critiques/`: same-model GPT internal critiques of frozen artifacts
 - `research/experiments/`: reproducible calculations (`ENNN`)
 - `research/checks/`: claim-linked machine-check obligations (`ONNN`)
 - `research/computation/`: reusable research-specific computational machinery
@@ -32,20 +33,21 @@ Label statements as one of: assumption, conjecture, derived result, numerical ob
 - Repetition of one argument by several agents is not independent confirmation.
 - Agreement between implementations sharing assumptions or code is not independent verification.
 - A separate agent session using the same model is procedural separation, not independence by itself.
-- Route verification to a model that did not materially produce the claim or its primary evidence, preferring a different provider, and record both sides of that model boundary.
+- A GPT-5.6 Sol internal critique is a useful second pass but is not independent verification, even when it runs in a fresh session.
+- Route final independent verification only to the reserved Opus 5 verifier after explicit user approval, and record both sides of that model boundary.
 - Keep material assumptions and unresolved contradictions visible.
 
-Use `verified` only after an independent verifier has reconstructed or attacked the claim by an alternate method or comparably strong independent check and a substantive report is linked from the ledger. Failed verification remains part of the record.
+Use `verified` only after the reserved Opus 5 verifier has reconstructed or attacked a mature critical claim by an alternate method or comparably strong independent check and a substantive report is linked from the ledger. Failed verification remains part of the record.
 
-Verification is a bounded adversarial audit, not a duplicate production stream. Most intermediate claims should remain below `verified`; reserve model-separated review for narrow claims whose verification changes an immediate decision or unlocks a conclusion. The default verifier reconstructs one load-bearing inference, attempts at most three decisive attacks, reviews only the computational paths needed to judge the claim-to-representation bridge, writes no code, and does not rerun obligations. Full reproduction or an independent implementation is a separate exceptional task requiring explicit user approval.
+Internal critique and independent verification are different operations. GPT internal critique is the normal fast second pass during exploration and convergence: it reconstructs one load-bearing inference, attempts a few decisive attacks, and writes under `research/critiques/` without changing independent-verification state. Opus independent verification is a bounded final audit, not a duplicate production stream. Reserve it for narrow, mature, critical claims after readiness checks and explicit user approval. Full reproduction or an independent implementation is a separate exceptional task requiring its own approval.
 
 ## Model Assignment
 
-Each agent's model is configured independently in its file under `.opencode/agents/`, but an unpinned role may use the invoking session model. A single claim may therefore have heterogeneous or shared model provenance. Establish the actual producing model per artifact rather than inferring it from hierarchy. Engineer-authored environments and reusable infrastructure count as material production when they support a claim.
+Each agent's model is configured independently in its file under `.opencode/agents/`. Core scientific producers and the internal critic are pinned to `openai/gpt-5.6-sol`; the independent verifier is pinned to `anthropic/claude-opus-5`. A single claim may still have heterogeneous provenance from mechanical helpers or imported evidence. Establish the actual producing model per artifact rather than inferring it from hierarchy. Engineer-authored environments and reusable infrastructure count as material production when they support a claim.
 
-One constraint is hard: a claim may reach `verified` only through a verifier whose model is absent from every model that materially produced the claim or its primary evidence. A different provider is preferred and recorded, but only the model-level separation is mandatory. Choosing models for cost or capability is otherwise free, including a deliberately small model for mechanical work such as citation metadata.
+One constraint is hard: a claim may reach `verified` only through `verifier-anthropic` on `anthropic/claude-opus-5`, and that exact model must be absent from every model that materially produced the claim or its primary evidence. Model separation is necessary but not sufficient; the report must also contain a substantive alternate reconstruction or comparably strong attack.
 
-Keep at least one verifier model unused by any producer agent, so an eligible verifier always exists. When no eligible verifier remains, leave the claim below `verified` and reassign a model rather than routing the check anyway.
+Keep Opus 5 unused by producer agents. When historical or exceptional Opus production makes it ineligible, leave the affected claim below `verified` rather than substituting same-model GPT review.
 
 ## Physics Checks
 
@@ -75,7 +77,7 @@ The architecture prescribes the process for designing computational evidence, no
 2. Theorists derive mathematics and expose checkable assertions. `scientific-computation` defines machine-check semantics, chooses the representation and trust strategy, and writes claim-specific obligation code.
 3. When the reusable software or research environment needs work, `scientific-computation` supplies a bounded computational contract and provisions `engineer`. Engineer verifies that software satisfies the contract but has no scientific or verification authority.
 4. Deterministic runners produce canonical machine outcomes. `research/checks/ONNN/result.json` is written only by `scripts/run_check.py`; no result file means the obligation has not run.
-5. Independent verifiers judge whether the reasoning, representation, implementation, obligations, assumptions, and outcomes are sufficient for the scientific claim.
+5. GPT internal critics attack the reasoning and claim-to-computation bridge during ordinary work; only a later user-approved Opus verifier judges independent sufficiency for a final claim.
 6. A passing computation does not automatically verify the scientific claim.
 7. Prefer explicit mathematical structure over heuristic symbolic simplification when a compact exact representation or small decidable operation set is practical. General-purpose CAS software remains allowed when justified.
 8. Minimize the trusted computational surface: conclusion-critical calculations should compose a small set of explicit, tested primitives where practical.
@@ -104,8 +106,9 @@ LLMs decide what should be derived, tested, challenged, and implemented.
 Scientific Computation owns computational semantics and claim-specific checks.
 Engineer supplies bounded, contract-driven software and environment support.
 Deterministic computation establishes the outcome of declared obligations.
-Independent verification decides whether those obligations, methods,
-assumptions, and outcomes support the scientific claim.
+GPT internal critique attacks ordinary work without claiming independence.
+User-approved Opus verification decides whether those obligations, methods,
+assumptions, and outcomes independently support a final scientific claim.
 ```
 
 ## Reproducibility
@@ -115,12 +118,20 @@ An important computational result must be reproducible without its originating c
 ## Research Behavior
 
 - Prefer competing hypotheses and tests that discriminate among them.
+- For broad, ambitious, or weakly mapped questions, use bounded breadth-first waves: preallocate distinct derivation paths, launch several sibling theorists concurrently, wait for a first-pass barrier, run fresh GPT internal critiques, then synthesize and prune.
+- Do not count repeated GPT agreement as independent confirmation. Diversity must come from distinct assumptions, formalisms, regimes, constructive routes, or falsification strategies rather than paraphrase.
 - Start with analytic estimates or tiny numerical diagnostics before expensive computation.
 - Reason about what needs checking, then build the smallest useful executable diagnostic, then stronger machinery only when scientifically justified.
 - Bound delegated work and integrate its artifacts. The only nested edge is `scientific-computation -> engineer` for a declared substrate task; Engineer cannot delegate.
-- Give narrow, gate-critical claims and their originating model IDs to a model-separated verifier through a curated primary-artifact packet, not an approving summary or an exhaustive repository assignment.
+- Give only mature, critical, user-approved claims and their originating model IDs to the Opus verifier through a curated primary-artifact packet, not an approving summary or an exhaustive repository assignment.
 - Do not optimize manuscript prose before core claims are adequately supported.
 - An experiment without method, configuration, provenance, and validation is incomplete.
 - Never fabricate citations, results, checks, consensus, or verification.
+
+Use the built-in `read` tool instead of shell `cat`, and use
+`research_safe_search` instead of shell `grep` or `rg`. Use typed `research_*`
+tools for allocation, status, validation, checks, Git inspection, and fixed test
+suites. Generic `uv` or `python` remains approval-gated because an interpreter
+can bypass role-owned edit paths; never request a broad persistent shell allow.
 
 Run `uv run --locked python scripts/validate_research_state.py` after material artifact changes.

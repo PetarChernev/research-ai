@@ -26,7 +26,7 @@ If the question is empty, ask for it and make no scientific artifacts. Otherwise
 
    Do not preselect a symbolic algebra system, proof assistant, interval-arithmetic library, tensor package, PDE solver, or numerical stack without a scientific reason recorded in the plan. Require a representation/trust assessment before bespoke machinery. If infrastructure is justified, Scientific Computation owns its contract and provisions Engineer; the Director does not invoke Engineer directly. The intended progression is `reason about what needs checking -> smallest useful executable diagnostic -> stronger machinery only when scientifically justified`. Sophisticated infrastructure is not expected at initialization.
 7. Rank the first tasks by information gain and cost. Prefer analytic limits and tiny diagnostics before full calculations or heavy machinery.
-8. Update every section of concise `research/STATE.md`, including literature gaps and independent-verification needs. Do not pretend this invocation finishes the research.
+8. Update every section of concise `research/STATE.md`, including the active exploration portfolio, internal-critique queue, literature gaps, and any eventual final-audit candidate. Keep ordinary claims at `checks.independent_verification: not-requested`. Do not invoke Opus or pretend this initialization finishes the research. For a broad or ambitious question, make `/research-explore` the recommended next action.
 9. Run `research_validate_state`. Fix structural failures and report scientific unknowns separately.
 
 Finish with artifact paths created or changed, delegated work and its limits, the competing hypotheses, the initial computational strategy in one or two sentences, and the single best next discriminating action.

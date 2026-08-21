@@ -74,7 +74,9 @@ superseded obligation            -> does not block the current strategy
 A claim cannot reach ledger status `verified` while an active required
 obligation lacks a passing result. This is a structural statement about the
 project's own declared strategy, not a judgment that the obligations are
-scientifically sufficient. Sufficiency is the independent verifier's call.
+scientifically sufficient. The director uses internal critique to judge immediate
+decision value; only a later user-approved Opus audit judges independent
+sufficiency for a final claim.
 
 If research later concludes that an obligation was misguided, mark it
 `superseded` and record why. Do not delete failed history to clear the gate.

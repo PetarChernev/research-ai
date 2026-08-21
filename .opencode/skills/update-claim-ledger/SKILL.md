@@ -26,7 +26,7 @@ Use only the controlled vocabulary. Match evidence category to status:
 - exact primary-source note for `literature-supported`;
 - independent reproduction, as an experiment or a passing obligation, plus
   `checks.computational_verification: passed`, for `reproduced`;
-- passed independent report for `verified`.
+- passed user-approved Opus independent report for `verified`.
 
 Multiple weak or dependent items do not combine automatically into verification.
 
@@ -56,7 +56,7 @@ A passing gate means the declared strategy is complete, not that it was scientif
 
 ## 6. Apply verification guardrails
 
-Set `verified` only when `checks.independent_verification` is `passed`, `checks.dimensional_analysis`, `checks.limiting_cases`, and `checks.computational_verification` are each `passed` or `not-applicable`, every active required obligation targeting the claim has a passing result, and `evidence.verification` links a report documenting known verifier and originating model IDs, no exact-model overlap, genuine methodological independence, and serious falsification attempts. Different-model review is necessary but not sufficient, and neither is a green computational gate. A report with unknown model provenance or materially shared code or implementations must not be promoted silently.
+Use `checks.independent_verification: not-requested` for ordinary exploratory and intermediate claims. Set it to `pending` only after a mature critical claim passes readiness checks and the user explicitly approves an Opus audit. Set `verified` only when `checks.independent_verification` is `passed`, `checks.dimensional_analysis`, `checks.limiting_cases`, and `checks.computational_verification` are each `passed` or `not-applicable`, every active required obligation targeting the claim has a passing result, and `evidence.verification` links a substantive `verifier-anthropic` report from `anthropic/claude-opus-5` documenting known originating models, no exact-model overlap, genuine methodological independence, and serious falsification attempts. Same-model GPT critique and a green computational gate are insufficient.
 
 ## 7. Preserve material history
 
