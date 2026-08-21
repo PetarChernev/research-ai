@@ -65,10 +65,21 @@ Distinguish a false claim from a narrower validity regime, ambiguous wording, in
 
 Record each serious attempted attack, including the exact artifact or relation inspected. Do not repair the originating derivation or code in place; that destroys independence and provenance.
 
-## 5. Assign an outcome
+## 5. Assign a role-appropriate outcome
 
-Use only: `verified`, `supported but not independently verified`, `inconclusive`, `failed verification`, or `contradicted`. Passing one check is not verification. Record the verifier and originating `provider/model` IDs. This workspace requires a known verifier model different from every originating model before `verified` is available, preferably across providers. Model separation alone is not sufficient; shared assumptions, code, and data reduce independence and must be disclosed.
+For `internal-critic-openai`, use only `no-blocking-issue-found`,
+`revision-required`, `blocking-issue-found`, or `inconclusive`. State that the
+review is same-model and not independent. For `verifier-anthropic`, use only
+`verified`, `supported but not independently verified`, `inconclusive`, `failed
+verification`, or `contradicted`. A theorist using this skill for self-attack
+records findings in the derivation and assigns no review outcome. Passing one
+machine check is never scientific verification.
 
-## 6. Write the report
+## 6. Write only the artifact owned by the role
 
-Create one concise report from `templates/verification-report.md` under `research/results/verification/`. Link source artifacts, fill `verifier_model` and `originating_models`, document the independence boundary, and list at most one highest-value follow-up. The director, not the verifier, updates the claim ledger and `STATE.md`.
+The internal critic creates one report from `templates/internal-critique.md`
+under `research/critiques/`. Only the user-approved Opus verifier creates a
+report from `templates/verification-report.md` under
+`research/results/verification/`. A producing theorist edits only its assigned
+derivation. Record actual `provider/model` IDs and shared resources. The
+director, not a reviewer, updates the claim ledger and `STATE.md`.

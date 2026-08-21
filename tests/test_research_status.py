@@ -82,8 +82,54 @@ class ComputationalStatusTests(WorkspaceTestCase):
             "Failed/inconclusive/error obligations:",
             "Claims blocked by pending required checks:",
             "Computational verification gaps:",
+            "Active exploration portfolio:",
+            "Internal critiques:",
+            "Final independent-verification nominations:",
+            "Approved Opus verification claims:",
         ):
             self.assertIn(line, completed.stdout)
+
+    def test_not_requested_is_not_reported_as_verification_debt(self) -> None:
+        self.write_ledger(independent="not-requested")
+        payload = status(self.root)
+        self.assertEqual(payload["approved_independent_verification_claims"], [])
+
+    def test_only_explicit_pending_claim_is_a_final_nomination(self) -> None:
+        self.write_ledger(independent="pending")
+        payload = status(self.root)
+        self.assertEqual(payload["approved_independent_verification_claims"], ["C001"])
+
+    def test_inconclusive_historical_attempt_is_not_an_approved_queue_item(self) -> None:
+        self.write_ledger(independent="inconclusive")
+        payload = status(self.root)
+        self.assertEqual(payload["approved_independent_verification_claims"], [])
+
+    def test_unapproved_final_candidate_comes_from_state(self) -> None:
+        path = self.root / "research" / "STATE.md"
+        path.write_text(
+            path.read_text(encoding="utf-8").replace(
+                "## Final independent-verification nominations\n\nNone nominated.",
+                "## Final independent-verification nominations\n\n- C007: candidate after convergence",
+            ),
+            encoding="utf-8",
+        )
+        payload = status(self.root)
+        self.assertEqual(
+            payload["final_independent_verification_nominations"],
+            ["C007: candidate after convergence"],
+        )
+
+    def test_active_exploration_portfolio_comes_from_state(self) -> None:
+        path = self.root / "research" / "STATE.md"
+        path.write_text(
+            path.read_text(encoding="utf-8").replace(
+                "## Active exploration portfolio\n\nNone.",
+                "## Active exploration portfolio\n\n- W-test: D001 and D002",
+            ),
+            encoding="utf-8",
+        )
+        payload = status(self.root)
+        self.assertEqual(payload["active_exploration_portfolio"], ["W-test: D001 and D002"])
 
 
 if __name__ == "__main__":

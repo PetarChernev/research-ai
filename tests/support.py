@@ -73,6 +73,80 @@ claims:
     updated_at: "2026-01-01T00:00:00Z"
 """
 
+EMPTY_QUESTION = """# Research Question
+
+Status: not-started
+
+## Question
+
+Not set. Run `/research-start <physics question>`.
+
+## Scope
+
+Record the included physical system and explicit exclusions.
+
+## Conventions
+
+Record units, signs, gauges, coordinates, and notation.
+
+## Success criteria
+
+Define what evidence would answer the question.
+"""
+
+EMPTY_STATE = """# Research State
+
+Last updated: not-started
+
+## Current question
+
+Not set.
+
+## Current working picture
+
+No research synthesis exists yet.
+
+## Active exploration portfolio
+
+None.
+
+## Active hypotheses
+
+None.
+
+## Highest-value claims
+
+None.
+
+## Strongest evidence
+
+None.
+
+## Known contradictions
+
+None.
+
+## Internal critique queue
+
+None.
+
+## Final independent-verification nominations
+
+None nominated.
+
+## Running/next experiments
+
+None.
+
+## Literature gaps
+
+None identified.
+
+## Next recommended actions
+
+- Run `/research-start <physics question>`.
+"""
+
 
 def run_script(script: str, args: list[str], root: Path) -> subprocess.CompletedProcess[str]:
     """Invoke a helper script the same way the OpenCode tools do."""
@@ -120,11 +194,31 @@ class WorkspaceTestCase(unittest.TestCase):
             self.root / "research",
             ignore=shutil.ignore_patterns("__pycache__"),
         )
-        # The scaffold on main carries no research artifacts; make that explicit
-        # so a stray local artifact cannot influence a test.
-        for pattern in ("checks/O*", "experiments/E*", "derivations/D*", "hypotheses/H*"):
+        # Tests always start from an empty scaffold, including on live research branches.
+        for pattern in (
+            "checks/O*",
+            "experiments/E*",
+            "derivations/D*",
+            "hypotheses/H*",
+            "critiques/*.md",
+            "computation/*",
+            "results/verification/C*.md",
+        ):
             for path in (self.root / "research").glob(pattern):
-                shutil.rmtree(path) if path.is_dir() else path.unlink()
+                if path.name != "README.md":
+                    shutil.rmtree(path) if path.is_dir() else path.unlink()
+        (self.root / "research" / "claims" / "ledger.yaml").write_text(
+            "schema_version: 2\nclaims: []\n", encoding="utf-8"
+        )
+        (self.root / "research" / "QUESTION.md").write_text(EMPTY_QUESTION, encoding="utf-8")
+        (self.root / "research" / "STATE.md").write_text(EMPTY_STATE, encoding="utf-8")
+        computation_path = self.root / "research" / "COMPUTATION.md"
+        computation_lines = computation_path.read_text(encoding="utf-8").splitlines()
+        for index, line in enumerate(computation_lines):
+            if line.startswith("Status:"):
+                computation_lines[index] = "Status: not-started"
+                break
+        computation_path.write_text("\n".join(computation_lines) + "\n", encoding="utf-8")
         (self.root / "research" / "provenance.jsonl").write_text("", encoding="utf-8")
 
     # -- convenience builders -------------------------------------------------
@@ -143,6 +237,15 @@ class WorkspaceTestCase(unittest.TestCase):
         completed = run_script("new_check.py", args, self.root)
         if not expect_success:
             return {"returncode": completed.returncode, "stderr": completed.stderr}
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        return json.loads(completed.stdout)
+
+    def new_derivations(self, branches: list[dict[str, Any]], wave: str = "W-test") -> dict[str, Any]:
+        completed = run_script(
+            "new_derivations.py",
+            ["--wave", wave, "--branches-json", json.dumps(branches), "--json"],
+            self.root,
+        )
         self.assertEqual(completed.returncode, 0, completed.stderr)
         return json.loads(completed.stdout)
 
@@ -177,7 +280,7 @@ class WorkspaceTestCase(unittest.TestCase):
         dimensional: str = "pending",
         limiting: str = "pending",
         computational: str = "pending",
-        independent: str = "pending",
+        independent: str = "not-requested",
     ) -> None:
         (self.root / "research" / "claims" / "ledger.yaml").write_text(
             CLAIM_TEMPLATE.format(

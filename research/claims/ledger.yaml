@@ -19,12 +19,12 @@ claims:
     checks:
       dimensional_analysis: not-applicable
       limiting_cases: pending
-      independent_verification: pending
+      independent_verification: not-requested
       computational_verification: pending
     dependencies: []
     conflicts: []
     created_at: "2026-08-19T10:57:00Z"
-    updated_at: "2026-08-20T10:16:05Z"
+    updated_at: "2026-08-21T23:26:11Z"
 
   - id: C002
     claim: >-
@@ -45,12 +45,12 @@ claims:
     checks:
       dimensional_analysis: pending
       limiting_cases: pending
-      independent_verification: pending
+      independent_verification: not-requested
       computational_verification: pending
     dependencies: [C001]
     conflicts: []
     created_at: "2026-08-19T10:57:00Z"
-    updated_at: "2026-08-20T10:16:05Z"
+    updated_at: "2026-08-21T23:26:11Z"
 
   - id: C003
     claim: >-
@@ -71,12 +71,12 @@ claims:
     checks:
       dimensional_analysis: pending
       limiting_cases: pending
-      independent_verification: pending
+      independent_verification: not-requested
       computational_verification: pending
     dependencies: [C001, C002]
     conflicts: []
     created_at: "2026-08-19T10:57:00Z"
-    updated_at: "2026-08-20T10:16:05Z"
+    updated_at: "2026-08-21T23:26:11Z"
 
   - id: C004
     claim: >-
@@ -124,12 +124,12 @@ claims:
     checks:
       dimensional_analysis: pending
       limiting_cases: pending
-      independent_verification: pending
+      independent_verification: not-requested
       computational_verification: pending
     dependencies: [C002, C004]
     conflicts: []
     created_at: "2026-08-19T10:57:00Z"
-    updated_at: "2026-08-20T10:16:05Z"
+    updated_at: "2026-08-21T23:26:11Z"
 
   - id: C006
     claim: >-
@@ -150,12 +150,12 @@ claims:
     checks:
       dimensional_analysis: pending
       limiting_cases: pending
-      independent_verification: pending
+      independent_verification: not-requested
       computational_verification: pending
     dependencies: [C001, C002, C003]
     conflicts: []
     created_at: "2026-08-19T10:57:00Z"
-    updated_at: "2026-08-20T10:16:05Z"
+    updated_at: "2026-08-21T23:26:11Z"
 
   - id: C007
     claim: >-
@@ -206,12 +206,12 @@ claims:
     checks:
       dimensional_analysis: not-applicable
       limiting_cases: passed
-      independent_verification: pending
+      independent_verification: not-requested
       computational_verification: pending
     dependencies: [C007]
     conflicts: []
     created_at: "2026-08-19T13:34:00Z"
-    updated_at: "2026-08-20T10:16:05Z"
+    updated_at: "2026-08-21T23:26:11Z"
 
   - id: C009
     claim: >-
@@ -236,12 +236,12 @@ claims:
     checks:
       dimensional_analysis: passed
       limiting_cases: passed
-      independent_verification: pending
+      independent_verification: not-requested
       computational_verification: passed
     dependencies: [C007]
     conflicts: []
     created_at: "2026-08-19T13:34:00Z"
-    updated_at: "2026-08-20T14:25:00Z"
+    updated_at: "2026-08-21T23:26:11Z"
 
   - id: C010
     claim: >-
@@ -263,12 +263,12 @@ claims:
     checks:
       dimensional_analysis: passed
       limiting_cases: passed
-      independent_verification: pending
+      independent_verification: not-requested
       computational_verification: passed
     dependencies: [C007, C009]
     conflicts: []
     created_at: "2026-08-19T15:00:00Z"
-    updated_at: "2026-08-20T14:25:00Z"
+    updated_at: "2026-08-21T23:26:11Z"
 
   - id: C011
     claim: >-
@@ -289,12 +289,12 @@ claims:
     checks:
       dimensional_analysis: passed
       limiting_cases: passed
-      independent_verification: pending
+      independent_verification: not-requested
       computational_verification: not-applicable
     dependencies: [C007, C008, C010]
     conflicts: []
     created_at: "2026-08-19T15:00:00Z"
-    updated_at: "2026-08-20T10:16:05Z"
+    updated_at: "2026-08-21T23:26:11Z"
 
   - id: C012
     claim: >-
@@ -316,12 +316,12 @@ claims:
     checks:
       dimensional_analysis: passed
       limiting_cases: passed
-      independent_verification: pending
+      independent_verification: not-requested
       computational_verification: passed
     dependencies: [C009, C010]
     conflicts: []
     created_at: "2026-08-19T16:35:00Z"
-    updated_at: "2026-08-20T14:25:00Z"
+    updated_at: "2026-08-21T23:26:11Z"
 
   - id: C013
     claim: >-
@@ -343,12 +343,12 @@ claims:
     checks:
       dimensional_analysis: passed
       limiting_cases: passed
-      independent_verification: pending
+      independent_verification: not-requested
       computational_verification: passed
     dependencies: [C011, C012]
     conflicts: []
     created_at: "2026-08-19T16:35:00Z"
-    updated_at: "2026-08-20T14:25:00Z"
+    updated_at: "2026-08-21T23:26:11Z"
 
   - id: C014
     claim: >-
@@ -369,12 +369,12 @@ claims:
     checks:
       dimensional_analysis: passed
       limiting_cases: passed
-      independent_verification: pending
+      independent_verification: not-requested
       computational_verification: passed
     dependencies: [C012, C013]
     conflicts: []
     created_at: "2026-08-19T19:50:00Z"
-    updated_at: "2026-08-20T14:25:00Z"
+    updated_at: "2026-08-21T23:26:11Z"
 
   - id: C015
     claim: >-
@@ -396,12 +396,12 @@ claims:
     checks:
       dimensional_analysis: passed
       limiting_cases: passed
-      independent_verification: pending
+      independent_verification: not-requested
       computational_verification: passed
     dependencies: [C013, C014]
     conflicts: []
     created_at: "2026-08-19T19:50:00Z"
-    updated_at: "2026-08-20T14:25:00Z"
+    updated_at: "2026-08-21T23:26:11Z"
 
   - id: C016
     claim: >-

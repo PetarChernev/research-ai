@@ -19,12 +19,14 @@ Then begin in OpenCode:
 /research-start <your physics question>
 ```
 
-Continue with `/research-cycle`, inspect with `/research-status`, and independently test an important claim with `/verify-claim C001`. Turn a concrete assertion into an executable obligation with `/new-check` and run it with `/run-check O001`.
+For a broad question, run `/research-explore --width 8` to launch a bounded parallel theory wave and fresh GPT internal critiques. Use `/research-cycle` to converge on survivors, inspect with `/research-status`, and reserve `/verify-claim C001` for a mature critical claim whose Opus audit you explicitly approve. Turn a concrete assertion into an executable obligation with `/new-check` and run it with `/run-check O001`.
 
 Create artifacts directly when needed:
 
 ```bash
 uv run --locked python scripts/new_hypothesis.py --title "Candidate mechanism"
+uv run --locked python scripts/new_derivations.py --wave "initial-map" \
+  --branches-json '[{"title":"Direct route","charter":"Derive from the stated axioms."}]'
 uv run --locked python scripts/new_experiment.py --title "Small-scale diagnostic"
 uv run --locked python scripts/new_check.py --title "Declared assertion" \
   --question "..." --acceptance-criterion "..."
@@ -42,6 +44,6 @@ research/checks/        claim-linked executable evidence (ONNN)
 research/experiments/   scientific computational experiments (ENNN)
 ```
 
-Scientific Computation owns the representation, trust strategy, computational contract, and claim-specific `ONNN/run.py`. When reusable software or a research environment must be created or materially changed, it provisions the bounded Engineer; Engineer is implementation support, not a scientific peer or verifier. `scripts/run_check.py` is the only writer of `research/checks/ONNN/result.json`, fingerprints declared infrastructure and environment manifests, and derives the outcome from actual process execution. A passing computation is evidence for a declared assertion, not a verified scientific claim; sufficiency remains the independent verifier's judgment.
+Scientific Computation owns the representation, trust strategy, computational contract, and claim-specific `ONNN/run.py`. When reusable software or a research environment must be created or materially changed, it provisions the bounded Engineer; Engineer is implementation support, not a scientific peer or verifier. `scripts/run_check.py` is the only writer of `research/checks/ONNN/result.json`, fingerprints declared infrastructure and environment manifests, and derives the outcome from actual process execution. A passing computation is evidence for a declared assertion, not a verified scientific claim. GPT internal critique is the ordinary second pass; only a later user-approved Opus audit can independently verify a final claim.
 
-See `docs/RESEARCH_WORKFLOW.md` for the workflow and `docs/REPRODUCIBILITY.md` for experiment and obligation requirements. The project binds verification roles to one OpenAI and one Anthropic model so the director can route review away from every model that materially produced a claim or its computational substrate. Unpinned producer roles may use the invoking session model, so actual artifact provenance remains authoritative.
+See `docs/RESEARCH_WORKFLOW.md` for the workflow and `docs/REPRODUCIBILITY.md` for experiment and obligation requirements. Core producers and the internal critic are pinned to `openai/gpt-5.6-sol`; `anthropic/claude-opus-5` is reserved for rare, user-approved independent audits. Actual artifact provenance remains authoritative.

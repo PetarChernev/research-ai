@@ -1,6 +1,6 @@
 # Research State
 
-Last updated: 2026-08-21T21:05:00Z
+Last updated: 2026-08-21T23:26:11Z
 
 ## Current question
 
@@ -31,6 +31,10 @@ does it retain physical/second-class edge structure?
 - F0-B/F0-C remain open: no moving-interface action, complete constraint
   algebra, hyperbolicity result, or stable defect solution exists.
 
+## Active exploration portfolio
+
+None.
+
 ## Active hypotheses
 
 - **H001 — intrinsic stratified continuum dynamics:** strong autonomous form
@@ -49,7 +53,7 @@ does it retain physical/second-class edge structure?
 | Category | Claims / evidence |
 |---|---|
 | Independently verified | C016/D006 with `anthropic/claude-opus-5` report, plus passing O005 and corrective O006. Verification covers the restricted interface result and its explicit non-decision clause, not a gauge/physical classification. |
-| Historical cross-provider verification | C008 and C009 have 2026-08-19 `anthropic/claude-sonnet-4-6` reports, but those reports predate and did not review the later computational architecture. The ledger conservatively keeps both `derived` pending fresh end-to-end review. |
+| Historical cross-provider verification | C008 and C009 have 2026-08-19 `anthropic/claude-sonnet-4-6` reports, but those reports predate and did not review the later computational architecture. The ledger conservatively keeps both `derived`; no current Opus audit is requested. |
 | Derived, computationally passed | C009/O001, C010+C012/O002, C014/O003, and C013+C015/O004. A pass establishes only each obligation's encoded finite assertion. |
 | Derived, no adopted machine gate | C007, C008, C011 and the conceptual remainders of the claims above. |
 | Conjectural | C001–C006: complete F0 gates, Hopf configuration topology, microscopic holonomy selection, and a stable defect. |
@@ -81,17 +85,22 @@ produced by `openai/gpt-5.6-sol`.
   pre-obligation regime. They remain historical analytic evidence, not review of
   the later computational representation or infrastructure.
 
-## Open verification tasks
+## Internal critique queue
 
-- C016 now has a qualifying `anthropic/claude-opus-5` verification report and
-  is `verified`; the earlier interrupted attempt remains non-evidence.
+None.
+
+## Remaining evidence gaps
+
+- C016 has a qualifying, explicitly user-approved
+  `anthropic/claude-opus-5` verification report and is `verified`; the earlier
+  interrupted attempt remains non-evidence.
 - C010–C015 remain the main unverified critical chain. C007 has supportive but
   non-verifying reports; C004 remains inconclusive because the full physical
   configuration space is undefined.
-- Seven legacy reports predate the mandatory computational-review sections.
-  They now contain clearly labeled 2026-08-21 director schema addenda stating
-  what was not reviewed; original outcomes, source packets, and model provenance
-  are unchanged. The four same-model reports retain explicit warnings.
+- Seven reports predate the current Opus-only lifecycle and are marked
+  `legacy: true`. Their original outcomes, source packets, bodies, and model
+  provenance remain unchanged; they are archival evidence and cannot satisfy a
+  current independent-verification gate.
 
 ## Computational state
 
@@ -106,6 +115,10 @@ produced by `openai/gpt-5.6-sol`.
   entrywise wrong despite the same rank. O006 is the adopted shell obligation.
 - No new computation is currently warranted. Another finite interface rank
   calculation cannot supply the omitted total Gauss system.
+
+## Final independent-verification nominations
+
+None nominated.
 
 ## Running/next experiments
 
@@ -153,9 +166,8 @@ category or interpretation conflicts and must not be averaged away.
 
 ## Repository integrity
 
-The active branch is `reseach/hopf-solitons`. The wrong-branch verifier incident
+The active branch is `research/quantum-gravity`. The wrong-branch verifier incident
 and deletion of its void reports remain documented in `research/DECISIONS.md`.
 Current work preserves the later genuine `-anthropic-r2` reports and all
-failing/inconclusive history. The default research-state validator passes with
-zero errors; eight warnings continue to disclose the four legacy same-model
-reports.
+failing/inconclusive history. Legacy reports are explicitly nonqualifying rather
+than emitted as current verification debt.

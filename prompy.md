@@ -757,3 +757,7 @@ Only genuine scientific counterevidence constitutes a contradiction.
 ```
 
 Do the migration and revalidation work now. Do not stop after producing a plan.
+> Legacy migration prompt. It is not loaded by `opencode.json` and predates the
+> breadth-first exploration, GPT internal-critique, and user-approved Opus-only
+> verification architecture. Follow `AGENTS.md` and `.opencode/commands/` for
+> current research behavior.

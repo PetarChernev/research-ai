@@ -1,7 +1,7 @@
 # Computational Verification Strategy
 
 Status: active — corrected fixed-interface shell verification; bulk Gauss phase deferred
-Last updated: 2026-08-21T21:05:00Z
+Last updated: 2026-08-21T23:26:11Z
 
 Research question: Does there exist a resolution-independent, Lorentz-covariant classical `4 <-> 5` framework, formulated without an inverse coframe at rank change, whose bulk and transition equations follow from one variational principle and whose linearized initial-value problem is free of an evident constraint inconsistency, ghost, or loss of predictivity?
 
@@ -354,12 +354,16 @@ not mutually independent when they share `exact_graded/`.
   control. The model-separated C016 verifier supplied the independent hand path;
   O006 itself is correlated machine evidence.
 
-Fresh independent verification must review the old derivation, old reports,
-plan, contracts, infrastructure/tests, research-specific validation, specs,
-runners and canonical results. Producer provenance includes the current
-OpenAI director, Scientific Computation, and every material Engineer model, as
-well as historical producers. A verifier model present in that set is
-ineligible. Deterministic execution supplies outcomes but not model independence.
+Any future current-lifecycle independent verification must be explicitly
+user-approved and use the reserved `anthropic/claude-opus-5` verifier. It must
+review the old derivation, old reports, plan, contracts, infrastructure/tests,
+research-specific validation, specs, runners and canonical results. Producer
+provenance includes the current OpenAI director, Scientific Computation, and
+every material Engineer model, as well as historical producers. Opus is
+ineligible if it appears in that set. Deterministic execution supplies outcomes
+but not model independence. Seven pre-cutover reports remain marked
+`legacy: true` and cannot satisfy this gate; C016 retains its explicitly
+user-approved Opus report.
 
 ## Phase-transition triggers
 
@@ -426,9 +430,9 @@ constraint closure or PDE questions.
   free-coframe equations in D005; fixing the period defines the normalized
   principal-connection variation class and avoids adding that equation, rather
   than being proved necessary for all consistent repairs.
-- Legacy verification reports did not review this plan, infrastructure or
-  obligations. Their scientific reconstructions remain evidence, but they do
-  not satisfy the fresh computational evidential chain by themselves.
+- Reports marked `legacy: true` did not review this plan, infrastructure or
+  obligations. Their scientific reconstructions remain archival evidence, but
+  they do not satisfy the current Opus evidential chain by themselves.
 - The attempted Anthropic verification of C016 was interrupted before a report
   was produced. Tool access recorded in provenance is not a verification
   artifact. A later bounded `anthropic/claude-opus-5` audit produced a qualifying
@@ -444,5 +448,6 @@ constraint closure or PDE questions.
 - `research/DECISIONS.md`, **2026-08-20: Use a minimal exact graded kernel for the migration obligations**.
 - `research/DECISIONS.md`, **2026-08-21: Treat the interrupted C016 audit as no evidence and stop at the missing bulk canonical system**.
 - `research/DECISIONS.md`, **2026-08-21: Verify C016 and replace its shell shortcut with O006**.
+- `research/DECISIONS.md`, **2026-08-22: Migrate live research to the exploration and approval-gated verification lifecycle**.
 - Earlier scope and category choices remain recorded in the 2026-08-19 entries;
   the migration does not rewrite them.

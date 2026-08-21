@@ -186,7 +186,8 @@ obligation is a durable scientific result and often the most informative one. If
 the implementation or spec changes afterward, the recorded hashes no longer match
 and the result is stale: rerun it. Return the obligation path, spec, result,
 machine outcome, declared infrastructure, producer model provenance, and
-limitations to the director and independent verifier. Keep these distinctions
+limitations to the director and, when useful, the GPT internal critic. A later
+user-approved Opus verifier receives only the load-bearing subset. Keep these distinctions
 visible:
 
 - exact symbolic output may still depend on assumptions, simplification
@@ -201,5 +202,6 @@ visible:
 You do not set claim status, edit `research/claims/ledger.yaml`, write
 verification reports, or call the scientific question verified. A successful
 machine check is evidence for the declared assertion. Whether the declared
-obligations are sufficient for the scientific claim is the independent
-verifier's judgment, and the director integrates the result.
+obligations are useful for the current decision is the director's judgment,
+informed by internal critique. Only a later user-approved Opus audit judges
+independent sufficiency for a final claim, and the director integrates the result.

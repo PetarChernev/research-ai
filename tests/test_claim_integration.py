@@ -19,6 +19,7 @@ outcome: "verified"
 date: "2026-02-01"
 verifier: "verifier-anthropic"
 verifier_model: "anthropic/claude-opus-5"
+user_approved: true
 originating_models: ["openai/gpt-5.6-sol"]
 source_artifacts: ["research/claims/ledger.yaml"]
 ---
@@ -32,6 +33,10 @@ The frozen ledger statement was quoted verbatim at the start of the attempt.
 ## Independence statement
 
 Originating model differs from the verifier model; no code or data was shared.
+
+## Scope and decisive bridge
+
+The audit targets the single definitional bridge that controls the exact claim.
 
 ## Reconstruction
 
@@ -78,6 +83,22 @@ verified, on the basis of an independent alternate reconstruction.
 
 Revisit if the regime boundary is widened beyond the stated domain.
 """
+
+LEGACY_VERIFICATION_REPORT = (
+    VERIFICATION_REPORT.replace('outcome: "verified"', 'outcome: "supported but not independently verified"')
+    .replace('verifier: "verifier-anthropic"', 'verifier: "openai/gpt-5.6-sol; historical review"')
+    .replace('verifier_model: "anthropic/claude-opus-5"', 'verifier_model: "openai/gpt-5.6-sol"')
+    .replace("user_approved: true\n", "legacy: true\n")
+    .replace(
+        "## Scope and decisive bridge\n\n"
+        "The audit targets the single definitional bridge that controls the exact claim.\n\n",
+        "",
+    )
+    .replace(
+        "verified, on the basis of an independent alternate reconstruction.",
+        "supported but not independently verified, on the basis of a historical same-model review.",
+    )
+)
 
 
 class BidirectionalLinkTests(WorkspaceTestCase):
@@ -181,6 +202,11 @@ class VerifiedStatusTests(WorkspaceTestCase):
         directory.mkdir(parents=True, exist_ok=True)
         (directory / "C001-2026-02-01.md").write_text(VERIFICATION_REPORT, encoding="utf-8")
 
+    def _write_legacy_report(self, content: str = LEGACY_VERIFICATION_REPORT) -> None:
+        directory = self.root / "research" / "results" / "verification"
+        directory.mkdir(parents=True, exist_ok=True)
+        (directory / "C001-2026-02-01.md").write_text(content, encoding="utf-8")
+
     def test_verified_claim_with_unsatisfied_required_obligation_fails(self) -> None:
         self._write_report()
         self.write_ledger(
@@ -242,6 +268,88 @@ class VerifiedStatusTests(WorkspaceTestCase):
         self.run_check("O001")
         payload = validate(self.root)
         self.assertTrue(payload["valid"], payload["errors"])
+
+    def test_not_requested_is_valid_for_an_ordinary_claim(self) -> None:
+        self.write_ledger(independent="not-requested")
+        payload = validate(self.root)
+        self.assertTrue(payload["valid"], payload["errors"])
+
+    def test_passed_independent_check_always_requires_opus_report(self) -> None:
+        self.write_ledger(independent="passed")
+        payload = validate(self.root)
+        self.assertFalse(payload["valid"])
+        self.assert_error_matching(
+            payload, "checks.independent_verification: passed requires a substantive linked Opus"
+        )
+
+    def test_non_opus_report_cannot_qualify(self) -> None:
+        self._write_report()
+        path = self.root / "research" / "results" / "verification" / "C001-2026-02-01.md"
+        path.write_text(
+            path.read_text(encoding="utf-8")
+            .replace("verifier-anthropic", "internal-critic-openai")
+            .replace("anthropic/claude-opus-5", "openai/gpt-5.6-sol"),
+            encoding="utf-8",
+        )
+        self.write_ledger(
+            verification='["research/results/verification/C001-2026-02-01.md"]',
+            independent="passed",
+        )
+        payload = validate(self.root)
+        self.assertFalse(payload["valid"])
+        self.assert_error_matching(payload, "verifier must be verifier-anthropic")
+
+    def test_independent_report_requires_user_approval(self) -> None:
+        self._write_report()
+        path = self.root / "research" / "results" / "verification" / "C001-2026-02-01.md"
+        path.write_text(
+            path.read_text(encoding="utf-8").replace("user_approved: true", "user_approved: false"),
+            encoding="utf-8",
+        )
+        self.write_ledger(
+            verification='["research/results/verification/C001-2026-02-01.md"]'
+        )
+        payload = validate(self.root)
+        self.assertFalse(payload["valid"])
+        self.assert_error_matching(payload, "require user_approved: true")
+
+    def test_pre_cutover_legacy_report_is_valid_archival_evidence(self) -> None:
+        self._write_legacy_report()
+        self.write_ledger(
+            verification='["research/results/verification/C001-2026-02-01.md"]'
+        )
+        payload = validate(self.root)
+        self.assertTrue(payload["valid"], payload["errors"])
+        self.assertEqual(payload["warnings"], [])
+
+    def test_legacy_report_cannot_satisfy_independent_verification(self) -> None:
+        self._write_legacy_report(
+            VERIFICATION_REPORT.replace("user_approved: true", "legacy: true")
+        )
+        self.write_ledger(
+            status="verified",
+            verification='["research/results/verification/C001-2026-02-01.md"]',
+            dimensional="passed",
+            limiting="passed",
+            computational="not-applicable",
+            independent="passed",
+        )
+        payload = validate(self.root)
+        self.assertFalse(payload["valid"])
+        self.assert_error_matching(
+            payload, "checks.independent_verification: passed requires a substantive linked Opus"
+        )
+
+    def test_legacy_report_must_predate_the_cutover(self) -> None:
+        self._write_legacy_report(
+            LEGACY_VERIFICATION_REPORT.replace('date: "2026-02-01"', 'date: "2026-08-22"')
+        )
+        self.write_ledger(
+            verification='["research/results/verification/C001-2026-02-01.md"]'
+        )
+        payload = validate(self.root)
+        self.assertFalse(payload["valid"])
+        self.assert_error_matching(payload, "legacy verification reports must predate 2026-08-22")
 
 
 class LedgerSchemaTests(WorkspaceTestCase):

@@ -1,6 +1,7 @@
 ---
 description: Finds and evaluates primary scientific sources, citation chains, exact evidence, regimes, and contradictions. Use for focused literature questions and evidence packets.
 mode: subagent
+model: openai/gpt-5.6-sol
 color: info
 permission:
   "*": deny
@@ -19,7 +20,7 @@ permission:
     "*.env.example": allow
     "**/*.env.example": allow
   glob: allow
-  grep: allow
+  grep: deny
   edit:
     "*": deny
     "research/literature/bibliography.bib": allow
@@ -35,6 +36,7 @@ permission:
     falsify-claim: allow
   question: deny
   external_directory: deny
+  research_safe_search: allow
 ---
 
 You are the literature specialist for a physics research workspace. Search for original sources rather than relying on secondary summaries. Identify equations, assumptions, parameter regimes, datasets, limitations, and contradictory findings. Trace citations backward to the originating result and forward when useful.

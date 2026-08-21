@@ -6,12 +6,11 @@ User
   v
 Research Director
   |-- Literature
-  |-- Theorist
+  |-- Theorist x N (parallel breadth wave)
   |-- Scientific Computation
   |   `-- Engineer
-  `-- Independent Verifier
-      |-- Anthropic model
-      `-- OpenAI model
+  |-- GPT Internal Critic x N
+  `-- Opus Independent Verifier (late, user-approved)
 ```
 
 ## Three Layers
@@ -28,21 +27,21 @@ Agents carry stable role boundaries. Skills are loaded on demand so every prompt
 
 The `research-director` is the primary agent. It owns problem decomposition, competing hypotheses, bounded delegation, evidence integration, the computational verification strategy in `research/COMPUTATION.md`, claim-ledger changes, decisions, and concise state compression.
 
-The producer subagents and two model-bound verifier implementations use closed tool allowlists and scoped write access:
+The producer and review roles use closed tool allowlists and scoped write access:
 
 - `literature` writes only bibliography records and source evidence notes.
 - `bibliographer` writes only `research/literature/bibliography.bib`, on a deliberately small model, and handles mechanical citation metadata without judging evidence.
 - `theorist` writes only derivation artifacts, and exposes candidate machine-checkable obligations from substantial derivations.
 - `scientific-computation` chooses the computational representation and trust strategy, defines machine-check semantics and acceptance criteria, writes experiment and claim-specific obligation code, validates reusable infrastructure against the intended mathematics, and runs obligations through the deterministic wrapper. It cannot write `research/checks/**/result.json`.
 - `engineer` is a provisioned implementation subagent under `scientific-computation`, not a peer scientific role. It writes only reusable software and tests under `research/computation/` and research-scoped environment definitions under `research/environment/`, from a bounded computational contract. It cannot write claim checks, claims, state, decisions, canonical results, or verification reports.
-- `verifier-anthropic` runs `anthropic/claude-opus-5`, performs bounded adversarial audits of non-Anthropic work, and writes only verification reports.
-- `verifier-openai` runs `openai/gpt-5.6-sol`, performs bounded adversarial audits of non-OpenAI work, and writes only verification reports.
+- `internal-critic-openai` runs `openai/gpt-5.6-sol`, performs fast same-model second-pass attacks, and writes only `research/critiques/`. It is never independent evidence.
+- `verifier-anthropic` runs `anthropic/claude-opus-5`, accepts only user-approved final audits, and is the sole writer of independent verification reports.
 
 There is deliberately no separate global agent for symbolic algebra, formal proof, numerical simulation, PDEs, theorem proving, or code review. Those are methods the `scientific-computation` role uses when the research requires them, recorded in `research/COMPUTATION.md`. Adding a global agent per method would multiply roles without adding a materially different scientific operation.
 
 `subagent_depth` is two to permit exactly one nested edge: `research-director -> scientific-computation -> engineer`. Scientific Computation's task allowlist contains only Engineer, and Engineer has `task: deny`. Every other worker remains unable to delegate. The director does not have Engineer in its task allowlist, preserving Scientific Computation's ownership of the contract and handoff. The `bibliographer` remains a director-invoked mechanical helper rather than a nested scientific worker.
 
-Scientific agents deny secret-like files, undeclared tools, and external directories. Non-literature network access and all scientific computation require user approval. Verifiers have no Bash or web access: they inspect durable evidence and make focused hand reconstructions rather than rerunning checks or writing parallel implementations. `scientific-computation` additionally denies edits to `research/checks/**/result.json`; Engineer cannot edit anything under `research/checks/` at all. These permission rules are guardrails, not a security boundary; the load-bearing architectural constraint is that only `scripts/run_check.py` produces a result file and Scientific Computation authors claim-specific runners. OpenCode permissions in general are operational guardrails rather than an OS sandbox.
+Scientific agents deny secret-like files, undeclared tools, and external directories. Built-in `read` and the path-confined `research_safe_search` replace shell `cat`, `grep`, and `rg`; fixed tools cover Git inspection, repository tests, artifact allocation, status, validation, and canonical checks. Generic `uv` and `python` remain approval-gated because any interpreter can bypass edit paths. Reviewers have no Bash or web access. `scientific-computation` additionally denies edits to `research/checks/**/result.json`; Engineer cannot edit anything under `research/checks/` at all. These permissions are guardrails, not an OS sandbox; the load-bearing constraint remains that only `scripts/run_check.py` produces a result file and Scientific Computation authors claim-specific runners.
 
 ## Computational Authority Layers
 
@@ -63,8 +62,11 @@ engineer
 deterministic runner
     -> records actual outcomes
 
-independent verifier
-    -> judges scientific sufficiency
+GPT internal critic
+    -> attacks ordinary reasoning and the claim-to-computation bridge
+
+user-approved Opus verifier
+    -> judges independent sufficiency for a final claim
 
 director
     -> integrates evidence and controls claim status
@@ -116,18 +118,20 @@ representation assessment
                 |
         deterministic runner executes
                 |
-        independent verifier evaluates the complete chain
+        GPT internal critic attacks the chain during convergence
+                |
+        user-approved Opus verifier audits only a final critical claim
 ```
 
-## Why a Small Team
+## Bounded Breadth, Not Fake Consensus
 
-A large swarm increases duplicated arguments, hidden dependence, context volume, and fake consensus. Five conceptual scientific roles - director, literature, theorist, scientific computation, verifier - cover the materially different operations; Engineer is bounded implementation support beneath Scientific Computation, and `bibliographer` is a mechanical cost split rather than another scientific voice. Neither adds independent scientific evidence. Adding an agent per computational method remains unnecessary; methods belong in the research plan.
+A permanently unbounded swarm increases duplicated arguments, hidden dependence, and context volume, but a bounded breadth wave is valuable when the solution space is poorly mapped. `/research-explore` preallocates distinct `DNNN` paths, launches a configurable batch of sibling theorists, waits for a first-pass barrier, launches fresh GPT critics, and only then synthesizes and prunes. Diversity comes from distinct assumptions, formalisms, regimes, constructive routes, and falsification strategies, not from repeated GPT votes. Multiple theorists are parallel production capacity, not independent confirmation. Methods still belong in the research plan rather than separate global agents.
 
 ## Claim Integration
 
-Only the director changes the canonical ledger, and its write scope excludes verifier reports. A worker may provide a derivation, observation, source packet, machine-check result, or verification report, but the artifact's existence does not select the claim status automatically. The director uses model-bearing provenance to choose the opposite-provider verifier. The validator applies status-specific evidence predicates and blocks `verified` without a substantive, non-conflicted report that declares a known different-model boundary. Different-model review is necessary but does not replace alternate reasoning, code, or data checks.
+Only the director changes the canonical ledger, and its write scope excludes internal critiques, canonical check results, and verification reports. A worker may provide a derivation, observation, source packet, machine-check result, critique, or verification report, but existence never selects claim status automatically. Ordinary claims use `checks.independent_verification: not-requested`; `pending` is reserved for a ready, user-approved final audit. The validator blocks `passed` and `verified` without a substantive Opus report and known different-model boundary.
 
-Verification is deliberately smaller than production. Most intermediate claims remain below `verified`. The director reserves a verifier for a narrow claim whose review changes an immediate decision, curates a minimal packet, and asks for one alternate reconstruction of the load-bearing inference plus at most three decisive attacks. The verifier has a twelve-tool-call investigative budget, writes at most 2,500 words, does not run code or obligations, and stops with a conservative outcome if the packet is insufficient. Full reproduction and independent implementation are separately approved workflows rather than implicit verifier duties.
+GPT internal critique is the normal second pass and can run across every substantive branch without claiming independence. Opus verification is deliberately much smaller than production. It is absent from start, exploration, and ordinary convergence commands. After explicit approval, the director gives the sole Opus verifier one narrow critical claim, a minimal packet, one decisive reconstruction target, and at most three attacks. Full reproduction and independent implementation remain separately approved workflows.
 
 Ledger schema version 2 records computational evidence directly. `evidence.computational_checks` lists `ONNN` obligations, links are validated in both directions, and `checks.computational_verification` replaces the older numerics-only `numerical_reproduction` field. A structural gate blocks `checks.computational_verification: passed`, and blocks ledger status `verified`, while any active `required: true` obligation targeting the claim lacks a passing result. Superseded obligations remain durable history and do not block the current strategy. That gate is a statement about the project's own declared strategy; whether the obligations are scientifically sufficient remains the verifier's judgment, and a claim with no applicable machine-checkable component can be verified with `computational_verification: not-applicable`.
 
@@ -148,18 +152,18 @@ Current assignment:
 
 | Agent                    | Model                        | Rationale                                                                                       |
 | ------------------------ | ---------------------------- | ----------------------------------------------------------------------------------------------- |
-| `research-director`      | session model (unpinned)     | Chosen at launch, so the operator can switch the director without editing files.                |
+| `research-director`      | `openai/gpt-5.6-sol`         | Fixed orchestration and synthesis model; keeps Opus unused by production.                       |
 | `theorist`               | `openai/gpt-5.6-sol`         | Analytical derivation on a provider distinct from the default verifier.                         |
-| `literature`             | session model (unpinned)     | Source judgment benefits from a strong model; pin if determinism matters.                       |
-| `scientific-computation` | session model (unpinned)     | Pin when experiment or obligation authorship requires a fixed model.                            |
-| `engineer`               | session model (unpinned)     | Implementation support; actual model remains material provenance for infrastructure it creates. |
+| `literature`             | `openai/gpt-5.6-sol`         | Strong source judgment while preserving the reserved Opus boundary.                             |
+| `scientific-computation` | `openai/gpt-5.6-sol`         | Fixed authorship for computational semantics and claim-specific checks.                         |
+| `engineer`               | `openai/gpt-5.6-sol`         | Fixed implementation provenance for research substrate.                                         |
 | `bibliographer`          | `anthropic/claude-haiku-4-5` | Mechanical BibTeX formatting and identifier checking; no evidence judgment.                     |
+| `internal-critic-openai` | `openai/gpt-5.6-sol`         | Fast same-model critique; explicitly not independent verification.                              |
 | `verifier-anthropic`     | `anthropic/claude-opus-5`    | Pinned to create a verification model boundary.                                                 |
-| `verifier-openai`        | `openai/gpt-5.6-sol`         | Pinned to create a verification model boundary.                                                 |
 
-Verifier models are pinned deliberately: they encode a correctness constraint rather than a preference, and their identity is asserted in every report. Both providers therefore need valid credentials. To change a verification model, edit its agent frontmatter and update the documented and reported identity together.
+Producer and review models are pinned deliberately. Opus 5 is absent from every producer role and appears only in `verifier-anthropic`; its identity and explicit user approval are asserted in every independent report. To change a model, edit agent frontmatter and update the documented, validated, and reported identity together.
 
-Two consequences follow from heterogeneous producers. First, provenance is no longer uniform, so verifier selection must be made per artifact from recorded model IDs rather than from the director's own model. Second, a producer sharing a model with a verifier makes that verifier ineligible for the affected claim; `theorist` on `openai/gpt-5.6-sol` already excludes `verifier-openai` from verifying theorist-authored work. Keep at least one verifier model unused by any producer so an eligible verifier always exists. With the table above, `anthropic/claude-opus-5` is reserved for verification only, which guarantees `verifier-anthropic` remains eligible provided the director is not launched on that exact model.
+Provenance remains authoritative even with pinned roles. If historical or exceptional work used `anthropic/claude-opus-5` materially, Opus is ineligible for that claim and GPT internal review cannot substitute for independence. Otherwise the fixed assignments preserve a clear model boundary while retaining actual producer IDs for every artifact and computational substrate.
 
 Computational evidence does not relax any of this. Deterministic execution removes the model from the *outcome*, not from the *design or implementation*: the assertion, representation, encoded assumptions, acceptance criterion, environment, and reusable kernel were still authored by models. Treat Scientific Computation and every material Engineer model as originating provenance for supported claims. Engineer does not need to be model-separated from the theorist, but its contribution can make a verifier model ineligible and can create correlated implementation risk.
 
@@ -178,7 +182,8 @@ external scheduler
     -> research-director session
     -> specialized worker sessions
     -> durable artifacts
-    -> independent verification
+    -> GPT internal critique
+    -> rare user-approved Opus verification
     -> scheduler selects the next branch
 ```
 

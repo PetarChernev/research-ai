@@ -1,4 +1,4 @@
-"""The architecture-only baseline must stay valid and research-neutral."""
+"""The live repository and disposable empty scaffold must both remain valid."""
 
 from __future__ import annotations
 
@@ -10,25 +10,49 @@ from tests.support import PROJECT_ROOT, WorkspaceTestCase, status, validate
 
 
 class BaselineTests(WorkspaceTestCase):
-    def test_repository_baseline_validates(self) -> None:
+    def test_repository_state_validates(self) -> None:
         payload = validate(PROJECT_ROOT)
         self.assertTrue(payload["valid"], payload["errors"])
-        self.assertEqual(payload["counts"]["obligations"], 0)
 
     def test_scaffold_copy_validates(self) -> None:
         payload = validate(self.root)
         self.assertTrue(payload["valid"], payload["errors"])
+        self.assertEqual(payload["counts"]["obligations"], 0)
+        self.assertEqual(payload["counts"]["critiques"], 0)
 
-    def test_baseline_carries_no_research_content(self) -> None:
-        ledger = yaml.safe_load((PROJECT_ROOT / "research" / "claims" / "ledger.yaml").read_text())
+    def test_scaffold_carries_no_research_content(self) -> None:
+        ledger = yaml.safe_load((self.root / "research" / "claims" / "ledger.yaml").read_text())
         self.assertEqual(ledger, {"schema_version": 2, "claims": []})
-        self.assertEqual(status(PROJECT_ROOT)["question"], "Not set. Run /research-start <question>.")
+        self.assertEqual(status(self.root)["question"], "Not set. Run /research-start <question>.")
         self.assertEqual(
-            sorted(path.name for path in (PROJECT_ROOT / "research" / "checks").iterdir()),
+            sorted(
+                path.name
+                for path in (self.root / "research" / "checks").iterdir()
+                if not (
+                    path.is_dir()
+                    and list(path.iterdir())
+                    and all(child.name == "__pycache__" for child in path.iterdir())
+                )
+            ),
             ["README.md"],
         )
         self.assertEqual(
-            sorted(path.name for path in (PROJECT_ROOT / "research" / "computation").iterdir()),
+            sorted(path.name for path in (self.root / "research" / "critiques").iterdir()),
+            ["README.md"],
+        )
+        self.assertEqual(
+            sorted(
+                path.name
+                for path in (self.root / "research" / "computation").iterdir()
+                if not (
+                    path.is_dir()
+                    and not any(
+                        "__pycache__" not in child.parts
+                        for child in path.rglob("*")
+                        if child.is_file()
+                    )
+                )
+            ),
             ["README.md"],
         )
 
@@ -39,8 +63,12 @@ class BaselineTests(WorkspaceTestCase):
         self.assertEqual(hypothesis.returncode, 0, hypothesis.stderr)
         experiment = run_script("new_experiment.py", ["--title", "Diagnostic", "--json"], self.root)
         self.assertEqual(experiment.returncode, 0, experiment.stderr)
+        derivations = self.new_derivations(
+            [{"title": "Analytic route", "charter": "Test one bounded route."}]
+        )
         self.assertTrue((self.root / "research" / "hypotheses" / "H001.md").is_file())
         self.assertTrue((self.root / "research" / "experiments" / "E001" / "config.yaml").is_file())
+        self.assertEqual(derivations["derivations"][0]["id"], "D001")
         payload = validate(self.root)
         self.assertTrue(payload["valid"], payload["errors"])
 

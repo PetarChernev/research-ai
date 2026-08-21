@@ -11,7 +11,7 @@ metadata:
 
 ## 1. Create the artifact
 
-Allocate the next unused `DNNN` ID, copy `templates/derivation.md` to `research/derivations/DNNN.md`, and link target `CNNN` IDs when they exist. A substantial result must be readable without the originating conversation.
+Write to the `DNNN` path preallocated by the research director and link target `CNNN` IDs when they exist. In a breadth wave, preserve the supplied branch charter and state what makes the route materially distinct from sibling branches. A substantial result must be readable without the originating conversation.
 
 ## 2. State the target
 
@@ -75,4 +75,4 @@ is supporting evidence rather than automatically a proof.
 
 ## 9. Conclude epistemically
 
-Record unresolved concerns and classify the output as a derived result only in its stated regime. Return the derivation path to the director for claim-ledger integration and, if important, independent verification.
+Record unresolved concerns and classify the output as a derived result only in its stated regime. Return the derivation path to the director for internal critique and claim-ledger integration. Independent Opus verification is considered only much later for a mature, critical, user-approved claim.

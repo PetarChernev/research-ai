@@ -64,7 +64,7 @@ Choose applicable resolution, finite-size, timestep, basis-cutoff, tolerance, pr
 
 ## 6. Run and preserve provenance
 
-Keep parameters in `config.yaml`; do not bury them in a transient command. Execute the canonical command from the experiment README. Preserve the Git commit and dirty state, command, environment, configuration hash, seeds, and input checksums or stable locations.
+Keep parameters in `config.yaml`; do not bury them in a transient command. Execute the standard `run.py` and `analysis.py` entrypoints with `research_run_experiment`; use an approval-gated command only when the research-specific environment genuinely requires another declared invocation. Preserve the Git commit and dirty state, command, environment, configuration hash, seeds, and input checksums or stable locations.
 
 ## 7. Write machine-readable output
 

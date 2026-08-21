@@ -4,6 +4,7 @@ outcome: "{{OUTCOME}}"
 date: "{{DATE}}"
 verifier: "{{VERIFIER}}"
 verifier_model: "{{VERIFIER_MODEL}}"
+user_approved: true
 originating_models: {{ORIGINATING_MODELS_JSON}}
 source_artifacts: {{SOURCE_ARTIFACTS_JSON}}
 ---

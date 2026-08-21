@@ -75,8 +75,11 @@ mathematics.
 
 ## 6. Run and record tests
 
-Run every relevant infrastructure and environment test. Preserve the exact
-commands and outcomes in documentation under the permitted directories. Record
+Run standard Python unittest suites with `research_run_infrastructure_tests`.
+Use an approval-gated command when a declared research-specific environment or
+another test mechanism genuinely requires it; never request a broad persistent
+interpreter allow. Preserve the exact commands and outcomes in documentation
+under the permitted directories. Record
 package versions, external executable versions, platform constraints, build
 steps, and lock or manifest paths where relevant. Do not claim a test ran when
 it did not.

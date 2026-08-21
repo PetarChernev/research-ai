@@ -16,7 +16,7 @@ If the request is empty, ask for the claim or hypothesis to test. Otherwise:
 2. Define the observable, units, baseline, parameter range, possible discriminating outcomes, numerical method, convergence threshold, and scientific/numerical failure criteria before implementation.
 3. Invoke `research_new_experiment` with a concise title and existing claim IDs. Never create the `ENNN` directory manually. Delegate scientific implementation to `scientific-computation` when the work is nontrivial. Scientific Computation may provision Engineer only for a missing or materially changed reusable substrate or research environment; Engineer does not choose observables, solvers, parameters, convergence interpretation, or scientific criteria.
 4. Complete `README.md` and `config.yaml`, following the representations, trust strategy, methods, and evidence standards recorded in `research/COMPUTATION.md`. Start with an analytic estimate or tiny diagnostic and explain when a full run would be justified.
-5. Implement only enough `run.py` and `analysis.py` for the requested stage. Do not run an expensive calculation unless explicitly requested and justified by successful cheap diagnostics.
+5. Implement only enough `run.py` and `analysis.py` for the requested stage. Scientific Computation executes these fixed entrypoints through `research_run_experiment`; arbitrary interpreter commands remain approval-gated. Do not run an expensive calculation unless explicitly requested and justified by successful cheap diagnostics.
 6. Leave unperformed result checks incomplete. A scaffold or successful process exit is not a scientific result.
 7. Update `research/STATE.md` under running/next experiments and run `research_validate_state`.
 
