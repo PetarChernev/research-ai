@@ -1,0 +1,152 @@
+schema_version: 1
+id: "O007"
+title: >-
+  Total Lorentz cut cancellation
+
+# Scientific targets. At least one claim or derivation should be linked once the
+# obligation is attached to the research record.
+claims: ["C017"]
+derivations: ["D008", "D009"]
+
+# Generic, method-neutral classification. Allowed values:
+#   exact-symbolic | formal | numerical | convergence | independent-implementation
+#   limiting-case | symmetry | dimensional | counterexample | other
+# The class describes what kind of assertion is being tested. It does not select
+# a library, language, or tool; the research chooses the method.
+class: "exact-symbolic"
+
+# required: true means this obligation is part of the currently declared
+# verification strategy for its target claims. A required active obligation
+# without a passing result blocks the structural computational gate.
+required: true
+
+# active | superseded. Superseded obligations remain durable history and do not
+# block the current strategy. Do not delete failed history to clear the gate.
+status: active
+
+# The exact mathematical question tested, stated so that a reader can tell what
+# is NOT tested.
+question: >-
+  Under the C017 fixed-interface basic persistent SO(1,3) assumptions and D004-D006 conventions, does the exact persistent five-dimensional core Palatini cut momentum have zero ordinary and normalized-circle pushforward at rho=0, and does the exterior Palatini term -P^- combine with the interface moment map -Ad_(g^-1)lambda to vanish on lambda=-Q and Q=g.P^- with the declared orientation, normalization, and dressing?
+
+# Assumptions the executable check encodes: conventions, normalizations, domains,
+# regularity, parameter ranges, representation choices, and anything the
+# implementation takes for granted.
+assumptions:
+  - >-
+    The check is pointwise on a fixed oriented spatial cut in the basic,
+    theta-independent persistent SO(1,3) sector.  It encodes the regular
+    adapted core coframe E^a=e_+^a, E^4=rho eta and the unshifted D004-D006
+    polarization; it does not encode smooth germs or prove descent.
+  - >-
+    Internal orientations are epsilon_01234=epsilon_0123=+1.  Antisymmetric
+    Lorentz pairs are represented in the fixed order (01,02,03,12,13,23),
+    both ordered values of contracted antisymmetric indices are summed, and
+    cut forms use dx1<dx2 with the circle leg dtheta rightmost.
+  - >-
+    The Palatini momenta are P^(D)_IJ=[2 kappa_D (D-2)!]^-1 epsilon_IJ... E...
+    and P^-_ab=(4 kappa_4)^-1 epsilon_abcd e^c wedge e^d.  The exact formal
+    circle period tau denotes 2pi; ordinary pushforward multiplies the
+    dtheta coefficient by tau and normalized pushforward does not.
+  - >-
+    The planar nonzero witness is e1=dx1, e2=dx2, e0=e3=0 on the spatial cut.
+    The matching shell is lambda=-Q and Q=Ad_g P^- (written g.P^-), and the
+    exterior residual is -P^- - Ad_(g^-1)lambda.  A common cut-orientation
+    reversal multiplies P^-, Q, and lambda together by -1.
+  - >-
+    The nonidentity dressing is the exact rational 01 boost with cosh=5/3
+    and sinh=4/3 in eta=diag(-,+,+,+).  All coefficient, exterior-form,
+    vector, and matrix equalities are exact over Q or a free polynomial ring
+    over Q; no floating point, tolerance, randomization, or CAS is used.
+
+# Predeclared pass/fail/inconclusive criterion. Write this before implementing.
+acceptance_criterion: >-
+  Pass iff an exact rational exterior/Lorentz representation reproduces the declared 4D and 5D Palatini momentum coefficients; gives zero for both ordinary and normalized persistent core pushforwards at rho=0 while recovering the nonzero fixed-radius control; gives an identically zero total exterior residual after lambda=-Q and Q=g.P^- for both identity and a nonidentity exact Lorentz dressing; preserves zero under common orientation reversal; and every predeclared single-error mutation (exterior incidence sign, lambda sign, or omitted/inverted dressing) produces a nonzero residual on at least one witness. Fail on any exact mismatch or ineffective mutation. Inconclusive only if a declared exact input lies outside the representation. The obligation leaves functional differentiability, smooth-germ quantification, seed/right gauge admissibility, primary stabilization, first-class closure, corner polarization, and physical classification of the rank-ten block unsettled.
+
+method:
+  description: >-
+    Exact sparse exterior forms and rational Lorentz matrices using the existing research/computation/exact_graded substrate, with an independently assembled hand-formula cross-check and sign/dressing mutations.
+  rationale: >-
+    The new conclusion is a finite sign-, factor-, and dressing-sensitive algebraic bridge. Exact canonical arithmetic is stronger and smaller-trust than floating sampling; the existing stable substrate already supplies the needed wedge, epsilon, and rational-matrix operations, so no new environment or reusable infrastructure is justified.
+
+representation:
+  mathematical_domain: >-
+    Finite sparse exterior forms over the free rational polynomial ring in
+    rho, R, tau, kappa4_inv, and kappa5_inv, together with six-component
+    rational/polynomial Lorentz bivectors and exact 4x4/6x6 rational maps.
+  operations_required:
+    - "ordered epsilon sums and canonical wedge products in dimensions four and five"
+    - "rightmost-circle-leg extraction for ordinary and normalized pushforward"
+    - "simultaneous exact substitution at rho=0 and at fixed-radius coupling relations"
+    - "exact Lorentz adjoint construction, inverse dressing, vector addition, and zero/nonzero comparison"
+  exact_and_canonical_representation: >-
+    Exterior monomials are sorted in caller-declared bases and coefficients are
+    canonical sparse polynomials over Fraction.  Lorentz pairs have one fixed
+    coordinate order.  No quotient relation or approximate limit is required.
+  equality_semantics: >-
+    Equality is canonical sparse-map equality for forms and exact entrywise
+    equality for vectors and matrices.  Collapse is the exact substitution
+    rho=0, not a floating small-radius test.
+  encoded_conventions: >-
+    The implementation explicitly encodes both internal epsilon orientations,
+    ordered antisymmetric-pair multiplicity, dx1<dx2<dtheta, ordinary versus
+    normalized circle mass, exterior incidence sign, shell signs, Lorentz
+    signature, adjoint direction, and common orientation reversal.
+  cas_trust_if_used: >-
+    A general CAS would add parsing, assumptions, simplification, and matrix
+    semantics to the trusted surface.  It is unnecessary and is not used.
+  domain_specific_kernel_assessment: >-
+    The existing exact_graded kernel already supplies the small decidable
+    exterior/epsilon/polynomial domain.  A new reusable Lorentz or pushforward
+    package for this one claim-specific bridge would add more risk than trust.
+  existing_implementation_adequacy: >-
+    The frozen standard-library-only exact_graded public API is sufficient;
+    the remaining pushforward, adjoint, shell residual, and mutations are short
+    claim-specific functions in O007/run.py.
+  custom_infrastructure_risk: >-
+    No dependency, environment change, compatibility work, reusable solver, or
+    missing primitive was found.  Engineer delegation would enlarge the
+    producer/trust surface without adding scientific capability.
+  independent_checks:
+    - "A local dense permutation/word calculation reconstructs the 03 Palatini components without using the sparse epsilon/wedge assembly path."
+    - "The rational boost of the planar P03 witness is checked against the hand values Q03=5/6 and Q13=2/3 at kappa4_inv=1."
+    - "Each isolated sign or dressing mutation must leave a nonzero exact residual."
+
+controls:
+  positive:
+    - "P01: ordered 4D and persistent 5D Palatini assembly has coefficients 1/4 and agrees with a dense hand count"
+    - "P02: ordinary and normalized core pushforwards are respectively tau*rho and rho times the declared form and vanish exactly at rho=0"
+    - "P03: fixed R>0 gives a nonzero momentum and matches P^- under kappa4_inv=tau*R*kappa5_inv (or R*kappa5_inv when normalized)"
+    - "P04: the total exterior residual vanishes for identity and exact nonidentity dressing on lambda=-Q, Q=g.P^-"
+    - "P05: common orientation reversal preserves the cancellation"
+  mutations:
+    - "M01 exterior-sign: replace -P^- by +P^-"
+    - "M02 lambda-sign: impose lambda=+Q instead of lambda=-Q"
+    - "M03 dressing-omit: compare lambda directly with P^-"
+    - "M04 dressing-invert: apply Ad_g rather than Ad_(g^-1) to lambda"
+
+implementation:
+  # Repository-relative entrypoint executed by scripts/run_check.py.
+  entrypoint: "research/checks/O007/run.py"
+  # Repository-relative reusable machinery this obligation depends on, normally
+  # under research/computation/. Also list material research-environment
+  # manifests, locks, container definitions, and build records under
+  # research/environment/. The runner fingerprints files and directories, so a
+  # change makes the recorded result stale.
+  infrastructure:
+    - "research/computation/exact_graded"
+    - "pyproject.toml"
+    - "scripts/_research.py"
+    - "scripts/run_check.py"
+    - "uv.lock"
+  producer_models: ["openai/gpt-5.6-sol"]
+  infrastructure_producer_models: ["openai/gpt-5.6-sol"]
+
+independence:
+  # not-required | recommended | required
+  requirement: "not-required"
+  rationale: >-
+    This intermediate wave result needs a discriminating regression against convention errors, not a second purportedly independent implementation. The check will share existing infrastructure and is explicitly correlated; analytic derivation plus same-model critique remain the primary reasoning evidence.
+
+created_at: "2026-08-22T08:39:45Z"
+updated_at: "2026-08-22T00:00:00Z"

@@ -1,0 +1,172 @@
+schema_version: 1
+id: "O011"
+title: >-
+  Inverse-source stress and NEC bridge
+
+# Scientific targets. At least one claim or derivation should be linked once the
+# obligation is attached to the research record.
+claims: ["C023"]
+derivations: ["D020"]
+
+# Generic, method-neutral classification. Allowed values:
+#   exact-symbolic | formal | numerical | convergence | independent-implementation
+#   limiting-case | symmetry | dimensional | counterexample | other
+# The class describes what kind of assertion is being tested. It does not select
+# a library, language, or tool; the research chooses the method.
+class: "exact-symbolic"
+
+# required: true means this obligation is part of the currently declared
+# verification strategy for its target claims. A required active obligation
+# without a passing result blocks the structural computational gate.
+required: true
+
+# active | superseded. Superseded obligations remain durable history and do not
+# block the current strategy. Do not delete failed history to clear the gate.
+status: active
+
+# The exact mathematical question tested, stated so that a reader can tell what
+# is NOT tested.
+question: >-
+  Under the C023/D020 common-warp, zero-spin-current conventions, do exact Lorentzian curvature contractions, exact differentiation of both D002 profiles, formal flat-germ order bookkeeping, and absolute-volume identities reproduce the claimed unbounded orthonormal curvature/stress, componentwise local L1 stress, and two-channel NEC violation near s=0?
+
+# Assumptions the executable check encodes: conventions, normalizations, domains,
+# regularity, parameter ranges, representation choices, and anything the
+# implementation takes for granted.
+assumptions:
+  - >-
+    The calculation is restricted to the nondegenerate open core s>0 with
+    E^i=w(s)dx^i for i=0,1,2, E^3=ds, E^4=rho(s)dtheta, signature
+    diag(-,+,+,+,+), the D004 curvature convention, kappa_5>0, and finite
+    constant Lambda_5. Zero spin current is assumed, so the D019 torsion-free
+    curvature families apply.
+  - >-
+    The circle profile is exactly rho=ell exp[-(L/s)^nu] for nu=2 or nu=4,
+    with ell,L,s positive. The extension of w by one on s<=0 is C-infinity;
+    the executable treats the resulting arbitrary-order flatness of w-1 and
+    its derivatives as a declared analytic premise rather than attempting to
+    prove that theorem.
+  - >-
+    Stress is defined, not dynamically realized, by
+    G_AB+Lambda_5 eta_AB=kappa_5 T_AB. Boundedness means bounded orthonormal
+    components; local integrability is componentwise absolute L1 against the
+    radial five-volume weight w^3 rho ds on compact tangential cells; and the
+    NEC is required for every orthonormal null vector.
+  - >-
+    No matter Lagrangian, torsion/spin source, distributional endpoint tensor,
+    D005 alteration, anisotropic or off-diagonal field, moving interface,
+    alternative action, or weaker regularity/topology is represented.
+  - >-
+    Coefficients, Laurent exponents, exterior/component contractions, and
+    formal asymptotic orders are exact and deterministic. Floats, tolerances,
+    randomization, finite sampling of smooth warps, and heuristic
+    simplification are forbidden.
+
+# Predeclared pass/fail/inconclusive criterion. Write this before implementing.
+acceptance_criterion: >-
+  Pass iff one exact canonical execution establishes all of the following under
+  the encoded D020 assumptions: (1) contracting the four D019 curvature
+  families with signature (-,+,+,+,+) yields G_ij=F eta_ij, G_33=H,
+  G_44=J and hence exactly the five C023 stress entries with ten off-diagonal
+  zeros; (2) reduction by k.k=0 yields
+  kappa_5 T_AB k^A k^B=(H-F)k3^2+(J-F)k4^2, with
+  H-F=2A^2+q-2p-r and J-F=p+2A^2-2q-r, and each coefficient is necessary by
+  an explicit null-vector witness; (3) exact differentiation for nu=2 and
+  nu=4 yields the stated B and r expressions, exact eventual-positivity
+  thresholds, and positive divergent leading terms; (4) an explicit
+  formal-order representation of the declared flat-germ premise shows
+  A,p,A^2,q and F-r,H,J are flat against the fixed polynomial profile
+  divergences, without claiming to prove the analytic flat-germ theorem;
+  (5) rho r=rho'' and positivity give a finite integral of rho |r| while r
+  itself is unbounded, and the weighted r^2 terms reduce to exponentially
+  damped fixed inverse powers; (6) the resulting verdict for each profile is
+  curvature unbounded, stress unbounded, componentwise absolute stress L1,
+  and both independent NEC coefficients eventually negative; and (7)
+  isolated mutations of the timelike stress sign, one profile-derivative
+  sign, omission of either NEC channel, and conflation of weighted
+  integrability with pointwise boundedness are each detected. Fail on any
+  exact mismatch or ineffective mutation. Return inconclusive only for a
+  predeclared unsupported representation case, never for a scientific
+  mismatch; execution exceptions are errors.
+
+method:
+  description: >-
+    Exact Lorentzian component contraction and sparse rational/polynomial arithmetic, augmented by a small explicit exponent/order representation for the two fixed profiles and the declared flat-germ premise; use analytic endpoint identities rather than floating sampling or heuristic simplification.
+  rationale: >-
+    The load-bearing risks are finite metric signs, profile derivative exponents, null-condition elimination, and confusing exponential volume suppression with pointwise boundedness. These admit canonical exact arithmetic and explicit asymptotic order rules; numerical sampling would be weaker and a general CAS would add unnecessary simplification assumptions.
+  representation: >-
+    The claim-local implementation represents curvature, Ricci, Einstein, stress,
+    and null-contraction coefficients as canonical sparse polynomials over exact
+    rational coefficients in A^2,p,q,r,Lambda_5. Profile logarithms and their
+    derivatives are canonical Laurent maps c L^a s^b with exact integer
+    exponents. Arbitrary-order flatness is a two-kind formal order domain:
+    finite powers and a declared flat element that remains flat after any fixed
+    polynomial shift. Sign conclusions use exact positive factorizations and
+    D002 exponential domination, not an order oracle.
+  equality: >-
+    Equality is decidable tuple equality after zero-coefficient collection and
+    lexicographic sorting of sparse polynomial or Laurent maps. Tensor indices
+    are finite integers 0 through 4 with eta=diag(-,+,+,+,+); all ten sectional
+    planes and symmetric off-diagonal positions are explicitly enumerated.
+    Formal-order equality distinguishes finite power from arbitrary-order flat.
+  trust_surface: >-
+    Trusted computation is limited to Python integer/Fraction arithmetic, short
+    claim-local sparse-map operations, explicit finite Lorentzian contractions,
+    the declared D002 flat-germ and exponential-domination premises, and the
+    root deterministic wrapper when canonically run. No CAS, floating library,
+    simplifier, random sampler, or external theorem checker is used. The target
+    Einstein vector is not inserted: Ricci and scalar curvature are contracted
+    from the four curvature families.
+  imports_and_reconstruction: >-
+    Imported assumptions are the D019 curvature families and convention, the
+    D002 exact profiles plus flatness/exponential-domination inputs, the D004
+    Einstein normalization, positivity of ell,L,s,kappa_5, finite Lambda_5, and
+    the declared arbitrary-order flat-germ premise for w-1. Reconstructed are
+    Ricci/scalar/Einstein contraction, all effective-stress entries, all-null
+    reduction, both profile derivative tables, exact positivity thresholds,
+    asymptotic order consequences, and weighted endpoint identities.
+  existing_infrastructure_adequacy: >-
+    The existing exact_graded kernel is sound but not useful here: it deliberately
+    forbids negative polynomial exponents and does not automate tensors or
+    smooth-germ/asymptotic orders. Importing it would not remove claim-local
+    contraction or Laurent/order code and would enlarge the fingerprinted trust
+    surface. A self-contained small implementation is safer; no Engineer or new
+    environment is justified.
+  alternate_assembly: >-
+    Exact product-space/unwarped limits, independently assembled null witnesses,
+    endpoint derivative identities, and five isolated semantic mutation runs
+    control signs and coverage. They share the source conventions, claim-local
+    code, Python arithmetic, and openai/gpt-5.6-sol producer, so they are
+    correlated controls rather than independent verification.
+
+controls:
+  mutations:
+    - "reverse the covariant timelike effective-stress sign and require exact component comparison to fail"
+    - "reverse B for the nu=2 profile before constructing r and require the derivative table to fail"
+    - "omit the normal NEC channel and require complete-channel coverage to fail"
+    - "omit the circle NEC channel and require complete-channel coverage to fail"
+    - "infer pointwise stress boundedness from weighted L1 finiteness and require the combined verdict to fail"
+
+implementation:
+  # Repository-relative entrypoint executed by scripts/run_check.py.
+  entrypoint: "research/checks/O011/run.py"
+  # Repository-relative reusable machinery this obligation depends on, normally
+  # under research/computation/. Also list material research-environment
+  # manifests, locks, container definitions, and build records under
+  # research/environment/. The runner fingerprints files and directories, so a
+  # change makes the recorded result stale.
+  infrastructure:
+    - "pyproject.toml"
+    - "scripts/_research.py"
+    - "scripts/run_check.py"
+    - "uv.lock"
+  producer_models: ["openai/gpt-5.6-sol"]
+  infrastructure_producer_models: ["openai/gpt-5.6-sol"]
+
+independence:
+  # not-required | recommended | required
+  requirement: "recommended"
+  rationale: >-
+    C023 is a critical but restricted intermediate claim. A separately assembled component/null-contraction path plus semantic mutations is proportionate now; a second full implementation or final independent audit is not yet warranted because the analytic flat-germ theorem remains outside the executable assertion and broad C002/C003 are undecided.
+
+created_at: "2026-08-22T15:17:40Z"
+updated_at: "2026-08-22T15:17:40Z"

@@ -431,3 +431,244 @@ claims:
     conflicts: []
     created_at: "2026-08-20T16:10:00Z"
     updated_at: "2026-08-21T21:05:00Z"
+
+  - id: C017
+    claim: >-
+      In the fixed-interface basic persistent SO(1,3) Stueckelberg sector of D005, with the regular quotient-equalizer class and the unshifted D004/D005 Palatini-interface polarization, the persistent five-dimensional core Lorentz cut moment map has zero ordinary and normalized-circle pushforward, while the exterior Palatini cut term -P^- exactly cancels the interface term Ad_(g^-1)Q on the matching shell lambda=-Q and Q=g.P^-; this is a constraint-surface cancellation, not an off-shell identity, and it does not classify the residual rank-ten shell block as gauge, physical, or second class.
+    status: derived
+    importance: critical
+    hypotheses: [H002, H003]
+    assumptions:
+      - The interface is fixed and timelike, the marked circle period is fixed, and only basic theta-independent persistent SO(1,3) fields and small transformations are retained.
+      - The regular five-dimensional fields and tangent variations obey the D002 quotient equalizer; no profile-divided, distributional, or independent bulk trace is added.
+      - The action, ordered-pair normalization, orientations, dressing conventions, and unshifted boundary polarization are those of D004-D006, with no additional corner symplectic potential.
+      - The cancellation is evaluated on the D005 algebraic matching shell; no claim of complete primary stabilization, first-class closure, corner-gauge admissibility, or reduced degree count is included.
+    evidence:
+      derivations: [D008, D009]
+      experiments: []
+      literature: []
+      computational_checks: [O007]
+      verification: []
+    checks:
+      dimensional_analysis: passed
+      limiting_cases: passed
+      independent_verification: not-requested
+      computational_verification: passed
+    dependencies: [C015, C016]
+    conflicts: []
+    created_at: "2026-08-22T08:39:07Z"
+    updated_at: "2026-08-22T08:48:31Z"
+
+  - id: C018
+    claim: >-
+      For fixed gauge-equivariant, locally trace-surjective one-sided persistent trace maps in the regular D004 equalizer class, the duplicated-trace extension of the D005 fixed-seed Stueckelberg action, with explicit covariant gluing multipliers and Lorentz parameters proper at temporal and lateral outer corners, is Euler-equivalent to the intrinsic-trace D005 action after algebraic gluing elimination and induces the same cut presymplectic potential on the clean gluing surface; this is a conditional local equivalence and does not establish existence of the trace lifts, equality of unreduced primary matrices, or equivalence of post-gluing Dirac brackets.
+    status: derived
+    importance: critical
+    hypotheses: [H002, H003]
+    assumptions:
+      - The persistent coframe and affine connection trace maps are fixed, continuous, gauge-equivariant, and locally lift arbitrary compactly supported regular boundary tangents.
+      - The gluing constraints and reaction multipliers form a clean local constant-rank auxiliary sector, with no independent seed or corner potential.
+      - The interface is fixed, the circle period is fixed, fields are basic and theta independent, and Lorentz parameters vanish at temporal endpoints and the lateral boundary.
+    evidence:
+      derivations: [D015]
+      experiments: []
+      literature: []
+      computational_checks: [O008]
+      verification: []
+    checks:
+      dimensional_analysis: passed
+      limiting_cases: passed
+      independent_verification: not-requested
+      computational_verification: passed
+    dependencies: [C015, C016, C017]
+    conflicts: []
+    created_at: "2026-08-22T09:33:33Z"
+    updated_at: "2026-08-22T10:11:06Z"
+
+  - id: C019
+    claim: >-
+      In the regular exact circle-collapse class and the unreduced duplicated-trace presentation of C018, every tangential pullback to C times S1 of the five-dimensional Palatini connection momentum and its coframe derivative, including persistent ab and mixed a4 rows, has zero ordinary and normalized-circle pushforward and therefore zero pre-gluing overlap with the five planar interface-copy dQ_C directions; one-sided normal contraction can instead be nonzero, and no presentation-independent post-gluing bracket conclusion follows.
+    status: derived
+    importance: critical
+    hypotheses: [H002, H003]
+    assumptions:
+      - E4=rho eta and every admissible collapsed-leg or circle-vertical tangent coefficient vanish at the interface in the smooth D002/D004 equalizer class.
+      - Pullback and circle pushforward are kept distinct from contraction with the one-sided spatial normal before restriction.
+      - Bulk and interface-copy coframes are independent until the explicit gluing constraints are stabilized.
+    evidence:
+      derivations: [D016]
+      experiments: []
+      literature: []
+      computational_checks: [O008]
+      verification: []
+    checks:
+      dimensional_analysis: passed
+      limiting_cases: passed
+      independent_verification: not-requested
+      computational_verification: passed
+    dependencies: [C012, C018]
+    conflicts: []
+    created_at: "2026-08-22T09:33:33Z"
+    updated_at: "2026-08-22T10:11:06Z"
+
+  - id: C020
+    claim: >-
+      In the clean local shell reduction of C018 with a nondegenerate exterior spatial triad, fixed seed, no independent seed/corner potential, and a declared finite trace incidence, the complete D005 cut potential reduces to the exterior-frame form integral_C <P^-_C,delta u u^-1>; the combined exterior Palatini/interface defining-primary matrix has rank(dP^-_C)=5 but its Palatini Schur self-correction is exactly zero, leaving six Palatini connection-primary null combinations, a rank-four simple-bivector coadjoint block with two null directions, and six g zero-momentum directions rather than an autonomous rank-ten interface block; preservation and physical classification remain undefined until a functional trace pairing, boundary-compatible background, and total Hamiltonian are supplied.
+    status: derived
+    importance: critical
+    hypotheses: [H002, H003]
+    assumptions:
+      - The gluing and matching shell is a clean embedded local constant-rank constraint surface whose algebraic reaction multipliers can be eliminated before any Lorentz quotient.
+      - The exterior spatial triad is nondegenerate, while its interface pullback lies on the planar rank-three stratum with b=kappa_4^{-1}.
+      - The pointwise trace incidence is fixed, Lorentz parameters are proper at temporal and lateral outer corners, and no singular trace or additional corner/seed kinetic term is present.
+    evidence:
+      derivations: [D017]
+      experiments: []
+      literature: []
+      computational_checks: [O008]
+      verification: []
+    checks:
+      dimensional_analysis: passed
+      limiting_cases: passed
+      independent_verification: not-requested
+      computational_verification: passed
+    dependencies: [C015, C016, C017, C018]
+    conflicts: []
+    created_at: "2026-08-22T09:33:33Z"
+    updated_at: "2026-08-22T10:11:06Z"
+
+  - id: C021
+    claim: >-
+      For the static unwarped cohomogeneity-one ansatz E=(dt,dx,dy,ds,rho(s)dtheta) on the five-dimensional core, with rho>0 for s>0, a C-infinity-flat zero extension to the four-dimensional s<=0 side in the D002 regular equalizer class, source-free D004 Palatini bulks with constant cosmological terms, a flat four-dimensional exterior, and the D005 fixed-seed shell a0=0, g=u=1, K=0 and b=kappa_4^{-1}, the open-core equations force Lambda_5=0 and rho''=0 while exterior flatness forces Lambda_4=0; the interface data rho(0)=rho'(0)=0 then imply rho identically zero, so no positive-radius core background exists in this ansatz, although the candidate planar traces satisfy all stated D005 algebraic and orbit equations.
+    status: derived
+    importance: critical
+    hypotheses: [H002, H003]
+    assumptions:
+      - The persistent directions are unwarped, A=0, E3=ds is proper-normal gauge, the interface is fixed, and the circle period is 2pi.
+      - The D004 bulk actions are source free and contain no matter, Lovelock term, torsion source, singular junction term, or distributional profile; the connection is varied independently and becomes torsion free only on the nondegenerate open core.
+      - The D002 smooth equalizer class requires rho and every normal jet to vanish at the exact-collapse interface; ordinary polar-axis topology and finite-regularity attachment are excluded.
+      - The conclusion is restricted to this static unwarped ansatz and does not exclude warped, sourceful, mixed/nonbasic, moving-interface, or alternative-action backgrounds.
+    evidence:
+      derivations: [D018]
+      experiments: []
+      literature: []
+      computational_checks: [O009]
+      verification: []
+    checks:
+      dimensional_analysis: passed
+      limiting_cases: passed
+      independent_verification: not-requested
+      computational_verification: passed
+    dependencies: [C007, C015]
+    conflicts: []
+    created_at: "2026-08-22T10:27:00Z"
+    updated_at: "2026-08-22T13:25:51Z"
+
+  - id: C022
+    claim: >-
+      For the source-free D004 Einstein-Cartan/Palatini theory with constant cosmological terms, the proper-normal cohomogeneity-one core ansatz E^i=w(s)dx^i for i=0,1,2, E^3=ds and E^4=rho(s)dtheta, with one common 2+1-dimensional persistent warp, w>0 and rho>0 for s>0, a C-infinity-flat extension w=1 and rho=0 for s<=0 in the D002 class, a flat four-dimensional exterior, and the D005 basic fixed-seed shell a0=0, u=g=1 and b=kappa_4^{-1}, the open-core equations imply (w'/rho)'=0 and (w^2)''+(2 Lambda_5/3)w^2=0; the endpoint data then force Lambda_5=Lambda_4=0, w=1 and rho=0, so no positive-radius core exists in this ansatz, although the limiting traces determine K=0 and satisfy all stated D005 shell and fixed-seed orbit equations.
+    status: derived
+    importance: critical
+    hypotheses: [H002, H003]
+    assumptions:
+      - The three persistent interface directions share one isotropic warp factor, E3=ds is proper-normal gauge, the interface is fixed, and the circle period is 2pi.
+      - The D004 bulks are source free and contain no matter, singular or torsion source, Lovelock term, separate lapse, anisotropic warp, off-diagonal field, or distributional junction term.
+      - The D002 regularity class makes w-1 and rho C-infinity flat at the interface; finite-regularity attachment and ordinary polar-axis topology are excluded.
+      - The conclusion is restricted to this diagonal common-warp ansatz and does not exclude more general source-free metrics, sourceful theories, mixed or nonbasic sectors, or moving interfaces.
+    evidence:
+      derivations: [D019]
+      experiments: []
+      literature: []
+      computational_checks: [O010]
+      verification: []
+    checks:
+      dimensional_analysis: passed
+      limiting_cases: passed
+      independent_verification: not-requested
+      computational_verification: passed
+    dependencies: [C007, C015]
+    conflicts: []
+    created_at: "2026-08-22T13:42:49Z"
+    updated_at: "2026-08-22T13:54:12Z"
+
+  - id: C023
+    claim: >-
+      For the D019 proper-normal common-warp core coframe with zero spin current, finite constant Lambda_5, kappa_5>0, either exact D002 profile rho=ell exp[-(L/s)^nu] with nu in {2,4}, and every positive w whose extension by w=1 on s<=0 is C-infinity smooth, the effective open-core tensor defined by G_AB+Lambda_5 eta_AB=kappa_5 T_AB has rho''/rho tending to positive infinity while every warp contribution is flat; consequently an orthonormal curvature component and T_00,T_11,T_22 are unbounded and the 0-3 and 0-4 null contractions are eventually negative, although every absolute orthonormal stress component is locally L1 against the five-volume. Thus bounded curvature/stress, componentwise local stress integrability, and the all-null null energy condition cannot coexist near the endpoint in this restricted ansatz; no covariant matter-action realization is asserted.
+    status: derived
+    importance: critical
+    hypotheses: [H002, H003]
+    assumptions:
+      - The core coframe is E^i=w(s)dx^i for i=0,1,2, E^3=ds, E^4=rho(s)dtheta in proper-normal gauge, with w,rho>0 for s>0 and the exact D002 C-infinity-flat zero-extension data.
+      - The circle profile is exactly rho_1 or rho_2 of D002, kappa_5 is positive, Lambda_5 is finite and constant, and zero spin current makes the D019 torsion-free open-core connection applicable.
+      - Boundedness means bounded orthonormal components; local integrability is componentwise absolute L1 against w^3 rho ds on compact tangential cells; and the NEC is required for every orthonormal null vector.
+      - No matter Lagrangian, torsion/spin source, singular junction, anisotropic or off-diagonal geometry, moving interface, alternative action, or weaker regularity/topology is included.
+    evidence:
+      derivations: [D020]
+      experiments: []
+      literature: []
+      computational_checks: [O011]
+      verification: []
+    checks:
+      dimensional_analysis: passed
+      limiting_cases: passed
+      independent_verification: not-requested
+      computational_verification: passed
+    dependencies: [C007]
+    conflicts: []
+    created_at: "2026-08-22T15:16:54Z"
+    updated_at: "2026-08-22T15:24:41Z"
+
+  - id: C024
+    claim: >-
+      For every one-sided circle radius rho in C^1([0,epsilon)) intersect C^2((0,epsilon)) with rho(0)=rho'_+(0)=0 and rho(s)>0 for s>0, rho''/rho is unbounded above on every punctured endpoint neighborhood, equivalently limsup as s approaches zero from above of rho''/rho is positive infinity; therefore in the torsion-free proper-normal radial-circle metric ds^2+rho(s)^2 dtheta^2 the orthonormal sectional component K_(s theta)=-rho''/rho is unbounded below. In any regular lapse chart ds=N dx with N in C^1, N(0)>0, the same invariant is -[rho_xx-(N_x/N)rho_x]/(N^2 rho). No actual limit, eventual sign, stress, NEC, integrability, matter-realization, or universal rank-change conclusion follows.
+    status: derived
+    importance: critical
+    hypotheses: [H002, H003]
+    assumptions:
+      - The radius is C^1 through the one-sided endpoint, C^2 on the nondegenerate punctured side, strictly positive there, and has both zero endpoint value and zero outward proper-distance derivative.
+      - The radial-circle metric is torsion-free and diagonal in proper-normal gauge; the curvature statement concerns the punctured nondegenerate side, not a tensor or distribution defined at the endpoint.
+      - Equivalent lapse coordinates are regular endpoint charts with positive finite lapse and sufficient differentiability; singular reparametrizations and raw coordinate rho_xx/rho are excluded from the invariant statement.
+      - No field equation, common-warp asymptotic dominance, source model, energy condition, or stronger smooth-flat profile property is assumed.
+    evidence:
+      derivations: [D021]
+      experiments: []
+      literature: []
+      computational_checks: []
+      verification: []
+    checks:
+      dimensional_analysis: passed
+      limiting_cases: passed
+      independent_verification: not-requested
+      computational_verification: pending
+    dependencies: []
+    conflicts: []
+    created_at: "2026-08-22T15:51:18Z"
+    updated_at: "2026-08-22T15:51:18Z"
+
+  - id: C025
+    claim: >-
+      For the exact D002 quotient topology with flat persistent coframes, rho=c s on the positive core for fixed c>0 and zero on the open collapsed side, zero cosmological constants, source-free D004 split Palatini bulks, and the unchanged D005 fixed-seed basic persistent SO(1,3) shell, the punctured core and exterior are separately flat and every persistent D005 shell/orbit equation is satisfied; however, in the declared minimum finite first-order tangent class a free vertical mixed trace delta omega^{43}=delta chi^{43} dtheta contributes +(2pi/kappa_5) delta chi^{43} o_Sigma to the core boundary potential, while D005 has no conjugate mixed term, so stationarity forces the intended rank-three triad volume to vanish. A candidate background remains only after both the polar slope and mixed holonomy are fixed externally, and that fixed-boundary sector establishes neither C002 nor C003.
+    status: derived
+    importance: critical
+    hypotheses: [H002, H003]
+    assumptions:
+      - The interface is fixed, theta has period 2pi, c is positive, the core coframe is E^a=(du0,du1,du2,ds) and E^4=c s dtheta for s>0, and the four-dimensional exterior is flat.
+      - D004 orientations, ordered antisymmetric-pair sums, independent coframe/connection variation, and source-free split bulk actions are retained with Lambda_5=Lambda_4=0.
+      - The finite tangent class has one-sided smooth core connections with a free finite mixed boundary trace delta chi^{43}; the D005 interface action remains restricted to its basic persistent SO(1,3) fields and contains no new mixed counterterm.
+      - The fixed-five-dimensional BV zero extension and its distributional curvature are bookkeeping controls only, not an intrinsic quotient calculus or part of the split action.
+      - Matter, torsion sources, Lovelock or transgression terms, off-diagonal/nonbasic fields, moving interfaces, full mixed SO(1,4) shell dynamics, Hamiltonian closure, and hyperbolicity are excluded.
+    evidence:
+      derivations: [D022]
+      experiments: []
+      literature: []
+      computational_checks: [O012]
+      verification: []
+    checks:
+      dimensional_analysis: passed
+      limiting_cases: passed
+      independent_verification: not-requested
+      computational_verification: passed
+    dependencies: [C015]
+    conflicts: []
+    created_at: "2026-08-22T18:05:00Z"
+    updated_at: "2026-08-22T18:05:00Z"

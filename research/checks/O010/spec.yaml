@@ -1,0 +1,148 @@
+schema_version: 1
+id: "O010"
+title: >-
+  Minimal warped background equations
+
+# Scientific targets. At least one claim or derivation should be linked once the
+# obligation is attached to the research record.
+claims: ["C022"]
+derivations: ["D019"]
+
+# Generic, method-neutral classification. Allowed values:
+#   exact-symbolic | formal | numerical | convergence | independent-implementation
+#   limiting-case | symmetry | dimensional | counterexample | other
+# The class describes what kind of assertion is being tested. It does not select
+# a library, language, or tool; the research chooses the method.
+class: "exact-symbolic"
+
+# required: true means this obligation is part of the currently declared
+# verification strategy for its target claims. A required active obligation
+# without a passing result blocks the structural computational gate.
+required: true
+
+# active | superseded. Superseded obligations remain durable history and do not
+# block the current strategy. Do not delete failed history to clear the gate.
+status: active
+
+# The exact mathematical question tested, stated so that a reader can tell what
+# is NOT tested.
+question: >-
+  Under the D019 common-warp ansatz and frozen D002/D004/D005 conventions, do an exact Cartan solve, curvature reconstruction, complete five-form Palatini Euler enumeration, regular endpoint reduction, branch-preserving first-integral analysis, and shell/orbit substitution reproduce the restricted nonexistence bridge claimed in C022?
+
+# Assumptions the executable check encodes: conventions, normalizations, domains,
+# regularity, parameter ranges, representation choices, and anything the
+# implementation takes for granted.
+assumptions:
+  - >-
+    The calculation is restricted to the connected invertible core s>0 with
+    E^i=w(s)dx^i for i=0,1,2, E^3=ds, E^4=rho(s)dtheta, w>0, rho>0,
+    signature diag(-,+,+,+,+), epsilon_01234=+1, and the D004 curvature
+    convention. Torsionlessness is solved from the complete Cartan system only
+    on that open core; no inverse coframe is used at s=0.
+  - >-
+    The five- and four-dimensional actions, Euler prefactors, and ordered
+    antisymmetric-pair sums are exactly D004. Cosmological terms are constant;
+    matter, singular or torsion sources, Lovelock terms, a separate lapse,
+    anisotropic warps, off-diagonal fields, and moving-interface terms are absent.
+  - >-
+    The D002 attachment has w=1 and rho=0 for s<=0, with endpoint data
+    w(0)=1, w'(0)=w''(0)=0 and rho(0)=rho'(0)=0. The polar negative control
+    deliberately removes rho'(0)=0. The exterior coframe is flat with zero
+    connection and curvature.
+  - >-
+    The shell is the D005 basic fixed-seed branch with a0=0, u=g=1,
+    b=kappa_4^-1, constant planar coframe traces, and proper outer corners.
+    K=0 must be recovered from the limiting persistent connection rather than
+    inserted as an unexplained shell consequence.
+  - >-
+    Coefficients are exact fractions and sparse polynomials in named atoms;
+    exterior words use explicit ordered bases. Equality is canonical sparse-map
+    or exact rational equality. Floats, tolerances, randomization, and heuristic
+    simplification are forbidden.
+
+# Predeclared pass/fail/inconclusive criterion. Write this before implementing.
+acceptance_criterion: >-
+  Pass iff exact canonical arithmetic establishes all of the following under the
+  encoded assumptions: (1) the 50-coefficient open-core Cartan system has full
+  rank and the unique nonzero independent connection families are
+  omega^(i3)=A E^i for i=0,1,2 and omega^(43)=B E^4; (2) the only curvature
+  families are R^(ij)=-A^2 E^(ij), R^(i3)=-p E^(i3),
+  R^(i4)=-q E^(i4), and R^(34)=-r E^(34), with every other residual zero;
+  (3) ordered-pair D004 Euler enumeration gives the coefficient vector
+  (S,S,S,H,J), with common overall -Xi_A/kappa_5,
+  S=2p+A^2+2q+r+Lambda_5, H=3A^2+3q+Lambda_5, and
+  J=3p+3A^2+Lambda_5; (4) exact regular-coordinate identities reproduce D019
+  (16a-c), H-J yields w''rho-w'rho'=0 and hence (w'/rho)'=0 on rho>0
+  without dividing by w', and both C=0 and C!=0 branches remain represented;
+  (5) the declared endpoint jets force Lambda_5=0, w=1, rho''=0, and rho=0,
+  while deleting rho'(0)=0 retains the affine polar control; (6) a flat
+  exterior forces Lambda_4=0 and every D005 matching, momentum, companion,
+  g-equation, and fixed-seed orbit residual vanishes with Q=P^- and K=0;
+  (7) the unwarped and constant-curvature controls reproduce D018 and D004;
+  and (8) isolated mutations of the R^(ij) sign, cosmological normalization,
+  circle-Euler equation coverage, and the rho'(0) endpoint jet are each
+  detected. Fail on any exact mismatch or ineffective mutation. Return
+  inconclusive only for a predeclared unsupported representation/domain case,
+  not for a scientific mismatch; implementation exceptions are errors.
+
+method:
+  description: >-
+    Exact sparse exterior algebra and rational linear algebra using the existing fingerprinted `research/computation/exact_graded/` kernel, plus a separately assembled component/ODE control path and process-local semantic mutations.
+  rationale: >-
+    The disputed assertions are finite polynomial exterior identities, exact ranks, and endpoint ideal implications. Canonical rational/polynomial arithmetic is stronger and more transparent than floating integration or heuristic CAS simplification, while the existing tested kernel already supports the required wedge, epsilon, and RREF operations without new infrastructure.
+  representation: >-
+    The Cartan solve is a 50-unknown rational linear system in coframe
+    coefficients. Curvature and Euler forms are canonical sparse exterior maps
+    over exact polynomials in A,p,q,r,Lambda_5. Endpoint and branch assertions
+    use explicit polynomial identities and small rational systems.
+  equality: >-
+    Equality is deterministic RREF or canonical polynomial/exterior-map
+    equality. Ratios A=w'/w and B=rho'/rho occur only on w,rho>0; all endpoint
+    assertions use the denominator-cleared regular coordinate equations.
+  trust_surface: >-
+    Trusted components are Python Fraction arithmetic, the fingerprinted
+    exact_graded wedge/epsilon/RREF primitives, short O010-specific Cartan and
+    Euler enumeration, and the deterministic wrapper. No CAS is used because
+    this finite canonical domain is decidable without heuristic simplification.
+  existing_infrastructure_adequacy: >-
+    exact_graded already supplies every reusable primitive. The warped ansatz,
+    ODE reductions, shell substitutions, and mutations are claim-specific; no
+    Engineer work or new research environment is justified.
+  alternate_assembly: >-
+    A separately written component Einstein/constant-curvature route and direct
+    regular-ODE identities must cross-check the epsilon Euler path. These paths
+    share conventions, arithmetic, and producer model and are correlated rather
+    than an independent implementation.
+
+controls:
+  mutations:
+    - "reverse the R^(ij) sign and require the Euler/constant-curvature checks to fail"
+    - "alter the cosmological normalization and require the Euler target to fail"
+    - "omit the circle Euler equation and require equation-coverage failure"
+    - "delete rho'(0)=0 and require endpoint uniqueness failure"
+
+implementation:
+  # Repository-relative entrypoint executed by scripts/run_check.py.
+  entrypoint: "research/checks/O010/run.py"
+  # Repository-relative reusable machinery this obligation depends on, normally
+  # under research/computation/. Also list material research-environment
+  # manifests, locks, container definitions, and build records under
+  # research/environment/. The runner fingerprints files and directories, so a
+  # change makes the recorded result stale.
+  infrastructure:
+    - "research/computation/exact_graded"
+    - "pyproject.toml"
+    - "scripts/_research.py"
+    - "scripts/run_check.py"
+    - "uv.lock"
+  producer_models: ["openai/gpt-5.6-sol"]
+  infrastructure_producer_models: ["openai/gpt-5.6-sol"]
+
+independence:
+  # not-required | recommended | required
+  requirement: "recommended"
+  rationale: >-
+    The conclusion is sensitive to correlated sign, ordered-pair, and equation-coverage errors. A separately assembled component Einstein/ODE path and mutation controls are warranted inside the obligation, but a second full implementation is not presently proportionate because the finite exact system is small and the result remains a restricted intermediate claim.
+
+created_at: "2026-08-22T13:43:31Z"
+updated_at: "2026-08-22T13:43:50Z"

@@ -1,0 +1,141 @@
+schema_version: 1
+id: "O008"
+title: >-
+  Duplicated-trace primary reduction bridge
+
+# Scientific targets. At least one claim or derivation should be linked once the
+# obligation is attached to the research record.
+claims: ["C018", "C019", "C020"]
+derivations: ["D015", "D016", "D017"]
+
+# Generic, method-neutral classification. Allowed values:
+#   exact-symbolic | formal | numerical | convergence | independent-implementation
+#   limiting-case | symmetry | dimensional | counterexample | other
+# The class describes what kind of assertion is being tested. It does not select
+# a library, language, or tool; the research chooses the method.
+class: "exact-symbolic"
+
+# required: true means this obligation is part of the currently declared
+# verification strategy for its target claims. A required active obligation
+# without a passing result blocks the structural computational gate.
+required: true
+
+# active | superseded. Superseded obligations remain durable history and do not
+# block the current strategy. Do not delete failed history to clear the gate.
+status: active
+
+# The exact mathematical question tested, stated so that a reader can tell what
+# is NOT tested.
+question: >-
+  In the frozen regular planar duplicated-trace representation of D015-D017, do exact gluing elimination, the five-dimensional tangential Palatini trace table, the complete D005 shell-potential pullback, and the exterior Palatini defining Schur reduction reproduce C018-C020 without an autonomous rank-ten interface block? Concretely: do gluing coefficients eliminate to the D005 equations with the D004 exterior incidence sign; do all tangentially pulled/pushed 5D P_AB and dP_AB rows vanish while the declared mixed-row normal-contraction witness is nonzero; does <lambda,xi_g>+<Q,xi_g+Ad_g zeta_u> reduce on lambda=-Q and Q=g.P to <P,zeta_u> with a zero g block; and does the exact planar exterior matrix have rank(A)=12, rank(I_C A)=5, zero Palatini Schur self-correction for every admissible invertible row complement, six ker(A^T) rows, rank(A_P)=4 with kernel span(T03,T12), plus the exact matching-tangency identity?
+
+# Assumptions the executable check encodes: conventions, normalizations, domains,
+# regularity, parameter ranges, representation choices, and anything the
+# implementation takes for granted.
+assumptions:
+  - >-
+    The obligation is local and pointwise on the frozen fixed planar interface.
+    The continuum persistent coframe and affine-connection trace maps are fixed,
+    gauge equivariant, continuous, and locally trace-surjective on compactly
+    supported regular tangents; the gluing/matching shell is clean and of local
+    constant rank. These properties are assumptions, not computational outputs.
+  - >-
+    The regular equalizer has E4=rho eta with rho=delta rho=0 at exact collapse;
+    persistent fields are basic, every admissible collapsed-leg or circle-vertical
+    tangent coefficient vanishes there, and no profile division, singular trace,
+    distributional bracket, or functional trace adjoint is introduced. Pullback
+    and circle pushforward are distinct from contraction with the one-sided ds normal.
+  - >-
+    Internal orientations are epsilon_01234=epsilon_0123=+1, signature is
+    diag(-,+,+,+), antisymmetric Lorentz pairs are (01,02,03,12,13,23), and
+    ordered contracted pairs give P_ab=(4 kappa4)^-1 epsilon_abcd e^c wedge e^d.
+    Spatial forms use dx1<dx2<ds, with dtheta last on the resolved cut.
+  - >-
+    The exterior spatial coframe is the nondegenerate adapted triad
+    e1=dx1,e2=dx2,e3=ds,e0=0; its cut pullback is planar. The finite incidence
+    I_C retains the dx1 wedge dx2 coefficient in each Lorentz row. Overall
+    inverse-kappa scales are set to one for ranks and retained as the declared
+    1/(2 kappa5) in the normal witnesses.
+  - >-
+    The D005 fixed-seed shell is lambda=-Q, Q=g.P, with no independent seed or
+    corner potential and Lorentz parameters proper at temporal and lateral outer
+    corners. The complete cut potential is evaluated before any quotient;
+    therefore g is retained as six zero-momentum directions.
+  - >-
+    All calculations use exact Fraction coefficients, canonical sparse exterior
+    maps, and exact rational matrices. There are no floats, tolerances, random
+    samples, heuristic simplification, or general-purpose CAS.
+
+# Predeclared pass/fail/inconclusive criterion. Write this before implementing.
+acceptance_criterion: >-
+  Pass iff an exact canonical representation verifies every declared coefficient, zero, nonzero witness, rank, nullspace, potential-pullback, gluing-elimination, complement-independent Schur, g-null, and matching-tangency assertion, and predeclared mutations of the exterior incidence sign, one shell-potential sign, deletion of the Lorentz frame commutator, and insertion of a connection-half group coupling each fail at least one targeted assertion. Fail on any exact mismatch, missing null certificate, nonzero supposed residual, wrong rank, an admissible complement with nonzero unmutated Schur correction, or an ineffective required mutation. Inconclusive only if a predeclared exact domain operation or admissible-complement enumeration is unsupported before any scientific comparison; runtime exceptions or malformed outputs are execution errors, not inconclusive.
+
+method:
+  description: >-
+    Exact finite exterior-algebra, Lorentz-adjoint, and rational-matrix reconstruction in the declared planar bases, with a separately assembled dense/permutation or direct analytic cross-check for conclusion-critical coefficients and complements.
+  rationale: >-
+    All adopted assertions are finite polynomial, exterior-sign, adjoint, rank, nullspace, and Schur identities over rational coefficients once the regular tangential pullback and planar incidence are frozen. Exact canonical arithmetic can discriminate sign, factor, omitted-row, and illicit-additive-rank errors without importing a functional trace adjoint or pretending to test preservation.
+
+representation:
+  mathematical_domains:
+    - "formal finite gluing-variation coefficients with named trace operators"
+    - "4D and 5D free exterior algebras in adapted spatial/cut bases"
+    - "exact rational Lorentz bivectors, adjoint/coadjoint maps, and primary matrices"
+  coefficient_and_basis_conventions: >-
+    Coefficients are fractions. Exterior words canonicalize in the declared
+    dx1<dx2<ds<dtheta order; internal epsilon orientations and Lorentz-pair order
+    are explicit. A has rows (pair,dx1dx2|dx1ds|dx2ds) and columns
+    (dx1|dx2|ds, internal 0|1|2|3). Equality is exact canonical-map or entrywise
+    Fraction equality.
+  primitive_operations: >-
+    Ordered epsilon sums, wedge, pullback ds->0, rightmost-circle extraction,
+    left normal contraction, exact differentiation by one coframe replacement,
+    Lorentz brackets and dressing, rational RREF/rank/nullspace/inversion, finite
+    incidence, block assembly, and exhaustive coordinate-complement enumeration.
+  canonical_equality: >-
+    Exterior monomials and coefficients are canonical sparse maps; matrices use
+    immutable row-major Fraction tuples. No simplifier or numerical zero test is
+    an equality oracle.
+  existing_implementation_adequacy: >-
+    The assessed exact_graded public API is adequate for exterior canonicalization,
+    epsilon signs, and exact matrix rank/nullspace. O008 needs matrix multiplication,
+    inversion, Lorentz dressing, incidence, complement enumeration, and mutations
+    only claim-locally; adding reusable infrastructure would enlarge risk without
+    serving another declared consumer. No Engineer is needed.
+  trust_surface_and_shared_failure_risks: >-
+    Trusted methodology is Python Fraction plus exact_graded wedge/epsilon/RREF.
+    The obligation shares D004-D006 conventions and exact_graded with O005-O007,
+    so agreement is correlated. It does not test continuum trace existence,
+    surjectivity, clean-shell global validity, or a functional trace adjoint.
+  alternate_assembly: >-
+    A second dense coefficient path constructs dP from an explicit two-letter
+    wedge-sign table rather than the sparse Palatini helper, then assembles I_C A
+    independently. A direct block multiplication proves the unmutated Schur zero,
+    while all 18564 twelve-row subsets of the primary A are deterministically
+    examined to cover every admissible coordinate complement.
+
+implementation:
+  # Repository-relative entrypoint executed by scripts/run_check.py.
+  entrypoint: "research/checks/O008/run.py"
+  # Repository-relative reusable machinery this obligation depends on, normally
+  # under research/computation/. Also list material research-environment
+  # manifests, locks, container definitions, and build records under
+  # research/environment/. The runner fingerprints files and directories, so a
+  # change makes the recorded result stale.
+  infrastructure:
+    - "research/computation/exact_graded"
+    - "pyproject.toml"
+    - "scripts/_research.py"
+    - "scripts/run_check.py"
+    - "uv.lock"
+  producer_models: ["openai/gpt-5.6-sol"]
+  infrastructure_producer_models: ["openai/gpt-5.6-sol"]
+
+independence:
+  # not-required | recommended | required
+  requirement: "recommended"
+  rationale: >-
+    The conclusion is representation-sensitive and D015-D017 share one model and D004-D006 conventions. An alternate dense/direct assembly inside the obligation is warranted for coefficient and matrix construction, while full independent implementation or Opus verification is not yet justified for this intermediate pre-preservation result.
+
+created_at: "2026-08-22T09:34:53Z"
+updated_at: "2026-08-22T09:34:53Z"

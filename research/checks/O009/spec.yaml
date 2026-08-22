@@ -1,0 +1,126 @@
+schema_version: 1
+id: "O009"
+title: >-
+  Static collapse background equations
+
+# Scientific targets. At least one claim or derivation should be linked once the
+# obligation is attached to the research record.
+claims: ["C021"]
+derivations: ["D018"]
+
+# Generic, method-neutral classification. Allowed values:
+#   exact-symbolic | formal | numerical | convergence | independent-implementation
+#   limiting-case | symmetry | dimensional | counterexample | other
+# The class describes what kind of assertion is being tested. It does not select
+# a library, language, or tool; the research chooses the method.
+class: "exact-symbolic"
+
+# required: true means this obligation is part of the currently declared
+# verification strategy for its target claims. A required active obligation
+# without a passing result blocks the structural computational gate.
+required: true
+
+# active | superseded. Superseded obligations remain durable history and do not
+# block the current strategy. Do not delete failed history to clear the gate.
+status: active
+
+# The exact mathematical question tested, stated so that a reader can tell what
+# is NOT tested.
+question: >-
+  Under the exact C021/D018 static unwarped coframe E=(dt,dx,dy,ds,rho(s)dtheta), D004 ordered-pair Palatini conventions, source-free constant cosmological terms, the D002 smooth-flat endpoint data, flat 4D exterior, and the stated D005 fixed-seed shell substitutions, do the Cartan and coframe equations reduce uniquely to omega^43=rho' dtheta, R^34=-rho'' ds wedge dtheta, G_a=(k-Lambda_5)Xi_a/kappa_5 for a=0,1,2, G_3=G_4=-Lambda_5 Xi/kappa_5, Lambda_4=0, and hence Lambda_5=0, rho''=0 and rho identically zero when rho(0)=rho'(0)=0, while retaining rho=cs as the one-endpoint polar control and satisfying the shell table?
+
+# Assumptions the executable check encodes: conventions, normalizations, domains,
+# regularity, parameter ranges, representation choices, and anything the
+# implementation takes for granted.
+assumptions:
+  - >-
+    The calculation is restricted to the connected nondegenerate core s>0 with
+    E=(dt,dx,dy,ds,rho(s)dtheta), rho>0, signature diag(-,+,+,+,+),
+    epsilon_01234=+1, and R^AB=d omega^AB+omega^A_C wedge omega^CB.
+    Torsionlessness is solved there from the complete Cartan system; no inverse
+    coframe or torsion equation is imposed at s=0.
+  - >-
+    The five- and four-dimensional actions, Euler prefactors, and sums over both
+    orders of every antisymmetric pair are exactly D004 (15), (25), and (26).
+    Both cosmological terms are constant and there is no matter, torsion source,
+    Lovelock term, distributional junction source, warping, or moving interface.
+  - >-
+    The exterior coframe is (dt,dx,dy,ds), its connection and curvature vanish,
+    and the D002 smooth-flat zero extension supplies rho(0)=rho'(0)=0. The
+    one-endpoint control deliberately drops rho'(0)=0.
+  - >-
+    The shell is the D005 fixed-reference branch on the planar pullback with
+    a0=0, g=u=1, K=0, b=kappa_4^-1, proper outer corners, and constant planar
+    coframes. No seed/corner contribution or functional trace operation is added.
+  - >-
+    Coefficients are exact fractions and free sparse polynomials in named atoms.
+    Exterior words use explicitly declared ordered bases. Equality is canonical
+    sparse-map or exact rational equality; floats, tolerances, randomization, and
+    heuristic simplification are forbidden.
+
+# Predeclared pass/fail/inconclusive criterion. Write this before implementing.
+acceptance_criterion: >-
+  Pass iff an exact canonical implementation (1) solves the open-core torsion equations and obtains the unique nonzero connection pair omega^43=+rho' dtheta, omega^34=-rho' dtheta with every torsion residual zero; (2) obtains only R^43=+rho'' ds wedge dtheta and R^34=-rho'' ds wedge dtheta; (3) independently enumerates the D004 ordered-pair Euler forms and obtains coefficients k-Lambda_5 for A=0,1,2 and -Lambda_5 for A=3,4, with the flat exterior residual forcing Lambda_4=0; (4) eliminates these exact equations to Lambda_5=0, rho''=0 and, for rho=cs+d, c=d=0 under rho(0)=rho'(0)=0, while a control imposing only rho(0)=0 retains nonzero c; (5) obtains exact zero/equality for every declared D005 shell/orbit substitution; and (6) detects predeclared mutations of the spin-connection sign, ordered-pair multiplicity or cosmological coefficient, omission of a normal/circle equation, and deletion of the rho'(0)=0 endpoint condition. Fail on any exact mismatch or ineffective mutation. Inconclusive only if a predeclared exact-domain operation is unsupported before scientific comparison; implementation exceptions are errors.
+
+method:
+  description: >-
+    Finite exact exterior-form/Cartan assembly and exact linear-polynomial elimination, with a separately assembled direct component or warped-product cross-check and semantic mutations.
+  rationale: >-
+    The load-bearing bridge consists only of exact wedge signs, ordered epsilon multiplicities, a small linear torsion solve, and affine endpoint elimination. Exact canonical arithmetic is cheaper and more discriminating than numerical sampling or a general PDE solver, while an alternate component assembly attacks the main shared transcription risk.
+  representation: >-
+    The Cartan solve is a 50-unknown exact rational system for every omega^{AB}
+    coframe coefficient, with q=rho'/rho factored only on the open core. Curvature
+    and Euler forms are canonical sparse exterior maps over exact polynomials;
+    endpoints use rational RREF and shell data use planar sparse forms.
+  equality: >-
+    Equality is deterministic RREF, canonical polynomial-map equality, or
+    canonical exterior-map equality. The identity q E4=rho' dtheta removes
+    division before curvature and endpoint work.
+  trust_surface: >-
+    Trusted components are Python Fraction arithmetic, fingerprinted exact_graded
+    wedge/epsilon/RREF primitives, short claim-local D004 enumeration, and the
+    wrapper. O009 shares D004 conventions and exact_graded with O002/O008, so
+    agreement is correlated. No CAS is used because the finite canonical domain
+    is decidable and a heuristic simplifier would enlarge the trust surface.
+  existing_infrastructure_adequacy: >-
+    exact_graded supplies every reusable primitive. The torsion matrix, warped
+    ansatz, shell substitutions, and mutations are claim-specific; no Engineer
+    or new reusable substrate is justified.
+  alternate_assembly: >-
+    A direct component path builds the sole warped-plane Riemann component and
+    contracts it to Ricci, scalar, and Einstein components without calling the
+    ordered epsilon Euler enumerator. P^- also uses a local permutation-parity
+    path distinct from Q. These checks share assumptions and are not independent.
+
+controls:
+  mutations:
+    - "spin-connection-sign reverses the solved connection and must fail torsion residuals"
+    - "ordered-pair-normalization doubles the curvature prefactor and must fail Euler coefficients"
+    - "omit-circle-equation removes G_4 and must fail equation coverage"
+    - "delete-rho-prime-endpoint removes rho'(0)=0 and must fail endpoint uniqueness"
+
+implementation:
+  # Repository-relative entrypoint executed by scripts/run_check.py.
+  entrypoint: "research/checks/O009/run.py"
+  # Repository-relative reusable machinery this obligation depends on, normally
+  # under research/computation/. Also list material research-environment
+  # manifests, locks, container definitions, and build records under
+  # research/environment/. The runner fingerprints files and directories, so a
+  # change makes the recorded result stale.
+  infrastructure:
+    - "research/computation/exact_graded"
+    - "pyproject.toml"
+    - "scripts/_research.py"
+    - "scripts/run_check.py"
+    - "uv.lock"
+  producer_models: ["openai/gpt-5.6-sol"]
+  infrastructure_producer_models: ["openai/gpt-5.6-sol"]
+
+independence:
+  # not-required | recommended | required
+  requirement: "recommended"
+  rationale: >-
+    D018 and its internal critique share one OpenAI model and D004 conventions. A materially separate direct component assembly is warranted for the curvature/Euler bridge, but a full independent implementation or Opus audit is premature for this restricted intermediate result.
+
+created_at: "2026-08-22T10:27:54Z"
+updated_at: "2026-08-22T10:27:54Z"

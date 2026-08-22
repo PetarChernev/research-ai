@@ -1,21 +1,42 @@
 # Computational Verification Strategy
 
-Status: active — corrected fixed-interface shell verification; bulk Gauss phase deferred
-Last updated: 2026-08-21T23:26:11Z
+Status: active — finite-slope mixed-interface obstruction derived and checked; one mixed completion next
+Last updated: 2026-08-22T18:05:00Z
 
 Research question: Does there exist a resolution-independent, Lorentz-covariant classical `4 <-> 5` framework, formulated without an inverse coframe at rank change, whose bulk and transition equations follow from one variational principle and whose linearized initial-value problem is free of an evident constraint inconsistency, ghost, or loss of predictivity?
 
 This is the project-specific methodology for testing research recorded in
-`D001`–`D006`. It does not retroactively turn historical calculations into
-machine evidence. D006 has completed the bounded interface-only canonical
-analysis. O005 tests its off-shell and residual-block algebra; a model-separated
-audit found O005's shell shortcut under-discriminating, and O006 now constructs
-the honest pulled-back shell form. None supplies the omitted bulk Gauss system
-required for a final gauge/physical classification.
+`D001`–`D022`. It does not retroactively turn historical calculations into
+machine evidence. D006 completed the bounded interface-only canonical analysis;
+W001-total-gauss derived the regular-core limit and total cut-moment-map
+cancellation; CY001-trace-primary then derived a conditional duplicated-trace
+reduction and the combined defining-primary algebra. CY002-background-existence
+tested whether the presumed minimal background actually solves the bulk
+equations. O007-O012 test the respective finite bridges. D019 excludes the
+minimal source-free common-warp background analytically, and D020 excludes a
+bounded NEC-respecting effective source for the two exact D002 profiles in that
+geometry. D021/C024 now prove the profile-independent classical endpoint
+theorem analytically; no check addresses that quantified real-analysis result,
+a more general background, functional trace adjoint, or post-shell preservation.
+D020/C023 derive the endpoint stress, boundedness, weighted-integrability, and
+null-energy-condition verdict for the two exact D002 profiles and every
+smooth-flat common warp. O011 passed that finite bridge. D021/C024 supply the
+universal zero-slope endpoint theorem analytically; finite differentiation does
+not test its quantifier, so formal real analysis remains deferred. D022/C025 now
+test the selected nonzero-slope attachment and identify a finite mixed D004
+boundary row absent from unchanged D005. O012 passed the predeclared exact
+coefficient, incidence, shell, and mutation bridge. No obligation decides the
+physical admissibility of the finite tangent class, a covariant mixed
+completion, weak-action completeness, or C002/C003.
 
 ## Current research phase
 
 The existing work is in a fixed-interface, exact-algebraic foundation regime.
+It has passed from an interface-only shell through a trace-aware combined
+defining-primary presentation. Smooth-flat background existence failed, while
+the finite-slope control exposes an uncancelled mixed interface row; complete
+action/background existence therefore blocks the planned functional
+bulk-boundary preservation phase.
 The benchmark object is the local non-pure quotient
 `X=[U x I x S1]/~`, with an exactly collapsed circle for `s<=0`, together
 with two infinitely flat resolutions. The load-bearing derivations use:
@@ -25,12 +46,21 @@ with two infinitely flat resolutions. The load-bearing derivations use:
 - oriented boundary pullback and circle pushforward;
 - first-order Einstein–Cartan/Palatini coframe and connection variations;
 - field-space exterior differentiation;
-- finite-dimensional exact linear maps on Lorentz-valued interface forms.
+- finite-dimensional exact linear maps on Lorentz-valued interface forms;
+- covariant and canonical Lorentz cut moment maps with explicit incident signs.
+- one-sided finite mixed traces and exact weak/distributional controls, kept
+  distinct from the split action and from a general weak calculus.
 
 The strict derivational backbone of the present frontier is
 
 ```text
-C009 and C010 -> C012 -> C013 -> C014 -> C015 -> C016,
+C009 and C010 -> C012 -> C013 -> C014 -> C015 -> C016 -> C017
+                                                    -> C018 -> C019/C020
+                  C007 + C015 -------------------------------> C021
+                                      `----------------------> C022
+                   C007 --------------------------------------> C023
+              endpoint data + D019 curvature ----------------> C024
+                   C012 + C015 + finite-slope tangent --------> C025,
 ```
 
 with C011 excluding an autonomous bare-quotient measure/incidence choice and
@@ -38,6 +68,91 @@ C007–C008 fixing the local category benchmark. C016 establishes exact
 interface-only presymplectic ranks and a corner-charge witness on one planar
 branch, but deliberately leaves total constraint closure undecided because the
 bulk symplectic form and Lorentz Gauss generators are absent.
+
+W001 adds the derived refinement C017: in the regular equalizer the persistent
+five-dimensional core cut flux is zero, while the exterior `-P^-` contribution
+cancels `Ad_(g^-1)Q` on the D005 matching shell in the unshifted polarization.
+This removes the partial interface charge as a standalone obstruction but does
+not remove or classify the rank-ten form. Seven of eight branches required
+revision after same-model internal critique; the surviving convergence target
+is a declared trace/gluing presentation plus the combined Palatini/interface
+primary matrix and first preservation step.
+
+The first focused convergence cycle froze a **duplicated one-sided trace
+presentation with explicit covariant gluing constraints**. Independent
+boundary copies enter the D005 interface functional and are constrained to the
+regular bulk traces; the copies are not presumed to add physical phase-space
+directions. This choice avoids an undeclared distributional trace bracket and
+makes the reduction map auditable. The accompanying gauge class admits small
+persistent core/exterior Lorentz transformations at the internal cut while
+requiring them to vanish at temporal endpoints and the lateral boundary. The
+fixed seed uses only its exact stabilizer redundancy and no independent
+seed/corner potential. These choices are recorded in `research/DECISIONS.md`.
+
+CY001 produced C018-C020. D015 makes the gluing equivalence conditional on
+fixed gauge-equivariant locally trace-surjective maps and a clean auxiliary
+sector. D016 proves zero regular tangential 5D Palatini overlap while retaining
+nonzero normal contractions. D017 shows that the complete shell potential and
+exterior Palatini defining reduction absorb the five isolated `dQ_C` pairs,
+leaving six Palatini connection-primary nulls, a rank-four coadjoint block with
+two nulls, and six `g` zero-momentum primaries. O008 passed the finite exact
+bridge. The next representation must add a functional trace domain, boundary
+pairing and adjoint, boundary-compatible background, and total Hamiltonian;
+these are not inferred from the pointwise incidence used by O008.
+
+CY002 then tested the smallest candidate background rather than assuming it.
+D018/C021 show that the source-free static unwarped core
+`E=(dt,dx,dy,ds,rho dtheta)` has `Lambda_5=0` and `rho''=0`, while the flat
+exterior has `Lambda_4=0`; D002 smooth-flat attachment supplies
+`rho(0)=rho'(0)=0`, so no positive-radius core exists. The limiting traces still
+satisfy the complete frozen D005 shell. O009 passed the exact Cartan, Euler,
+endpoint, and shell bridge. Planned Domain I is therefore deferred until a
+genuine background is found; the next theory object is the minimal source-free
+warped cohomogeneity-one extension, not a functional bracket around nonexistent
+unwarped data.
+
+CY003 tests that least-radical extension. D019/C022 use
+`E^i=w(s)dx^i`, `E^3=ds`, `E^4=rho(s)dtheta` with one common `2+1` warp. The
+five Euler forms imply `(w'/rho)'=0` and a regular equation for `w^2`; the
+smooth-flat endpoint forces `Lambda_5=0`, `w=1`, and then `rho=0`. The shell
+again remains compatible. O010 passed the frozen exact
+Cartan/Euler/ODE/endpoint/shell bridge. The next analytic object is the
+effective source required by the same geometry, not another vacuum warp or a
+functional bracket around absent data.
+
+CY004 performs that inverse-source diagnostic without choosing matter fields.
+D020/C023 show for both exact D002 profiles and every common warp smooth-flat to
+one that `rho''/rho` diverges positively, so orthonormal curvature/stress are
+unbounded and both nontrivial NEC channels fail, while each absolute stress
+component remains locally five-volume integrable. O011 passed the finite exact
+contraction/profile/order bridge with five effective mutations. The next theory
+object is a profile-independent endpoint lemma, not a matter action fitted to a
+singular effective tensor.
+
+CY005 derives that endpoint lemma. D021/C024 require only a positive radius in
+`C^1` through the endpoint and `C^2` on the punctured side, with zero endpoint
+value and proper-distance slope. A two-integrating-factor comparison gives
+`limsup rho''/rho=+infinity`, so the orthonormal radial-circle sectional
+curvature is unbounded below in every endpoint neighborhood. A smooth-flat
+oscillatory witness shows that no actual limit or eventual sign follows. The
+regular-lapse formula isolates invariant curvature from raw coordinate second
+derivatives. CY005 adopts no obligation: exact differentiation or chain-rule checks
+would not test the universal theorem, while formal real-analysis infrastructure
+is disproportionate at this stage. The next methodological regime is one
+deliberately selected finite-regularity/nonzero-slope attachment, with the
+connection, diagonal geometry, and D004/D005 action otherwise frozen.
+
+CY006 performs that finite-slope audit. D022/C025 use `rho=c s` on the positive
+core and zero on the open collapsed side. The punctured bulks are flat and the
+persistent D005 shell is compatible, but the newly admitted finite vertical
+mixed tangent produces
+`p_!Theta_(5,chi43)=+(2pi/kappa_5)delta chi43 o_Sigma`; unchanged D005 has no
+conjugate field, so free variation forces the rank-three triad volume to vanish.
+Fixing both slope and mixed holonomy leaves only a fixed-boundary control. O012
+passed the finite ordered-index, orientation, D005-incidence, shell, and mutation
+bridge. The next methodological question changes only the exposed action-side
+datum: whether one minimal covariant integrable mixed interface completion can
+repair this row without degeneracy or uncontrolled edge data.
 
 ## Checkability map
 
@@ -58,13 +173,35 @@ bulk symplectic form and Lorentz Gauss generators are absent.
 | C013 | Pure-multiplier degeneracy and the displayed completion coefficient algebra. | Exhaustive boundary-action classification is not currently formalized. | The bounded conceptual classification beyond the explicitly varied families. |
 | C014 | Field-space curl and complete primitive on a certified nonzero mode. | A general formal calculus of local field-space functionals is unnecessary now. | A universal statement about every possible interface action (not claimed). |
 | C015 | Reference-branch gradients, coupling relation, rank/minor implication, `H(K)` rank/nullity and nonflat kernel witness. | The interface-only canonical follow-up is now represented by C016/O005; a complete bulk canonical system would need materially more structure. | Gauge-versus-physical status, bulk compatibility, hyperbolicity and solution existence. |
-| C016 | O005 checks exact `dQ`, off-shell ranks and residual-block algebra; O006 checks the honest 20-dimensional shell pullback, cross blocks, nullity, moment-map sign, and planar witness. | A completed bulk-plus-interface canonical formulation could expose total Gauss rank and constraint-closure obligations. | Whether the residual rank-ten block is physical, second class, or removed by first-class total gauge in the presently omitted bulk system. |
+| C016 | O005 checks exact `dQ`, off-shell ranks and residual-block algebra; O006 checks the honest 20-dimensional shell pullback, cross blocks, nullity, moment-map sign, and planar witness. | The adopted duplicated-trace presentation could expose total Gauss rank and constraint-closure obligations after its gluing reduction is derived. | Whether the residual rank-ten block is physical, second class, or removed by first-class total gauge in the presently incomplete bulk system. |
+| C017 | O007 checks exact 4D/5D Palatini coefficients, zero regular core pushforward, fixed-radius normalization, exterior/interface cancellation, nonidentity dressing, common orientation reversal, and sign/dressing mutations. | The adopted duplicated-trace presentation could expose primary stabilization and reduced-rank obligations if it yields a finite faithful matrix. | Final gauge classification and physical degree count remain non-machine-checkable until the gluing reduction and first preservation are complete. |
+| C018 | O008 checks the finite shell-potential coefficients and gluing-elimination sign bridge under the declared clean local maps. | A concrete functional trace realization could test continuity, adjointness, and equivalence of reduced brackets. | Existence and local surjectivity of the assumed trace maps, and global phase-space equivalence. |
+| C019 | O008 exactly enumerates regular 5D tangential `P,dP` rows, zero circle pushforwards, and nonzero normal-contraction controls. | A functional trace/normal-domain implementation would be needed for post-gluing bulk-boundary brackets. | Any presentation-independent conclusion beyond the stated pre-gluing tangential theorem. |
+| C020 | O008 checks the complete finite defining matrix, all legal Palatini complements, zero Schur correction, ranks, null certificates, direct assemblies, and mutations. | First preservation requires a functional trace adjoint and an explicit background total Hamiltonian; a new obligation is possible only after those are derived. | Gauge/physical/second-class classification and reduced degree count in the presently undefined preservation system. |
+| C021 | O009 checks the complete exact Cartan solve, curvature signs, ordered-pair 5D Euler coefficients, flat 4D residual, affine endpoint elimination, shell table, alternate component contraction, and semantic mutations. | The common-warp extension is now C022/O010; sourceful or more general geometric backgrounds require new equations and representation assessment. | Whether another background/action or a different regularity category evades the restricted obstruction; broad C002/C003 remain undecided. |
+| C022 | O010 passed the complete common-warp Cartan solve, curvature families, ordered-pair Euler vector, denominator-cleared ODEs, branch-preserving first integral, endpoint elimination, shell table, alternate component controls, and semantic mutations. | Anisotropic/off-diagonal or sourceful backgrounds require new equations and possibly a different representation. | Completeness of the source-free background search, physical necessity of the frozen category/action, and broad C002/C003. |
+| C023 | O011 passed the exact effective-stress components, all-null NEC reduction, both fixed-profile derivatives/signs, formal flat-order bookkeeping, and the distinction between pointwise divergence and volume-weighted integrability. | A formal analytic or dynamical development would be needed for an all-profile source theorem or existence/nonexistence of a matter action. | Covariant matter realization, source dynamics, and every excluded geometric/action relaxation. |
+| C024 | Exact differentiation can regress the oscillatory sharpness witness and the regular-lapse chain rule, but neither finite identity tests the quantified endpoint theorem. | A formal real-analysis development could encode the integrating-factor comparison, endpoint limits, positivity, and weak a.e. extension. | Finite symbolic sampling or profile enumeration cannot establish the universal theorem or its physical sufficiency; no required obligation is adopted in this cycle. |
+| C025 | O012 checks the ordered D004 finite-slope mixed boundary coefficient, frozen D005 field incidence, persistent shell table, and semantic mutations exactly. | A completed lower-regularity quotient calculus or a proposed mixed interface action could expose new covariance, integrability, and gauge obligations. | Physical necessity of the finite mixed tangent, general BV action completeness, classification of all counterterms, and broad C002/C003. |
 
 ## Current machine-check obligations
 
-The program now has six required exact obligations, prioritized by the actual
-dependency graph rather than chronology. None had a result at allocation time,
-and all six now have current deterministic `passed` results.
+The program now has twelve required exact obligations, prioritized by the actual
+dependency graph rather than chronology. All twelve have current deterministic
+`passed` results; each was allocated with its acceptance criterion fixed before
+implementation.
+
+CY005 added no obligation. C024's conclusion-critical content is a
+quantified real-analysis comparison proved directly in D021. The available
+finite exact regressions would test only derivative and coordinate identities;
+a formal analysis stack is possible but not proportionate to the present
+decision. Its computational-verification state remains pending/deferred rather
+than being laundered through a non-discriminating check.
+
+CY006 adds O012 because C025's decisive bridge is instead finite and
+mechanically discriminating: an ordered-index sign/factor calculation plus the
+absence of a mixed variable in the frozen D005 action. O012 does not encode the
+scientific choice of tangent class or any candidate action repair.
 
 1. **O001 — D002 equalizer and curvature controls (C009/D002).** Exact
    branchwise pullback residuals for `eta`, `rho eta`, `A`, `F`, and mixed
@@ -90,6 +227,39 @@ and all six now have current deterministic `passed` results.
    20-dimensional `(chi_v,xi,delta e)` shell form including cross blocks, and
    checks rank/nullity, explicit null certificates, fixed-reference pullback,
    moment-map contraction, and mutations targeting the O005 shortcut.
+7. **O007 — total Lorentz cut cancellation (C017/D008–D009).** Reconstructs
+   exact persistent 4D/5D Palatini coefficients, verifies the zero regular core
+   pushforward and fixed-radius control, and tests the exterior `-P^-` plus
+   interface `-Ad_(g^-1)lambda` cancellation under identity and nonidentity
+   Lorentz dressing. Four sign/dressing mutations must fail.
+8. **O008 — duplicated-trace reduced primary bridge (C018-C020/D015-D017).**
+   Reconstructs shell/gluing coefficients, regular tangential 5D Palatini rows,
+   normal controls, the combined exterior/interface defining matrix, every
+   legal Palatini complement, the zero Schur correction, and all residual
+   primary nulls. Four semantic mutations must fail. It deliberately omits a
+   functional trace adjoint and every first-preservation row.
+9. **O009 — static collapse background equations (C021/D018).** Solves the
+   complete open-core Cartan system, reconstructs curvature and all ordered-pair
+   D004 coframe equations, checks the flat exterior, affine endpoint ideal, and
+   D005 shell substitutions, and uses a direct warped-component cross-check.
+   Four sign/normalization/equation-coverage/endpoint mutations must fail.
+10. **O010 — minimal warped background equations (C022/D019).** Solves the
+    common-warp Cartan system, reconstructs all curvature families and five
+    Euler forms, checks the regular ODE and endpoint bridge without deleting the
+    nonzero-first-integral branch, and evaluates the D005 shell/orbit table.
+     Four sign/normalization/equation-coverage/endpoint mutations must fail.
+11. **O011 — inverse-source stress and NEC bridge (C023/D020).** Reconstructs
+    the Lorentzian effective tensor and all-null reduction, differentiates both
+    exact D002 profiles, represents the declared flat-germ order consequences,
+    and distinguishes unbounded orthonormal fields from absolute local
+    five-volume integrability. Four semantic mutations must fail. It does not
+    prove the analytic flat-germ theorem or construct a matter action.
+12. **O012 — finite-slope mixed interface variation (C025/D022).** Reconstructs
+    the ordered D004 boundary-potential split, the nonzero `43` mixed trace,
+    unchanged D005 field incidence, and every persistent shell row. Four
+    orientation/order/tangent/cancellation mutations must fail. It does not
+    decide tangent-class admissibility, weak-action completeness, or a mixed
+    interface repair.
 
 Each obligation includes mutation/negative controls. A passing outcome is
 evidence only for the encoded finite exact assertions and does not establish
@@ -104,6 +274,12 @@ run.
 | O004 | `passed` | 60/60 | 2026-08-20T14:08:32Z | D004/D005 reference branches, minors, and exact rank table |
 | O005 | `passed` | 40/40 | 2026-08-20T18:18:12Z | D006 cut ranks, null directions, moment maps, and corner witness |
 | O006 | `passed` | 36/36 | 2026-08-21T20:58:46Z | Honest D006 shell pullback, cross blocks, null certificates, and moment map |
+| O007 | `passed` | 28/28 | 2026-08-22T08:46:29Z | C017 regular-core limit, fixed-radius control, and total exterior cut cancellation |
+| O008 | `passed` | 51/51 | 2026-08-22T10:11:06Z | C018-C020 gluing coefficients, 5D tangential rows, complete primary matrix, complements, Schur correction, and nulls |
+| O009 | `passed` | 42/42 | 2026-08-22T13:25:51Z | C021 Cartan solve, curvature, 5D/4D Euler forms, endpoint obstruction, and shell compatibility |
+| O010 | `passed` | 74/74 | 2026-08-22T13:54:12Z | C022 common-warp Cartan, curvature, Euler, regular ODE/endpoint, and shell bridge |
+| O011 | `passed` | 79/79 | 2026-08-22T15:24:41Z | C023 effective stress, profile asymptotics, weighted integrability, and all-null NEC bridge |
+| O012 | `passed` | 29/29 | 2026-08-22T16:30:05Z | C025 finite-slope D004 mixed boundary row, unchanged D005 incidence, and persistent shell table |
 
 O002–O004 record the same aggregate shared-infrastructure SHA-256
 `0b4aeb783458e144f6b86641ad631d0cb62dcc12398b414a552434f00d211b97`
@@ -120,6 +296,42 @@ O006 reused that same unchanged kernel and aggregate infrastructure fingerprint
 at Git commit `ba26507511bca36d84ad2cfcfdef624292fb0eac`; its canonical result was
 recorded from a dirty worktree and fingerprints its distinct claim-specific
 implementation.
+O007 reused the same unchanged kernel and aggregate infrastructure SHA-256
+`0b4aeb783458e144f6b86641ad631d0cb62dcc12398b414a552434f00d211b97`
+at Git commit `38f38ea5c5c8419c2c77f4fdfd69870b38ca1595`; its canonical result was
+recorded from a dirty worktree and fingerprints its distinct claim-specific
+implementation. O007 is correlated with O002/O006 through both infrastructure
+and conventions and is not an independent implementation.
+O008 reused the same unchanged kernel and aggregate infrastructure fingerprint
+at the same recorded Git commit and from a dirty worktree. Its distinct runner
+is fingerprinted, but its exact-form and matrix paths remain correlated with
+O002-O007 rather than an independent implementation.
+O009 again reused that kernel and aggregate fingerprint at Git commit
+`38f38ea5c5c8419c2c77f4fdfd69870b38ca1595` from a dirty worktree. Its direct
+warped-component contraction avoids the ordered-epsilon Euler helper but shares
+the action conventions, arithmetic, and producer model; it is correlated
+support rather than an independent implementation.
+O010 reused the same unchanged kernel and aggregate fingerprint at the same Git
+commit from a dirty worktree. Its distinct runner, full Cartan matrix, component
+Einstein path, coordinate-ODE path, and four mutations are fingerprinted, but
+they share D004/D005 conventions, arithmetic, infrastructure, and OpenAI
+provenance with O009 and are correlated support rather than an independent
+implementation.
+O011 used no reusable research kernel. Its self-contained exact
+polynomial/Laurent/formal-order runner and root orchestration dependencies have
+aggregate infrastructure SHA-256
+`c161ea4ada2e2a5118552101f73cbe899007cc28701c86677cf238a6f6cb7357` at Git
+commit `38f38ea5c5c8419c2c77f4fdfd69870b38ca1595` from a dirty worktree. It
+changes the implementation surface but shares D002/D004/D019 assumptions and
+the OpenAI producer, so it is correlated rather than independent evidence.
+O012 likewise uses a self-contained exact claim-local runner and the same root
+orchestration infrastructure fingerprint at that recorded commit from a dirty
+worktree. Its canonical result fingerprints spec
+`1c300fa4654d9d797f81f9c7657a41aeaa993d857135d30bfe78913355f15ee4` and
+implementation
+`743ac9e93ff3b6b6795418663c6dfec5649cd10a18d23071f114122a3e7e1616`.
+Changing from the shared exterior kernel reduces code dependence but not the
+shared D004/D005 conventions or OpenAI producer, so O012 remains correlated.
 
 ## Computational representations and methods
 
@@ -256,6 +468,255 @@ implementation.
 - **Limitation:** O006 still imports D005's action, shell, and temporal-boundary
   potential and omits all bulk Gauss and polarization data.
 
+### Domain G — total cut coefficient and regular-core limit (O007)
+
+- **Mathematical domain:** exact 4D/5D Palatini momentum components on one
+  planar cut, circle pushforward with formal period `tau`, and six-component
+  Lorentz bivectors under exact rational dressing.
+- **Representation:** sparse exterior forms over exact rational polynomials in
+  `rho,R,tau,kappa4_inv,kappa5_inv`, ordered pairs
+  `(01,02,03,12,13,23)`, and exact `4 x 4`/`6 x 6` rational matrices. Collapse
+  is substitution `rho=0`; no limiting tolerance is used.
+- **Scientific rationale:** C017 depends on incident signs, ordered-pair
+  factors, fixed-radius normalization, and the direction of the adjoint
+  dressing. These are finite decidable assertions for which sampling would be
+  weaker.
+- **Trust surface:** unchanged `exact_graded` wedge/epsilon/polynomial
+  primitives plus claim-local circle extraction and Lorentz adjoint code. A
+  dense permutation count and hand boost values provide alternate assembly
+  controls; four isolated mutations test discriminating power.
+- **Limitations:** O007 imports the regular equalizer, matching shell, and
+  unshifted polarization. It does not prove smooth descent, functional
+  differentiability, primary stabilization, seed/corner admissibility,
+  first-class closure, or a reduced degree count.
+
+### Domain H — duplicated traces and reduced defining primaries (O008)
+
+- **Mathematical domain:** the finite exact content of D015-D017: shell/gluing
+  coefficients, regular five-dimensional tangential Palatini forms and normal
+  controls, the exterior triad-to-momentum map, finite trace incidence, Lorentz
+  coadjoint block, and combined defining-primary matrix.
+- **Representation:** canonical sparse exterior maps from `exact_graded`, exact
+  `fractions.Fraction` coefficients, ordered Lorentz pairs, and explicit dense
+  rational matrices. The complete local matrix has 42 rows on
+  `(C_e,C_varpi,Phi_u,Psi_g)`; no floating point, randomization, or CAS
+  simplification is used.
+- **Scientific rationale:** the load-bearing bridge is sensitive to shell and
+  incidence signs, the half-coupling in `dP`, which half of the Palatini form
+  receives `B`, complement choice, and the distinction between tangential
+  pullback and normal contraction. These are finite decidable assertions.
+- **Trust surface and validation:** O008 uses the existing exact kernel plus a
+  claim-local form/matrix runner. It compares sparse and independently assembled
+  dense `A` and `B`, exhaustively enumerates all 18,564 twelve-row complements,
+  checks six `ker(A^T)` certificates, and requires four process-local semantic
+  mutations to fail. These paths still share one representation and producer
+  model and are not independent confirmation.
+- **Canonical outcome:** `passed`, 51/51 assertions. Eight complements are
+  admissible and all have zero Schur correction; ranks are `A=12`, `B=5`,
+  `A_P=4`, complete `=28`, residual `=4`; the normal control is
+  `P_40=dP_40=1/(2 kappa_5)`.
+- **Limitations:** trace-map existence, continuity, local surjectivity, global
+  clean reduction, functional adjoints, total Hamiltonian, secondary
+  constraints, closure, and physical degree count are not encoded. The result
+  records `functional_trace_adjoint_encoded: false`.
+
+### Deferred Domain I — functional trace and first preservation (blocked by C021)
+
+- **Re-entry condition:** first supply a bulk-plus-shell background that solves
+  the complete equations. C021 excludes the previously presumed static
+  unwarped candidate, so implementing functional preservation now would test an
+  off-shell background rather than C003.
+- **Mathematical domain still required from theory:** one declared bulk field
+  and boundary trace space, the trace pairing and adjoint, the reduced total
+  Hamiltonian on a boundary-compatible exterior/reference background, and the
+  preservation equations for the six Palatini nulls, `Phi_u`, `p_g`,
+  `pi_varpi0`, and `pi_e0`.
+- **Method not yet selected:** no Sobolev scale, distribution space, symbolic
+  functional calculus, Dirac engine, or PDE stack is adopted before the theory
+  fixes the regularity, domains, boundary conditions, and exact observable. A
+  pointwise incidence matrix is not a substitute for an adjoint trace operator.
+- **Required theory bridge before implementation:** derive every first-
+  preservation row while retaining torsion/coframe equations; state whether
+  multipliers are fixed, secondary constraints arise, or mixed `SO(1,4)` or
+  another frozen sector is sourced; isolate any finite rank/closure assertion
+  and its assumptions.
+- **Trust-surface assessment:** reuse Domain H only for a genuinely finite
+  coefficient subproblem. Functional operators or reusable canonical machinery
+  would require a new computational contract and possibly research-scoped
+  infrastructure; building them now would be speculative.
+- **Independence:** a conclusion-critical preservation rank should use an
+  alternate functional or matrix reconstruction, and may warrant an independent
+  implementation if the result depends materially on trace discretization or
+  elimination order. This is distinct from approval-gated Opus finalization.
+
+### Domain J — static unwarped background equations (O009)
+
+- **Mathematical domain:** the exact cohomogeneity-one coframe
+  `E=(dt,dx,dy,ds,rho dtheta)` on the nondegenerate open core, all 50 spin-
+  connection coefficients in the coframe basis, torsion/curvature exterior
+  forms, the five D004 coframe Euler forms, flat 4D exterior residuals, affine
+  endpoint data, and the finite D005 shell substitution table.
+- **Representation:** exact `Fraction` and sparse polynomial coefficients,
+  canonical `exact_graded` exterior maps on explicitly ordered coordinate and
+  coframe bases, and rational RREF for the `50 x 50` Cartan and endpoint
+  systems. `rho'/rho` is used only on `rho>0`; conversion
+  `(rho'/rho)E4=rho' dtheta` removes division before curvature and endpoint
+  comparisons.
+- **Scientific rationale:** C021 hinges on a spin-connection sign, ordered-pair
+  multiplicities, independent normal/circle equations, and two endpoint data.
+  These are small exact assertions for which numerical ODE integration would be
+  weaker and a general CAS would add an unnecessary simplification surface.
+- **Trust and alternate path:** O009 enumerates D004 Euler forms explicitly and
+  separately contracts a direct warped-plane Riemann component to Ricci,
+  scalar, and Einstein components without the Euler helper. It also builds
+  `P^-` by local parity independently of `Q`. Shared conventions, kernel,
+  arithmetic, and OpenAI provenance remain correlated.
+- **Canonical outcome:** `passed`, 42/42 assertions. Cartan rank is 50 with sole
+  independent coefficient `omega^(34)_4=-rho'/rho`; the Euler coefficient
+  vector is `(k-Lambda_5)^3,(-Lambda_5)^2`; endpoint ranks are two with the full
+  jet and one with only `rho(0)=0`; all shell equalities hold. All four semantic
+  mutations were effective.
+- **Limitations:** O009 does not prove that the D002 category is compulsory,
+  exhaust backgrounds or actions, construct a warped solution, define a
+  functional trace, or decide broad C002/C003. No new infrastructure or
+  research environment was justified.
+
+### Domain K — minimal common-warp background equations (O010)
+
+- **Mathematical domain:** the exact cohomogeneity-one coframe
+  `E^i=w dx^i` for `i=0,1,2`, `E^3=ds`, `E^4=rho dtheta`; all 50
+  spin-connection coefficients; sparse torsion, curvature, and five D004 Euler
+  forms; denominator-cleared coordinate ODEs; endpoint linear data; and the
+  finite D005 planar shell table.
+- **Representation:** exact `Fraction` coefficients, free sparse polynomials in
+  `A,p,q,r,Lambda_5` and coordinate-jet atoms, canonical `exact_graded`
+  exterior maps, and rational RREF. Ratios are used only on `w,rho>0`; endpoint
+  assertions use regular equations multiplied by the required positive powers
+  of `w` and `rho`.
+- **Scientific rationale:** C022 hinges on three additional warped curvature
+  families, the complete Euler vector `(S,S,S,H,J)`, preservation of both
+  `w'/rho=C` branches, and the order in which endpoint jets are imposed. These
+  are finite exact assertions for which floating ODE integration or heuristic
+  CAS simplification would be weaker.
+- **Trust and alternate path:** the existing fingerprinted exact kernel is
+  adequate, so no Engineer or new environment is justified. A separately
+  assembled component Einstein/constant-curvature path and direct coordinate-
+  ODE identities must cross-check the epsilon enumeration. Four isolated
+  semantic mutations test plane-curvature sign, cosmological normalization,
+  circle-equation coverage, and endpoint uniqueness. Shared conventions,
+  infrastructure, arithmetic, and OpenAI provenance remain correlated.
+- **Canonical outcome:** `passed`, 74/74 assertions. Cartan rank is 50; all four
+  curvature families and the Euler vector `(S,S,S,H,J)` agree; both `C`
+  branches are represented before endpoint elimination; endpoint/polar ranks
+  are two/one; six shell momentum rows are nonzero; and all four mutations are
+  effective.
+- **Limitations:** O010 cannot establish that D002/D004/D005 is compulsory,
+  exhaust source-free metrics, or decide sourceful, anisotropic, lapse,
+  off-diagonal, moving-interface, functional-preservation, or broad C002/C003
+  questions.
+
+### Domain L — inverse-source regularity (D020/C023/O011)
+
+- **Derived question and answer:** D020 defines
+  `G_AB+Lambda_5 eta_AB=kappa_5 T_AB` in the zero-spin-current D019 geometry,
+  fixes boundedness in an orthonormal frame, componentwise absolute `L1` against
+  `w^3 rho ds` on compact tangential cells, and the NEC for every null vector.
+  For both exact D002 profiles and every common warp smooth-flat to one,
+  `rho''/rho` diverges positively: curvature/stress are unbounded and both
+  independent NEC coefficients are eventually negative, while each absolute
+  stress component is volume-integrable.
+- **Checkability assessment:** O011 tests the finite contraction, profile,
+  order-bookkeeping, and endpoint-integrability bridge. The analytic theorem
+  that every smooth zero extension supplies arbitrary flat orders remains a
+  displayed derivation premise rather than a machine theorem. Existence of a
+  covariant matter action and physical source dynamics are not usefully checked
+  by this obligation.
+- **Selected representation and rationale:** use exact Lorentzian component
+  contraction and sparse rational/polynomial arithmetic, plus a claim-local
+  exponent/order representation for the two fixed profiles and the declared
+  flat-germ premise. Equality is canonical coefficient/exponent equality; no
+  floating sampling or heuristic simplification is allowed. The inherited
+  `exact_graded` primitives may be reused if Scientific Computation finds them
+  adequate, but no new reusable kernel or environment is scientifically
+  justified.
+- **Trust and independence:** Scientific Computation must reconstruct the
+  curvature-to-Einstein contraction rather than insert D020's target tensor,
+  retain both NEC channels, and use semantic mutations for the timelike sign,
+  profile derivative, channel coverage, and bounded-versus-integrable
+  distinction. An alternate component/order assembly is recommended, but it is
+  correlated support rather than independent verification.
+- **Canonical outcome:** `passed`, 79/79 assertions. The executable reconstructed
+  ten off-diagonal stress zeros, both exact profile tables and positivity
+  thresholds, both independent NEC channels, the declared flat-order bridge,
+  and the distinct unbounded versus absolute-`L1` verdicts. All five semantic
+  mutations were effective. It used self-contained exact `Fraction`, sparse
+  polynomial/Laurent, and formal-order code rather than `exact_graded`.
+- **Failure modes attacked:** mistaking volume-integrated finiteness for bounded
+  orthonormal stress; inferring an energy condition from one component; hiding
+  divergent ratios behind flat coordinate forms; or treating an effective
+  conserved tensor as a realized local matter action.
+
+### Deferred Domain M — profile-independent endpoint comparison (D021/C024)
+
+- **Derived question and answer:** for every positive
+  `rho in C^1([0,epsilon)) intersect C^2((0,epsilon))` with zero endpoint value
+  and proper-distance slope, D021 proves
+  `limsup_(s->0+) rho''/rho=+infinity`. The invariant torsion-free
+  radial-circle sectional curvature is therefore unbounded below on every
+  endpoint neighborhood. A regular lapse gives the exact combination
+  `[rho_xx-(N_x/N)rho_x]/(N^2 rho)`.
+- **Representation and checkability assessment:** the decisive proof is an
+  inequality plus two integrating factors and endpoint limits. Exact symbolic
+  differentiation can check the oscillatory counterexample and lapse chain
+  rule, but cannot decide the universal quantifier. A faithful executable
+  obligation would require a formal real-analysis representation of ordered
+  functions, one-sided limits, positivity, and integration/monotonicity.
+- **Method decision:** no proof assistant, CAS, custom kernel, or research
+  environment is selected. Building that infrastructure for this transparent
+  lemma would add a larger trust and producer surface than the current
+  scientific risk justifies. This is a phase-specific deferral, not a claim that
+  C024 is unformalizable.
+- **Failure modes attacked analytically:** dropping the zero-slope datum is
+  exposed by `rho=cs`; the dimensionally repaired smooth-flat oscillatory
+  witness has both infinite-sign subsequential limits and blocks an erroneous
+  actual-limit or eventual-sign promotion; regular-lapse covariance blocks a
+  raw-coordinate escape.
+- **Independence:** D021 and both critiques use `openai/gpt-5.6-sol`, and its
+  curvature bridge imports D019 conventions. The second critique resolves the
+  first report's dimensional revision but remains same-model, non-independent
+  evidence. No Opus audit is requested for this intermediate theorem.
+
+### Domain N — finite-slope mixed interface variation (D022/C025/O012)
+
+- **Derived question and answer:** D022 admits the finite one-sided tangent
+  `delta omega43=delta chi43 dtheta` for `rho=c s` while keeping D004/D005
+  unchanged. The ordered D004 potential gives
+  `+(2pi/kappa_5)delta chi43 o_Sigma`; D005 has no mixed incidence, so free
+  variation is incompatible with the planar rank-three triad. Fixing slope and
+  holonomy leaves only a fixed-boundary background.
+- **Representation and rationale:** O012 uses a self-contained finite exterior
+  algebra and sparse exact rational polynomials, complete five-index epsilon
+  enumeration, rightmost circle-leg extraction, an explicit frozen D005
+  field/variation table, and exact shell substitutions. The assertion is a
+  finite sign/factor/incidence problem; a CAS, weak-geometry solver, or reusable
+  BV kernel would enlarge rather than reduce trust.
+- **Canonical outcome:** `passed`, 29/29 assertions. The executable recovered
+  D004 split coefficients `1/4` and `1/6`,
+  `epsilon_(3bcd)e^b e^c e^d=-6 o_Sigma`, the exact positive mixed coefficient,
+  no D005 `chi43` variable, and all persistent shell rows. Core-sign,
+  omitted-order, smooth-flat-zero, and fictitious-cancellation mutations each
+  exited `1`.
+- **Trust boundary:** the direct hand/permutation count and mutations are
+  correlated controls. O012 does not establish that the chosen finite tangent
+  is physically mandatory, define intrinsic lower-regularity traces, validate
+  general nonlinear distribution products, or classify a future mixed
+  completion.
+- **Next representation decision:** no method is selected for that completion
+  until theory specifies its fields, covariance, primitive, companion
+  variations, and gauge action. Reuse O012 only for finite coefficient
+  regressions; do not presume its small algebra decides field-space
+  integrability or full `SO(1,4)` reduction.
+
 No general-purpose CAS is used as a conclusion-critical equality oracle. A CAS
 may be used later only as an explicitly independent targeted exact cross-check
 with its assumptions and normal form recorded.
@@ -294,7 +755,7 @@ self-contained to retain a materially different representation path.
   tensor automation, gauge-group solving, factorization/Groebner bases, theorem
   proving, numerical linear algebra, Markdown parsing, and generic canonical
   dynamics. O005 reused only the already-contracted exterior and matrix API.
-- **Dependent obligations:** O002, O003, O004, O005 and O006; each must fingerprint the entire
+- **Dependent obligations:** O002, O003, O004, O005, O006, O007, O008, O009 and O010; each must fingerprint the entire
   kernel directory. The kernel is methodology, not evidence.
 
 Engineer is required because this reusable primitive set and its law tests are
@@ -336,7 +797,7 @@ implementation. A bad criterion is superseded rather than edited after output.
 
 ## Independence strategy
 
-All six required obligations use an alternate analytic path because they test
+All twelve required obligations use an alternate analytic path because they test
 load-bearing reasoning. The primary implementations and exact kernel are
 not mutually independent when they share `exact_graded/`.
 
@@ -353,6 +814,33 @@ not mutually independent when they share `exact_graded/`.
   RREF, with the O005 equal-rank shortcut retained as an entrywise negative
   control. The model-separated C016 verifier supplied the independent hand path;
   O006 itself is correlated machine evidence.
+- O007: dense permutation/word coefficient reconstruction and hand rational
+  boost values versus sparse exterior/Lorentz assembly. It shares the kernel,
+  shell, and conventions with earlier checks and is correlated evidence.
+- O008: direct dense `A/B` assembly, exhaustive complement enumeration, and
+  explicit null certificates versus sparse exterior and block-matrix assembly.
+  It shares the kernel, finite incidence, conventions, and OpenAI producer with
+  earlier checks and is correlated evidence, not an independent implementation.
+- O009: direct warped-component Riemann/Ricci/Einstein contraction versus the
+  ordered-epsilon Palatini Euler enumeration, plus a full Cartan solve and
+  endpoint controls. It shares D004 conventions, exact infrastructure, and the
+  OpenAI producer, so it remains correlated evidence.
+- O010: a component Einstein/constant-curvature reconstruction and direct
+  denominator-cleared ODE path versus the ordered-epsilon Euler enumeration,
+  plus full Cartan and mutation controls. It shares D004/D005 conventions,
+  exact infrastructure, and OpenAI provenance, so it is correlated evidence,
+  not an independent implementation.
+- O011: a self-contained Lorentzian component contraction, exact Laurent profile
+  table, explicit null witnesses, and formal-order bookkeeping versus D020's
+  differential-form/asymptotic derivation. It does not reuse `exact_graded`, but
+  imports D002/D019 conventions and analytic flat-germ premises and shares the
+  OpenAI producer, so it remains correlated support rather than an independent
+  implementation.
+- O012: complete ordered five-index enumeration plus a separate direct
+  pair/permutation count and four semantic mutations versus D022's hand
+  reduction. It is self-contained but imports D004/D005 conventions and shares
+  the OpenAI producer, so it is correlated support rather than independent
+  confirmation.
 
 Any future current-lifecycle independent verification must be explicitly
 user-approved and use the reserved `anthropic/claude-opus-5` verifier. It must
@@ -374,22 +862,36 @@ Redesign this strategy if any of the following occurs:
    conclusion-critical identity or imposes an extra one;
 3. the state space moves beyond the basic fixed-interface sector to nonbasic
    circle modes, full `SO(1,4)` normal dynamics, moving interfaces or corners;
-4. the interface-only D006 regime is extended to a complete bulk-plus-interface
-   Hamiltonian system with primary/secondary constraints and total Gauss generators;
+4. the interface-only D006 regime is extended to a trace-aware
+   bulk-plus-interface Hamiltonian system with primary/secondary constraints
+   and total Gauss generators;
 5. a concrete hyperbolic PDE is fixed, requiring principal-symbol and energy
    estimates;
 6. a defect solution is posed, requiring a research-scoped numerical
    environment, convergence and error analysis;
 7. the program reaches Hopf configuration-space topology or quantum holonomy,
    requiring computational topology/formalization rather than this graded
-   exterior kernel.
+   exterior kernel;
+8. a proposed mixed interface completion introduces new fields, covariance,
+   field-space primitives, edge symplectic data, or full `SO(1,4)` reduction;
+   its representation must be reassessed before any post-O012 obligation.
 
-At the immediate frontier, O006 closes the known finite shell-representation
-gap, and no additional finite interface matrix is expected to discriminate H002
-from restricted H003. The next theory object would be the
-bulk-plus-interface Hamiltonian/Gauss system itself. New computation is deferred
-until that object exists; the present exact kernel is not presumed adequate for
-constraint closure or PDE questions.
+At the immediate frontier, O006 closes the honest interface-shell gap, O007 the
+finite total-cut cancellation, O008 the selected duplicated-trace defining-
+primary matrix, O009-O010 the unwarped/common-warp source-free background
+bridges, O011 the two-profile inverse-source bridge, and O012 the finite-slope
+mixed-interface coefficient/incidence bridge. No computation is queued.
+D021/C024 close the zero-slope profile-rate escape; D022/C025 show that the
+selected nonzero-slope attachment is separately flat but activates an
+uncancelled mixed D004 boundary equation under free finite tangents. The next
+cheapest theory discriminator is exactly one minimal covariant integrable mixed
+interface completion, with finite-slope flat bulks and the persistent D005
+sector otherwise frozen. Its fields and companion variations must be derived
+before a method or O013 is selected. Planned Domain I resumes only if that or
+another explicitly declared complete action admits an actual background. The
+present exact kernels are not presumed adequate for field-space integrability,
+full mixed gauge reduction, functional trace brackets, constraint closure, or
+PDE questions.
 
 ## Deferred or non-machine-checkable issues
 
@@ -408,6 +910,37 @@ constraint closure or PDE questions.
   interface variation, constraint closure, hyperbolicity and positivity remain
   outside migration. Existing derived results may be used exploratorily only
   with these dependencies and pending verification visible.
+- C017's finite cut cancellation is machine-checkable and passed; its explicit
+  non-decision clause remains non-machine-checkable until the trace-aware total
+  constrained phase space is defined.
+- C018's finite gluing coefficients are checked, but existence and analytic
+  properties of the assumed trace maps and global reduced-phase-space
+  equivalence are not usefully decided by O008.
+- C019's regular tangential theorem and normal witness are checked. Functional
+  post-gluing brackets require a different trace-domain representation.
+- C020's defining-primary ranks and Schur result are checked. Its explicit
+  non-decision about preservation, closure, and physical status remains outside
+  any current machine obligation.
+- C021's restricted equation and endpoint bridge is checked. Existence of a
+  warped, sourceful, mixed/nonbasic, moving-interface, or alternative-action
+  background remains a new analytic question, not an untested clause of C021.
+- C022's common-warp equation and endpoint bridge is checked by passing O010.
+  This cannot exclude anisotropic/off-diagonal or sourceful backgrounds and
+  does not decide broad C002/C003.
+- C023's two-profile effective-stress, weighted-integrability, and NEC bridge is
+  checked by passing O011. C024 now supplies the all-profile geometric
+  unbounded-curvature input, but an all-profile stress/NEC/`L1` theorem and
+  realization by a healthy local matter action remain analytic and dynamical
+  questions outside O011 and C024.
+- C024's comparison theorem and regular-lapse curvature bridge are analytically
+  derived. Finite symbolic regressions cannot test the universal quantifier;
+  formal real-analysis verification is possible only with materially more
+  infrastructure and is deferred rather than replaced by profile sampling.
+- C025's finite D004 coefficient, frozen D005 incidence, and persistent shell
+  table are checked by passing O012. Whether the finite mixed tangent belongs to
+  the correct physical quotient category, whether fixing it is principled, and
+  whether a covariant integrable mixed completion exists remain theory
+  questions outside the obligation.
 
 ## Known limitations and risks
 
@@ -441,6 +974,45 @@ constraint closure or PDE questions.
   shell moment-map assertion do not discriminate the honest pullback. O006 is
   the adopted machine evidence for those shell clauses; O005 remains durable
   rather than being deleted or silently rewritten.
+- W001 branches share D004-D006 and one producer model. Internal critiques
+  required revision of D007-D008 and D010-D014. In particular, a regular core
+  Palatini shared-row overlap was not established, the proposed singularity-
+  robust rank bound lacked clean-splitting hypotheses, and formal compensators
+  were not admissible action/Gauss completions.
+- CY001 derivations, critics, and O008 share D004-D006 conventions and the same
+  OpenAI model. D015's trace equivalence is conditional; D016 distinguishes
+  tangential pullback from normal contraction; D017/O008 establish only the
+  pointwise defining-primary algebra. None defines a functional trace adjoint
+  or permits primary null directions to be labelled gauge or physical.
+- D018, its critic, and O009 share D002/D004/D005 assumptions and the OpenAI
+  producer model. The exact restricted obstruction is robust to the recorded
+  sign, coefficient, omitted-equation, endpoint, and polar-cap attacks, but it
+  must not be generalized to warped or sourceful backgrounds. Shell
+  compatibility and bulk solution existence are distinct.
+- D019, its critic, and O010 share the same category/action/shell chain
+  and OpenAI model. The common-warp no-solution argument is narrower than a
+  general cohomogeneity-one theorem; a lapse, anisotropic warps, off-diagonal
+  fields, weaker regularity, sources, or a different topology change the
+  problem.
+- D020, its critic, and O011 share D002/D004/D019 conventions and the OpenAI
+  producer. O011 changes the claim-local representation and does not reuse
+  `exact_graded`, but it imports the flat-germ and exponential-domination
+  premises. Its passing result cannot turn an effective conserved tensor into a
+  matter action or generalize two explicit profiles to the full smooth-flat
+  class.
+- D021 and both internal critiques use the same OpenAI model and import D019's
+  curvature convention. The first critique correctly required dimensional
+  scales in the oscillatory witness; the revised artifact and second critique
+  resolve that defect. Their agreement remains same-model and cannot promote
+  C024 to independently verified. The theorem supplies only `limsup=+infinity`
+  and unbounded sectional curvature, not an actual limit, eventual sign, source
+  theorem, or universal H003 result.
+- D022, its critic, and O012 share D002/D004/D005 conventions and the OpenAI
+  producer. O012 changes to a self-contained representation and catches the
+  declared sign/order/incidence mutations, but it encodes rather than proves
+  the finite tangent class and frozen D005 field content. Its pass cannot
+  establish a general lower-regularity action, rule out mixed counterterms, or
+  promote C025 beyond its restricted derived status.
 
 ## Related decisions
 
@@ -449,5 +1021,13 @@ constraint closure or PDE questions.
 - `research/DECISIONS.md`, **2026-08-21: Treat the interrupted C016 audit as no evidence and stop at the missing bulk canonical system**.
 - `research/DECISIONS.md`, **2026-08-21: Verify C016 and replace its shell shortcut with O006**.
 - `research/DECISIONS.md`, **2026-08-22: Migrate live research to the exploration and approval-gated verification lifecycle**.
+- `research/DECISIONS.md`, **2026-08-22: Adopt the total-cut cancellation and converge on a trace-aware primary system**.
+- `research/DECISIONS.md`, **2026-08-22: Freeze duplicated traces and proper outer-corner gauge for the first convergence cycle**.
+- `research/DECISIONS.md`, **2026-08-22: Close the defining-primary question and require functional preservation next**.
+- `research/DECISIONS.md`, **2026-08-22: Reject the unwarped static background before preservation**.
+- `research/DECISIONS.md`, **2026-08-22: Close the common-warp escape and test source regularity next**.
+- `research/DECISIONS.md`, **2026-08-22: Reject the ordinary regular-source escape for the exact D002 profiles**.
+- `research/DECISIONS.md`, **2026-08-22: Close the profile-rate escape and relax only endpoint regularity next**.
+- `research/DECISIONS.md`, **2026-08-22: Close the unchanged-action finite-slope escape and test one mixed completion**.
 - Earlier scope and category choices remain recorded in the 2026-08-19 entries;
   the migration does not rewrite them.

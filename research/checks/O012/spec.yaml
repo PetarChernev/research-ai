@@ -1,0 +1,133 @@
+schema_version: 1
+id: "O012"
+title: "Finite-slope mixed interface variation"
+claims: ["C025"]
+derivations: ["D022"]
+class: "exact-symbolic"
+required: true
+status: active
+
+question: >-
+  Under the D022 finite-slope split field class, D004 orientations and ordered
+  antisymmetric-pair convention, the planar rank-three trace
+  e=(du0,du1,du2,0), ordinary circle period 2pi, and the unchanged D005 basic
+  persistent field list, does exact first-order boundary variation give zero
+  for the collapsed-E4 channel, +(2pi/kappa5) delta-chi43 oSigma for
+  delta-omega43=delta-chi43 dtheta, no D005 term conjugate to chi43, and exact
+  compatibility of the remaining persistent D005 shell substitutions?
+
+assumptions:
+  - >-
+    The calculation is local to the fixed D004 split interface with
+    oSigma=du0 wedge du1 wedge du2, o5=oSigma wedge ds wedge dtheta,
+    core-minus-exterior incidence, positive ordinary circle orientation, and
+    formal exact period tau interpreted as 2pi. No moving interface,
+    normalized-Haar replacement, counterterm, matter, or altered action is encoded.
+  - >-
+    Internal conventions are epsilon_01234=epsilon_0123=+1,
+    epsilon_abcd=epsilon_abcd4, omega^AB=-omega^BA, and every antisymmetric
+    pair is summed over both ordered values before collection. The executable
+    starts from Theta5=(kappa5_inv/12) epsilon_ABCDE deltaomega^AB E^C E^D E^E.
+  - >-
+    The finite-slope trace is e=(du0,du1,du2,0), E4 has exactly zero boundary
+    value, and deltaomega43=delta_chi43 dtheta remains a free finite one-sided
+    Palatini tangent. Coframe and connection variations are not tied before variation.
+  - >-
+    The unchanged D005 basic persistent fields are exactly e_plus,
+    omega_plus_ab, e_minus, varpi_ab, g, lambda_ab, mu_a, with fixed seed/orbit
+    data represented by u and a0=0. Mixed SO(1,4) fields omega43 and chi43 are
+    absent. The represented variation incidence includes both connections,
+    both coframes, both multipliers, g, and the seed-orbit tangent.
+  - >-
+    Candidate substitutions are g=u=1, a0=a=bar_a=barvarpi=0,
+    omega_plus_ab=varpi_ab=0, Delta e=Delta omega=K=0, b=kappa4_inv,
+    lambda=-Q, mu=0, constant planar coframes, Q=Pminus, and dQ=0. Proper
+    outer-corner support removes the D005 corner potentials.
+  - >-
+    Coefficients are canonical sparse free polynomials over Fraction in tau,
+    kappa5_inv, kappa4_inv, delta_chi43 and witness atoms. Forms are canonical
+    sparse maps on du0<du1<du2<dtheta. There are no floats, tolerances,
+    sampling, randomization, heuristic simplification, or hidden relations.
+
+acceptance_criterion: >-
+  Pass iff exact canonical enumeration reconstructs the D004 five-dimensional
+  boundary potential from its ordered-index formula, gives
+  p_!Theta_(5,E4)=0 at E4=0, gives
+  p_!Theta_(5,chi43)=+(tau/kappa5) delta-chi43 oSigma with tau interpreted
+  exactly as 2pi and epsilon_(3bcd)e^b e^c e^d=-6 oSigma, confirms that the
+  unchanged D005 variable/variation table has identically zero chi43
+  coefficient, and reproduces every declared persistent shell equality on the
+  candidate traces; additionally, isolated mutations reversing the core
+  incidence/orientation sign, omitting one antisymmetric order, imposing the
+  smooth-flat zero trace in place of the finite tangent, or inserting a
+  fictitious D005 mixed cancellation must each make the complete claim check
+  exit 1. Fail on any exact mismatch or ineffective required mutation.
+  Inconclusive only if a predeclared exact-domain operation or the frozen D005
+  field table cannot be represented before comparison; implementation
+  exceptions are errors. The obligation does not test physical admissibility
+  of the finite-regularity class or completeness of other action classes.
+
+method:
+  description: >-
+    Exact exterior-form and ordered-index enumeration of the D004 boundary
+    potential, plus an explicit frozen D005 field/variation incidence table and
+    exact shell substitution table, with semantic mutations and a direct
+    hand-coefficient cross-check.
+  rationale: >-
+    The load-bearing result is a finite sign-, factor-, orientation-, and
+    field-content-sensitive algebraic bridge. Exact canonical arithmetic can
+    decide it; numerical sampling or a general weak-geometry implementation
+    would be less discriminating and enlarge the trust surface.
+  representation: >-
+    The domain is a finite free exterior algebra on ordered interface/circle
+    bases with coefficients in a sparse free polynomial ring over exact
+    rationals. Required operations are addition, wedge, antisymmetric lookup,
+    finite epsilon/permutation enumeration, circle-leg extraction, and exact
+    shell-table substitution. Canonical sorted maps make equality decidable.
+  trust_surface: >-
+    Trusted code is Python integer/Fraction arithmetic, the short
+    self-contained canonicalization and ordered-index loops in run.py, and the
+    deterministic wrapper. No CAS is used. A general simplifier would enlarge
+    the trust surface without helping this finite domain. The existing
+    exact_graded kernel is adequate in principle but unnecessary for these few
+    claim-local operations; new reusable infrastructure would add risk.
+  conventions_and_alternate_checks: >-
+    D004 epsilon, antisymmetry, incidence, fiber-right orientation and ordinary
+    period are explicit, as is frozen D005 incidence. A separate hand count
+    uses two pair orders, six coframe permutations, epsilon_3012=-1 and the
+    three-leg fiber move. Exact planar Q=Pminus and four fresh-process semantic
+    mutations are correlated alternate controls, not independent verification.
+
+controls:
+  positive:
+    - "complete ordered-index D004 split and finite mixed coefficient"
+    - "collapsed E4 zero and epsilon_3bcd e^b e^c e^d=-6 oSigma"
+    - "complete frozen D005 field/variation incidence excludes chi43"
+    - "all D022 persistent shell substitutions, including fixed-seed dQ=0"
+    - "separate hand/permutation coefficient equals the ordered enumeration"
+  mutations:
+    - "reverse the core incidence/orientation sign"
+    - "omit one antisymmetric connection order"
+    - "replace the finite mixed tangent by the smooth-flat zero trace"
+    - "insert a fictitious D005 mixed cancellation"
+
+implementation:
+  entrypoint: "research/checks/O012/run.py"
+  infrastructure:
+    - "pyproject.toml"
+    - "scripts/_research.py"
+    - "scripts/run_check.py"
+    - "uv.lock"
+  producer_models: ["openai/gpt-5.6-sol"]
+  infrastructure_producer_models: ["openai/gpt-5.6-sol"]
+
+independence:
+  requirement: "recommended"
+  rationale: >-
+    D022 and its internal critique share one OpenAI model and D004/D005
+    conventions. A separately assembled direct coefficient path and semantic
+    mutations are warranted, but a second full implementation or final audit is
+    disproportionate for this restricted intermediate result.
+
+created_at: "2026-08-22T16:21:04Z"
+updated_at: "2026-08-22T18:00:00Z"

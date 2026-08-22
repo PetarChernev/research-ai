@@ -1,0 +1,168 @@
+{
+  "schema_version": 2,
+  "obligation_id": "O011",
+  "claims": [
+    "C023"
+  ],
+  "derivations": [
+    "D020"
+  ],
+  "outcome": "passed",
+  "exit_code": 0,
+  "started_at": "2026-08-22T15:24:41Z",
+  "completed_at": "2026-08-22T15:24:41Z",
+  "command": "/home/petar/Projects/research-ai/.venv/bin/python3 /home/petar/Projects/research-ai/research/checks/O011/run.py",
+  "runner_command": "uv run --locked python scripts/run_check.py O011",
+  "implementation": "research/checks/O011/run.py",
+  "git_commit": "38f38ea5c5c8419c2c77f4fdfd69870b38ca1595",
+  "dirty_worktree": true,
+  "spec_sha256": "3e3ede19de55056a51b708e0fc57123574705600d2727009eb3fe117dea1ec11",
+  "implementation_sha256": "a65e7971ce2f50900f40a15e4df1cc643daca4bf37607eb086e827b71eae4b0a",
+  "infrastructure": [
+    {
+      "path": "pyproject.toml",
+      "type": "file",
+      "sha256": "a83358c688c795208a1da1b9ee6b630afb791719baa9f72a2cb53e672417e07e"
+    },
+    {
+      "path": "scripts/_research.py",
+      "type": "file",
+      "sha256": "d651210158db51853658afd917ff616ae9c90ea95e4c2cfbc37f1427b04f8210"
+    },
+    {
+      "path": "scripts/run_check.py",
+      "type": "file",
+      "sha256": "1187837d94b89bf08ab2b9b7164a6c116930f7cb9c9e3a320f5f7b4117e4cf24"
+    },
+    {
+      "path": "uv.lock",
+      "type": "file",
+      "sha256": "e32bee08b2192dd59a9820a15bdf7cb914daf0a7136e594869e98e4c0ae7bea0"
+    }
+  ],
+  "infrastructure_sha256": "c161ea4ada2e2a5118552101f73cbe899007cc28701c86677cf238a6f6cb7357",
+  "environment": {
+    "python": "3.12.12",
+    "python_implementation": "CPython",
+    "python_executable": "/home/petar/Projects/research-ai/.venv/bin/python3",
+    "platform": "Linux-6.17.0-41-generic-x86_64-with-glibc2.42",
+    "machine": "x86_64",
+    "packages": {
+      "PyYAML": "6.0.3"
+    }
+  },
+  "observations": {
+    "assertions": {
+      "failed": [],
+      "passed": 79,
+      "total": 79
+    },
+    "formal_flat_objects": [
+      "A",
+      "A2",
+      "F-r",
+      "H",
+      "J",
+      "p",
+      "q2",
+      "q4"
+    ],
+    "mutation": null,
+    "mutation_exit_codes": {
+      "bounded-integrable-conflation": 1,
+      "omit-nec-circle-channel": 1,
+      "omit-nec-normal-channel": 1,
+      "profile-derivative-sign": 1,
+      "timelike-stress-sign": 1
+    },
+    "off_diagonal_zeros": 10,
+    "profiles": {
+      "2": {
+        "B": [
+          [
+            [
+              2,
+              -3
+            ],
+            "2"
+          ]
+        ],
+        "positivity_threshold_ratio": "2/3",
+        "r": [
+          [
+            [
+              2,
+              -4
+            ],
+            "-6"
+          ],
+          [
+            [
+              4,
+              -6
+            ],
+            "4"
+          ]
+        ],
+        "weighted_r2_inverse_powers": [
+          8,
+          10,
+          12
+        ]
+      },
+      "4": {
+        "B": [
+          [
+            [
+              4,
+              -5
+            ],
+            "4"
+          ]
+        ],
+        "positivity_threshold_ratio": "4/5",
+        "r": [
+          [
+            [
+              4,
+              -6
+            ],
+            "-20"
+          ],
+          [
+            [
+              8,
+              -10
+            ],
+            "16"
+          ]
+        ],
+        "weighted_r2_inverse_powers": [
+          12,
+          16,
+          20
+        ]
+      }
+    },
+    "verdicts": {
+      "2": {
+        "both_NEC_channels_eventually_negative": true,
+        "componentwise_absolute_stress_L1": true,
+        "curvature_unbounded": true,
+        "stress_unbounded": true
+      },
+      "4": {
+        "both_NEC_channels_eventually_negative": true,
+        "componentwise_absolute_stress_L1": true,
+        "curvature_unbounded": true,
+        "stress_unbounded": true
+      }
+    }
+  },
+  "artifacts": [],
+  "logs": [
+    "research/checks/O011/logs/stdout.log",
+    "research/checks/O011/logs/stderr.log"
+  ],
+  "notes": "Canonical outcome derived from the recorded process exit status."
+}
