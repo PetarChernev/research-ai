@@ -1,6 +1,6 @@
 # AI-Assisted Physics Research Workspace
 
-This repository uses OpenCode as a lightweight orchestration layer for theoretical and computational physics. Agents exchange durable hypotheses, claims, derivations, experiments, machine-check obligations, literature notes, and verification reports through the filesystem and Git.
+This repository uses OpenCode as a lightweight orchestration layer for theoretical and computational physics. Agents exchange durable hypotheses, claims, derivations, experiments, machine-check obligations, exploratory literature leads, focused literature notes, and verification reports through the filesystem and Git.
 
 ## Quick Start
 
@@ -19,7 +19,7 @@ Then begin in OpenCode:
 /research-start <your physics question>
 ```
 
-For a broad question, run `/research-explore --width 8` to launch a bounded parallel theory wave and fresh GPT internal critiques. Use `/research-cycle` to converge on survivors, inspect with `/research-status`, and reserve `/verify-claim C001` for a mature critical claim whose Opus audit you explicitly approve. Turn a concrete assertion into an executable obligation with `/new-check` and run it with `/run-check O001`.
+For a broad theory question, run `/research-explore --width 8` to launch a bounded parallel derivation wave and fresh GPT internal critiques. Run `/literature-explore --width 4` when terminology, historical precursors, cross-domain structures, or transferable methods are poorly mapped. Its creative reports are only candidate leads; the director sends promising ones to focused Literature and/or Theorist evaluation before incorporation. Use `/research-cycle` to converge on survivors, inspect with `/research-status`, and reserve `/verify-claim C001` for a mature critical claim whose Opus audit you explicitly approve. Turn a concrete assertion into an executable obligation with `/new-check` and run it with `/run-check O001`.
 
 Create artifacts directly when needed:
 

@@ -12,6 +12,10 @@ $ARGUMENTS
 
 Use width 8 unless the user requests another value. Accept widths 2 through 16;
 do not silently reduce the requested width merely to make integration easier.
+This command explores theoretical routes. When the unresolved search space is
+primarily terminological, historical, or cross-domain, use or recommend the
+separate `/literature-explore` wave rather than disguising web searches as
+derivation branches.
 
 1. Read `research/QUESTION.md`, `research/STATE.md`, `research/COMPUTATION.md`, the claim ledger, active hypotheses, and only the primary artifacts needed to avoid duplicate branches. If the question is not initialized, stop and request `/research-start`.
 2. Freeze one exploration objective and build a branch matrix whose rows differ materially in assumptions, formalism, regime, limiting case, constructive route, no-go strategy, or observable consequences. Do not manufacture nominal diversity by paraphrasing one approach. Include at least one adversarial or impossibility branch when scientifically meaningful.

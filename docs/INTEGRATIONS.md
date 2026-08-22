@@ -2,7 +2,7 @@
 
 The baseline repository defines no project MCP server and works with OpenCode's normal web tools and local artifacts. Global configuration varies by user; inspect it with `opencode debug config`. No credential is stored or required by this repository.
 
-Any integration is a discovery or retrieval aid. Its output becomes claim evidence only after the literature agent checks the actual source, records an exact locator and regime in `research/literature/notes/`, and adds verified metadata to `bibliography.bib`.
+Any integration is a discovery or retrieval aid. `literature-explorer` may use it to broaden terminology and find candidate connections, but writes those only under `research/literature/explorations/`. Its output becomes claim evidence only after the focused `literature` agent checks the actual source, records an exact locator and regime in `research/literature/notes/`, and adds verified metadata to `bibliography.bib`. A nontrivial structural correspondence also requires `theorist` evaluation before adoption.
 
 ## Semantic Scholar
 
@@ -10,7 +10,7 @@ Use the official [Academic Graph API](https://api.semanticscholar.org/api-docs/g
 
 OpenCode's `websearch` availability depends on the configured provider or an explicitly enabled search integration. When unavailable, use `webfetch` with the official Semantic Scholar, arXiv, or Crossref endpoints and observe their rate limits; this remains provider-neutral but still sends URLs and queries to those services.
 
-An MCP server can be added later under `mcp` in `opencode.json` after checking its maintenance status, source, requested permissions, and current command syntax. Do not select a package by name alone. The literature agent should use Semantic Scholar to find candidate and citing papers, then inspect primary text before asserting support.
+An MCP server can be added later under `mcp` in `opencode.json` after checking its maintenance status, source, requested permissions, and current command syntax. Do not select a package by name alone. The explorer may use Semantic Scholar to find candidates and terminology trails. The focused literature agent must inspect primary text before asserting support.
 
 ## Zotero
 
@@ -37,5 +37,5 @@ For papers, record at minimum title, authors, year, DOI or versioned arXiv ID, s
 3. Reference secrets through supported environment or credential mechanisms; never write their values to files.
 4. Start read-only and least-privileged.
 5. Test loading with `opencode debug config` and inspect the exposed tool names.
-6. Update the literature agent's permissions only for the exact tools needed.
+6. Update the explorer or focused literature agent's permissions only for the exact tools needed.
 7. Keep a manual web/API path so integration failure does not block research.

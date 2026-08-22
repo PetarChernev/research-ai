@@ -5,7 +5,8 @@ User
   |
   v
 Research Director
-  |-- Literature
+  |-- Literature Explorer x N (candidate leads)
+  |-- Literature (focused source evaluation)
   |-- Theorist x N (parallel breadth wave)
   |-- Scientific Computation
   |   `-- Engineer
@@ -29,7 +30,8 @@ The `research-director` is the primary agent. It owns problem decomposition, com
 
 The producer and review roles use closed tool allowlists and scoped write access:
 
-- `literature` writes only bibliography records and source evidence notes.
+- `literature-explorer` runs at temperature 0.6 and writes only candidate discovery reports under `research/literature/explorations/`. It searches across terminology, history, fields, equations, mathematical structures, and methods, but has no authority to create source evidence or promote a connection.
+- `literature` writes only bibliography records and focused source evidence notes. It validates primary sources, exact statements, regimes, citation lineages, and contradictions for known questions or promoted exploratory leads.
 - `bibliographer` writes only `research/literature/bibliography.bib`, on a deliberately small model, and handles mechanical citation metadata without judging evidence.
 - `theorist` writes only derivation artifacts, and exposes candidate machine-checkable obligations from substantial derivations.
 - `scientific-computation` chooses the computational representation and trust strategy, defines machine-check semantics and acceptance criteria, writes experiment and claim-specific obligation code, validates reusable infrastructure against the intended mathematics, and runs obligations through the deterministic wrapper. It cannot write `research/checks/**/result.json`.
@@ -39,7 +41,7 @@ The producer and review roles use closed tool allowlists and scoped write access
 
 There is deliberately no separate global agent for symbolic algebra, formal proof, numerical simulation, PDEs, theorem proving, or code review. Those are methods the `scientific-computation` role uses when the research requires them, recorded in `research/COMPUTATION.md`. Adding a global agent per method would multiply roles without adding a materially different scientific operation.
 
-`subagent_depth` is two to permit exactly one nested edge: `research-director -> scientific-computation -> engineer`. Scientific Computation's task allowlist contains only Engineer, and Engineer has `task: deny`. Every other worker remains unable to delegate. The director does not have Engineer in its task allowlist, preserving Scientific Computation's ownership of the contract and handoff. The `bibliographer` remains a director-invoked mechanical helper rather than a nested scientific worker.
+`subagent_depth` is two to permit exactly one nested edge: `research-director -> scientific-computation -> engineer`. Scientific Computation's task allowlist contains only Engineer, and Engineer has `task: deny`. Every other worker remains unable to delegate. The director invokes parallel Literature Explorers directly as siblings, then directly invokes Literature and/or Theorist to evaluate selected leads; no explorer launches its own evaluator. The director does not have Engineer in its task allowlist, preserving Scientific Computation's ownership of the contract and handoff. The `bibliographer` remains a director-invoked mechanical helper rather than a nested scientific worker.
 
 Scientific agents deny secret-like files, undeclared tools, and external directories. Built-in `read` and the path-confined `research_safe_search` replace shell `cat`, `grep`, and `rg`; fixed tools cover Git inspection, repository tests, artifact allocation, status, validation, and canonical checks. Generic `uv` and `python` remain approval-gated because any interpreter can bypass edit paths. Reviewers have no Bash or web access. `scientific-computation` additionally denies edits to `research/checks/**/result.json`; Engineer cannot edit anything under `research/checks/` at all. These permissions are guardrails, not an OS sandbox; the load-bearing constraint remains that only `scripts/run_check.py` produces a result file and Scientific Computation authors claim-specific runners.
 
@@ -75,6 +77,9 @@ director
 The artifact boundary mirrors it:
 
 ```text
+research/literature/explorations/  speculative discovery leads, not evidence
+research/literature/notes/         focused source evidence
+research/derivations/              auditable theory and structural mappings
 research/computation/   reusable methodology/infrastructure
 research/environment/   research-scoped dependency/runtime definitions
 research/checks/        claim-linked executable evidence
@@ -127,9 +132,13 @@ representation assessment
 
 A permanently unbounded swarm increases duplicated arguments, hidden dependence, and context volume, but a bounded breadth wave is valuable when the solution space is poorly mapped. `/research-explore` preallocates distinct `DNNN` paths, launches a configurable batch of sibling theorists, waits for a first-pass barrier, launches fresh GPT critics, and only then synthesizes and prunes. Diversity comes from distinct assumptions, formalisms, regimes, constructive routes, and falsification strategies, not from repeated GPT votes. Multiple theorists are parallel production capacity, not independent confirmation. Methods still belong in the research plan rather than separate global agents.
 
+`/literature-explore` applies a parallel fan-out/fan-in pattern to discovery rather than derivation. The director assigns genuinely distinct search lenses and unique report paths, launches several sibling `literature-explorer` workers, and waits for the complete discovery barrier. These workers may use abstracts, snippets, reviews, historical terminology, and structural analogies to find candidates, so their reports are explicitly non-evidentiary. Parallel reports broaden coverage but do not independently confirm a connection.
+
+After the barrier, the director triages at most a few high-value leads. `literature` checks source identity, exact evidence, regime, lineage, and contradictions. `theorist` derives or attacks the proposed dictionary between project and source structures. Leads needing both normally pass through source validation before source-specific theory work. Only those focused evaluation artifacts can enter synthesis, state, decisions, or claims; rejected and deferred leads remain visible without being laundered into evidence.
+
 ## Claim Integration
 
-Only the director changes the canonical ledger, and its write scope excludes internal critiques, canonical check results, and verification reports. A worker may provide a derivation, observation, source packet, machine-check result, critique, or verification report, but existence never selects claim status automatically. Ordinary claims use `checks.independent_verification: not-requested`; `pending` is reserved for a ready, user-approved final audit. The validator blocks `passed` and `verified` without a substantive Opus report and known different-model boundary.
+Only the director changes the canonical ledger, and its write scope excludes internal critiques, canonical check results, and verification reports. A worker may provide an exploratory lead, derivation, observation, source packet, machine-check result, critique, or verification report, but existence never selects claim status automatically. In particular, an artifact under `research/literature/explorations/` is not valid claim evidence. Ordinary claims use `checks.independent_verification: not-requested`; `pending` is reserved for a ready, user-approved final audit. The validator blocks `passed` and `verified` without a substantive Opus report and known different-model boundary.
 
 GPT internal critique is the normal second pass and can run across every substantive branch without claiming independence. Opus verification is deliberately much smaller than production. It is absent from start, exploration, and ordinary convergence commands. After explicit approval, the director gives the sole Opus verifier one narrow critical claim, a minimal packet, one decisive reconstruction target, and at most three attacks. Full reproduction and independent implementation remain separately approved workflows.
 
@@ -154,6 +163,7 @@ Current assignment:
 | ------------------------ | ---------------------------- | ----------------------------------------------------------------------------------------------- |
 | `research-director`      | `openai/gpt-5.6-sol`         | Fixed orchestration and synthesis model; keeps Opus unused by production.                       |
 | `theorist`               | `openai/gpt-5.6-sol`         | Analytical derivation on a provider distinct from the default verifier.                         |
+| `literature-explorer`    | `openai/gpt-5.6-sol`         | Creative discovery at temperature 0.6; produces non-evidentiary candidate leads.                |
 | `literature`             | `openai/gpt-5.6-sol`         | Strong source judgment while preserving the reserved Opus boundary.                             |
 | `scientific-computation` | `openai/gpt-5.6-sol`         | Fixed authorship for computational semantics and claim-specific checks.                         |
 | `engineer`               | `openai/gpt-5.6-sol`         | Fixed implementation provenance for research substrate.                                         |
@@ -169,7 +179,7 @@ Computational evidence does not relax any of this. Deterministic execution remov
 
 ## Provenance Plugin
 
-`research-provenance.js` uses the documented `chat.message`, `chat.params`, `command.execute.before`, and `tool.execute.after` hooks. It records agent, provider, and model metadata for research slash commands, infrastructure/environment writes, experiment commands, machine-check commands, and Engineer provisioning. Engineer provisioning records Scientific Computation as the parent agent, `delegated_agent: engineer`, and an associated obligation ID when one appears in the bounded task. Child writes carry Engineer's actual session model. It never stores prompt text, arbitrary arguments, file contents, environment values, or tool output. All plugin writes are caught and fail open, so a logging problem cannot block research.
+`research-provenance.js` uses the documented `chat.message`, `chat.params`, `command.execute.before`, and `tool.execute.after` hooks. It records agent, provider, and model metadata for research slash commands, exploratory-literature delegation and writes, infrastructure/environment writes, experiment commands, machine-check commands, and Engineer provisioning. Engineer provisioning records Scientific Computation as the parent agent, `delegated_agent: engineer`, and an associated obligation ID when one appears in the bounded task. Child writes carry the worker's actual session model. It never stores prompt text, arbitrary arguments, file contents, environment values, or tool output. All plugin writes are caught and fail open, so a logging problem cannot block research.
 
 Direct helper scripts, generated experiment runners, and `scripts/run_check.py` also write explicit provenance. This keeps the scientific workflow usable even if plugins are disabled with OpenCode's pure mode.
 
@@ -181,6 +191,7 @@ Stable IDs, YAML claims, JSON results, explicit dependencies, independently runn
 external scheduler
     -> research-director session
     -> specialized worker sessions
+    -> speculative discovery and focused evaluation
     -> durable artifacts
     -> GPT internal critique
     -> rare user-approved Opus verification

@@ -43,6 +43,13 @@ class BaselineTests(WorkspaceTestCase):
         self.assertEqual(
             sorted(
                 path.name
+                for path in (PROJECT_ROOT / "research" / "literature" / "explorations").iterdir()
+            ),
+            ["README.md"],
+        )
+        self.assertEqual(
+            sorted(
+                path.name
                 for path in (PROJECT_ROOT / "research" / "computation").iterdir()
                 if not (
                     path.is_dir()

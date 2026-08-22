@@ -5,6 +5,7 @@ import path from "node:path"
 const RESEARCH_COMMANDS = new Set([
   "research-start",
   "research-explore",
+  "literature-explore",
   "research-cycle",
   "new-hypothesis",
   "new-experiment",
@@ -120,7 +121,9 @@ export const ResearchProvenance = async ({ worktree }) => {
         }
 
         let operation = relevantPaths.length ? "research-artifact-write" : null
-        if (relevantPaths.some((item) => item.startsWith("research/critiques/"))) {
+        if (relevantPaths.some((item) => item.startsWith("research/literature/explorations/"))) {
+          operation = "literature-exploration-write"
+        } else if (relevantPaths.some((item) => item.startsWith("research/critiques/"))) {
           operation = "internal-critique-write"
         } else if (relevantPaths.some((item) => item.startsWith("research/environment/"))) {
           operation = "research-environment-write"
@@ -146,7 +149,13 @@ export const ResearchProvenance = async ({ worktree }) => {
         }
         const delegatedTask = input.tool === "task" ? input.args : null
         const delegatedAgent = delegatedTask?.subagent_type
-        if (delegatedAgent === "engineer") {
+        if (delegatedAgent === "literature-explorer") {
+          operation = "literature-exploration-delegated"
+          const match = delegatedTask.prompt?.match(
+            /research\/literature\/explorations\/[A-Za-z0-9._/-]+\.md/,
+          )
+          if (match) relevantPaths = [match[0]]
+        } else if (delegatedAgent === "engineer") {
           operation = "engineer-provisioned"
         } else if (delegatedAgent === "theorist") {
           operation = "theory-branch-delegated"
