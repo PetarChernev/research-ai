@@ -1,0 +1,145 @@
+{
+  "schema_version": 2,
+  "obligation_id": "O013",
+  "claims": [
+    "C026"
+  ],
+  "derivations": [
+    "D023"
+  ],
+  "outcome": "passed",
+  "exit_code": 0,
+  "started_at": "2026-08-22T17:25:13Z",
+  "completed_at": "2026-08-22T17:25:29Z",
+  "command": "/home/petar/Projects/research-ai/.venv/bin/python3 /home/petar/Projects/research-ai/research/checks/O013/run.py",
+  "runner_command": "uv run --locked python scripts/run_check.py O013",
+  "implementation": "research/checks/O013/run.py",
+  "git_commit": "9bd25b908d2d122b76bcbc97a02b9507fac7439a",
+  "dirty_worktree": true,
+  "spec_sha256": "aa5d989347ae6bca0b6201df61f370acfffe8a10c1e5f5e3b49ed32f2a1a3721",
+  "implementation_sha256": "5bf4ea80e6e5109eeb55ece330c353a424b266cd85534612bacbf15eac1aebaa",
+  "infrastructure": [
+    {
+      "path": "pyproject.toml",
+      "type": "file",
+      "sha256": "a83358c688c795208a1da1b9ee6b630afb791719baa9f72a2cb53e672417e07e"
+    },
+    {
+      "path": "scripts/_research.py",
+      "type": "file",
+      "sha256": "d651210158db51853658afd917ff616ae9c90ea95e4c2cfbc37f1427b04f8210"
+    },
+    {
+      "path": "scripts/run_check.py",
+      "type": "file",
+      "sha256": "1187837d94b89bf08ab2b9b7164a6c116930f7cb9c9e3a320f5f7b4117e4cf24"
+    },
+    {
+      "path": "uv.lock",
+      "type": "file",
+      "sha256": "e32bee08b2192dd59a9820a15bdf7cb914daf0a7136e594869e98e4c0ae7bea0"
+    }
+  ],
+  "infrastructure_sha256": "c161ea4ada2e2a5118552101f73cbe899007cc28701c86677cf238a6f6cb7357",
+  "environment": {
+    "python": "3.12.12",
+    "python_implementation": "CPython",
+    "python_executable": "/home/petar/Projects/research-ai/.venv/bin/python3",
+    "platform": "Linux-6.17.0-41-generic-x86_64-with-glibc2.42",
+    "machine": "x86_64",
+    "packages": {
+      "PyYAML": "6.0.3"
+    }
+  },
+  "observations": {
+    "assertions": {
+      "failed": 0,
+      "failed_names": [],
+      "passed": 38,
+      "total": 38
+    },
+    "details": {
+      "B_ref": "-1*k*kappa5_inv*tau",
+      "coframe_companion_terms": 1,
+      "covariance": {
+        "finite_witness_only": false,
+        "internal_generators": 10,
+        "kind": "generic exact polynomial tensor identity",
+        "simultaneous_residual_terms": 0,
+        "transform_only_residual_terms": 1
+      },
+      "deltaomega_rows": {
+        "01": true,
+        "02": true,
+        "03": true,
+        "04": true,
+        "12": true,
+        "13": true,
+        "14": true,
+        "23": true,
+        "24": true,
+        "34": true
+      },
+      "direct_coefficients": {
+        "P34": "1/2",
+        "P43": "-1/2"
+      },
+      "mutation": null,
+      "nonzero_momenta": {
+        "P34": "1/2*kappa5_inv",
+        "P43": "-1/2*kappa5_inv"
+      },
+      "orbit": {
+        "bulk": 1,
+        "corner": -1,
+        "derivation": {
+          "D_zeta_P_equals_boundary_minus_zeta_DP": -1,
+          "input_-D_zeta_P": -1
+        }
+      },
+      "reference_row": "1*dbar43*kappa5_inv*tau",
+      "rescaling_residual": "-3*alpha*k*kappa5_inv*tau"
+    },
+    "infrastructure_producer_models": [
+      "openai/gpt-5.6-sol"
+    ],
+    "mutation_processes": {
+      "delete-coframe-companion": {
+        "detected": true,
+        "exit_code": 1
+      },
+      "omit-order": {
+        "detected": true,
+        "exit_code": 1
+      },
+      "reverse-orbit-corner-sign": {
+        "detected": true,
+        "exit_code": 1
+      },
+      "reverse-primitive-sign": {
+        "detected": true,
+        "exit_code": 1
+      },
+      "transform-only-dynamical-connection": {
+        "detected": true,
+        "exit_code": 1
+      }
+    },
+    "obligation_id": "O013",
+    "producer_model": "openai/gpt-5.6-sol",
+    "representation": {
+      "CAS": false,
+      "covariance_rigor": "generic polynomial identity in all component and gauge-generator atoms",
+      "domain": "free exact rational polynomials, finite exterior forms, and explicit SO(1,4) tables",
+      "equality": "canonical sparse tuple equality",
+      "floating_point": false,
+      "random_sampling": false
+    }
+  },
+  "artifacts": [],
+  "logs": [
+    "research/checks/O013/logs/stdout.log",
+    "research/checks/O013/logs/stderr.log"
+  ],
+  "notes": "Canonical outcome derived from the recorded process exit status."
+}

@@ -1,18 +1,18 @@
 # Computational Verification Strategy
 
-Status: active — finite-slope mixed-interface obstruction derived and checked; one mixed completion next
-Last updated: 2026-08-22T18:05:00Z
+Status: active — first mixed polarization completion derived and checked; covariant reduction field next
+Last updated: 2026-08-22T20:15:00Z
 
 Research question: Does there exist a resolution-independent, Lorentz-covariant classical `4 <-> 5` framework, formulated without an inverse coframe at rank change, whose bulk and transition equations follow from one variational principle and whose linearized initial-value problem is free of an evident constraint inconsistency, ghost, or loss of predictivity?
 
 This is the project-specific methodology for testing research recorded in
-`D001`–`D022`. It does not retroactively turn historical calculations into
+`D001`–`D023`. It does not retroactively turn historical calculations into
 machine evidence. D006 completed the bounded interface-only canonical analysis;
 W001-total-gauss derived the regular-core limit and total cut-moment-map
 cancellation; CY001-trace-primary then derived a conditional duplicated-trace
 reduction and the combined defining-primary algebra. CY002-background-existence
 tested whether the presumed minimal background actually solves the bulk
-equations. O007-O012 test the respective finite bridges. D019 excludes the
+equations. O007-O013 test the respective finite bridges. D019 excludes the
 minimal source-free common-warp background analytically, and D020 excludes a
 bounded NEC-respecting effective source for the two exact D002 profiles in that
 geometry. D021/C024 now prove the profile-independent classical endpoint
@@ -25,17 +25,21 @@ universal zero-slope endpoint theorem analytically; finite differentiation does
 not test its quantifier, so formal real analysis remains deferred. D022/C025 now
 test the selected nonzero-slope attachment and identify a finite mixed D004
 boundary row absent from unchanged D005. O012 passed the predeclared exact
-coefficient, incidence, shell, and mutation bridge. No obligation decides the
-physical admissibility of the finite tangent class, a covariant mixed
-completion, weak-action completeness, or C002/C003.
+coefficient, incidence, shell, and mutation bridge. D023/C026 test one full
+tensorial-difference polarization primitive; O013 passed its finite complete
+variation and local-covariance bridge. No obligation decides the physical
+admissibility of the finite tangent class, another mixed completion, global
+holonomy/edge status, total-interface full covariance, weak-action
+completeness, or C002/C003.
 
 ## Current research phase
 
 The existing work is in a fixed-interface, exact-algebraic foundation regime.
 It has passed from an interface-only shell through a trace-aware combined
 defining-primary presentation. Smooth-flat background existence failed, while
-the finite-slope control exposes an uncancelled mixed interface row; complete
-action/background existence therefore blocks the planned functional
+the finite-slope control exposes an uncancelled mixed interface row and the
+first covariant polarization repair fails its free-background criterion;
+complete action/background existence therefore blocks the planned functional
 bulk-boundary preservation phase.
 The benchmark object is the local non-pure quotient
 `X=[U x I x S1]/~`, with an exactly collapsed circle for `s<=0`, together
@@ -59,8 +63,9 @@ C009 and C010 -> C012 -> C013 -> C014 -> C015 -> C016 -> C017
                   C007 + C015 -------------------------------> C021
                                       `----------------------> C022
                    C007 --------------------------------------> C023
-              endpoint data + D019 curvature ----------------> C024
-                   C012 + C015 + finite-slope tangent --------> C025,
+               endpoint data + D019 curvature ----------------> C024
+                    C012 + C015 + finite-slope tangent --------> C025
+                         C014 + C015 + C025 + one primitive ----> C026,
 ```
 
 with C011 excluding an autonomous bare-quotient measure/incidence choice and
@@ -154,6 +159,18 @@ bridge. The next methodological question changes only the exposed action-side
 datum: whether one minimal covariant integrable mixed interface completion can
 repair this row without degeneracy or uncontrolled edge data.
 
+CY007 tests exactly one such action-side repair. D023/C026 add the full
+tensorial-difference core-boundary primitive
+`B_ref=-integral (omega_+-barOmega)^AB wedge P^(5)_AB`. It cancels the C025
+`43` row but changes polarization: fixed reference data anchor the slope,
+unrestricted reference or seed variation forces boundary rank at most two, and
+a fixed-seed gauge orbit fixes the holonomy conjugacy class while adding an
+unclassified edge/corner sector. O013 passed the finite ordered-index,
+field-space, orbit-sign, and generic infinitesimal-covariance bridge. Full
+`SO(1,4)` covariance of the total frozen interface theory now requires an
+explicit normal/reduction field or a full mixed D005 extension, so no further
+computational representation is selected before that theory object exists.
+
 ## Checkability map
 
 | Claim | Machine-checkable now | With materially more infrastructure | Not usefully machine-checkable in this phase |
@@ -183,11 +200,12 @@ repair this row without degeneracy or uncontrolled edge data.
 | C023 | O011 passed the exact effective-stress components, all-null NEC reduction, both fixed-profile derivatives/signs, formal flat-order bookkeeping, and the distinction between pointwise divergence and volume-weighted integrability. | A formal analytic or dynamical development would be needed for an all-profile source theorem or existence/nonexistence of a matter action. | Covariant matter realization, source dynamics, and every excluded geometric/action relaxation. |
 | C024 | Exact differentiation can regress the oscillatory sharpness witness and the regular-lapse chain rule, but neither finite identity tests the quantified endpoint theorem. | A formal real-analysis development could encode the integrating-factor comparison, endpoint limits, positivity, and weak a.e. extension. | Finite symbolic sampling or profile enumeration cannot establish the universal theorem or its physical sufficiency; no required obligation is adopted in this cycle. |
 | C025 | O012 checks the ordered D004 finite-slope mixed boundary coefficient, frozen D005 field incidence, persistent shell table, and semantic mutations exactly. | A completed lower-regularity quotient calculus or a proposed mixed interface action could expose new covariance, integrability, and gauge obligations. | Physical necessity of the finite mixed tangent, general BV action completeness, classification of all counterterms, and broad C002/C003. |
+| C026 | O013 checks the single primitive's ordered rank-three reduction, complete finite field-space variation, all ten connection-row cancellations, polar coframe/reference residuals, orbit signs, and generic infinitesimal standalone `SO(1,4)` covariance. | A defined normal/reduction-field theory could expose mixed gauge, moment-map, and constraint obligations in a new representation. | Global holonomy/large-gauge classification, edge gauge-versus-physical status, full D005 covariance, all other mixed actions, and broad C002/C003. |
 
 ## Current machine-check obligations
 
-The program now has twelve required exact obligations, prioritized by the actual
-dependency graph rather than chronology. All twelve have current deterministic
+The program now has thirteen required exact obligations, prioritized by the actual
+dependency graph rather than chronology. All thirteen have current deterministic
 `passed` results; each was allocated with its acceptance criterion fixed before
 implementation.
 
@@ -202,6 +220,12 @@ CY006 adds O012 because C025's decisive bridge is instead finite and
 mechanically discriminating: an ordered-index sign/factor calculation plus the
 absence of a mixed variable in the frozen D005 action. O012 does not encode the
 scientific choice of tangent class or any candidate action repair.
+
+CY007 adds O013 because C026's new load-bearing bridge is finite: the ordered
+normal-bivector momentum, complete field-space variation of one polynomial
+primitive, orbit integration-by-parts signs, and local covariance identity.
+O013 does not encode global holonomy, edge classification, total D005
+covariance, or sufficiency of the action class.
 
 1. **O001 — D002 equalizer and curvature controls (C009/D002).** Exact
    branchwise pullback residuals for `eta`, `rho eta`, `A`, `F`, and mixed
@@ -260,6 +284,13 @@ scientific choice of tangent class or any candidate action repair.
     orientation/order/tangent/cancellation mutations must fail. It does not
     decide tangent-class admissibility, weak-action completeness, or a mixed
     interface repair.
+13. **O013 — mixed polarization completion bridge (C026/D023).** Reconstructs
+    the rank-three `P43/P34` table, the exact boundary primitive, its complete
+    connection/coframe/reference variation, all ten core connection-row
+    cancellations, polar coframe/reference consequences, gauge-orbit bulk and
+    corner signs, and generic infinitesimal standalone `SO(1,4)` covariance.
+    Five semantic mutations must fail. It does not classify global holonomy,
+    edge modes, the total frozen interface gauge group, or other actions.
 
 Each obligation includes mutation/negative controls. A passing outcome is
 evidence only for the encoded finite exact assertions and does not establish
@@ -280,6 +311,7 @@ run.
 | O010 | `passed` | 74/74 | 2026-08-22T13:54:12Z | C022 common-warp Cartan, curvature, Euler, regular ODE/endpoint, and shell bridge |
 | O011 | `passed` | 79/79 | 2026-08-22T15:24:41Z | C023 effective stress, profile asymptotics, weighted integrability, and all-null NEC bridge |
 | O012 | `passed` | 29/29 | 2026-08-22T16:30:05Z | C025 finite-slope D004 mixed boundary row, unchanged D005 incidence, and persistent shell table |
+| O013 | `passed` | 38/38 | 2026-08-22T17:25:13Z | C026 single-primitive reduction, complete variation, orbit signs, and generic infinitesimal covariance |
 
 O002–O004 record the same aggregate shared-infrastructure SHA-256
 `0b4aeb783458e144f6b86641ad631d0cb62dcc12398b414a552434f00d211b97`
@@ -332,6 +364,16 @@ implementation
 `743ac9e93ff3b6b6795418663c6dfec5649cd10a18d23071f114122a3e7e1616`.
 Changing from the shared exterior kernel reduces code dependence but not the
 shared D004/D005 conventions or OpenAI producer, so O012 remains correlated.
+O013 is also self-contained and uses the same root orchestration fingerprint,
+but implements a new exact sparse polynomial/exterior and generic infinitesimal
+`SO(1,4)` path rather than reusing O012 or `exact_graded`. Its dirty-worktree
+result at Git commit `9bd25b908d2d122b76bcbc97a02b9507fac7439a`
+fingerprints spec
+`aa5d989347ae6bca0b6201df61f370acfffe8a10c1e5f5e3b49ed32f2a1a3721`
+and implementation
+`5bf4ea80e6e5109eeb55ece330c353a424b266cd85534612bacbf15eac1aebaa`.
+Its generic local covariance identity changes the code path, but D004/D023
+conventions and the OpenAI producer remain shared, so it is correlated support.
 
 ## Computational representations and methods
 
@@ -711,11 +753,46 @@ shared D004/D005 conventions or OpenAI producer, so O012 remains correlated.
   is physically mandatory, define intrinsic lower-regularity traces, validate
   general nonlinear distribution products, or classify a future mixed
   completion.
-- **Next representation decision:** no method is selected for that completion
-  until theory specifies its fields, covariance, primitive, companion
-  variations, and gauge action. Reuse O012 only for finite coefficient
-  regressions; do not presume its small algebra decides field-space
+- **Disposition:** D023 subsequently specified one primitive, its full
+  reference connection, companion variations, and gauge-orbit action; Domain O
+  records the resulting O013 representation. O012 remains only the finite C025
+  coefficient/incidence bridge and is not presumed to decide field-space
   integrability or full `SO(1,4)` reduction.
+
+### Domain O — single mixed polarization completion (D023/C026/O013)
+
+- **Derived question and answer:** D023 tests only
+  `B_ref=-integral (omega_+-barOmega)^AB wedge P^(5)_AB`. The primitive cancels
+  the C025 `43` row but changes polarization. Fixed reference data anchor
+  `c=barChi43`; unrestricted reference or seed variation imposes `P^(5)=0` and
+  rank at most two; a fixed-seed orbit preserves only a fixed holonomy
+  conjugacy class and adds `D_barOmega P=0` plus a corner moment map.
+- **Representation and rationale:** O013 uses a self-contained exact sparse
+  polynomial/exterior algebra over `Fraction`, complete ordered five-index
+  enumeration, explicit field-space Leibniz differentiation, and generic
+  component atoms for all five coframes, ten connection differences, and ten
+  infinitesimal `so(1,4)` generators. Canonical tuple equality proves the
+  encoded local infinitesimal covariance identity; no sampling, float, CAS, or
+  shared scientific kernel is used. Reusing `exact_graded` would enlarge the
+  fingerprinted surface without removing claim-specific semantics.
+- **Canonical outcome:** `passed`, 38/38 assertions. The exact result recovers
+  `P43=-oSigma/(2kappa5)`, `P34=+oSigma/(2kappa5)`,
+  `B_ref=-(tau/kappa5)k oSigma`, all ten connection-row cancellations, the
+  `-3 alpha k tau/kappa5` coframe-rescaling residual, nonzero free-reference
+  row, orbit signs `(+1,-1)`, and zero generic simultaneous-covariance residual.
+  All five fresh-process semantic mutations exited `1`.
+- **Trust boundary and independence:** a direct complement/permutation count is
+  separate from the primary momentum constructor, but O013 shares D004/D023
+  conventions and the OpenAI producer. It is correlated machine support, not
+  independent verification. It does not test finite/large gauge transformations,
+  global holonomy, edge classification, total D005 covariance, or another
+  action.
+- **Next representation decision:** the research has crossed phase-transition
+  trigger 8. No finite normal/reduction-field, mixed Gauss, or canonical
+  representation is selected until theory defines that field, its gauge action,
+  variational primitive, and the observable deciding whether the `43` datum is
+  gauge, superselected, or physical. O013 must not be extended by assumption to
+  that wider system.
 
 No general-purpose CAS is used as a conclusion-critical equality oracle. A CAS
 may be used later only as an explicitly independent targeted exact cross-check
@@ -797,7 +874,7 @@ implementation. A bad criterion is superseded rather than edited after output.
 
 ## Independence strategy
 
-All twelve required obligations use an alternate analytic path because they test
+All thirteen required obligations use an alternate analytic path because they test
 load-bearing reasoning. The primary implementations and exact kernel are
 not mutually independent when they share `exact_graded/`.
 
@@ -841,6 +918,12 @@ not mutually independent when they share `exact_graded/`.
   reduction. It is self-contained but imports D004/D005 conventions and shares
   the OpenAI producer, so it is correlated support rather than independent
   confirmation.
+- O013: generic sparse-polynomial infinitesimal `SO(1,4)` covariance and full
+  field-space differentiation plus a direct complement/permutation momentum
+  count and five semantic mutations versus D023's hand variation. It does not
+  reuse O012 or `exact_graded`, but shares D004 conventions and the OpenAI
+  producer, so it remains correlated support rather than independent
+  confirmation.
 
 Any future current-lifecycle independent verification must be explicitly
 user-approved and use the reserved `anthropic/claude-opus-5` verifier. It must
@@ -876,22 +959,30 @@ Redesign this strategy if any of the following occurs:
    field-space primitives, edge symplectic data, or full `SO(1,4)` reduction;
    its representation must be reassessed before any post-O012 obligation.
 
+Trigger 8 occurred in CY007. Domain O records the bounded O013 reassessment for
+the one specified primitive; it does not authorize reuse for the now-required
+normal/reduction-field theory.
+
 At the immediate frontier, O006 closes the honest interface-shell gap, O007 the
 finite total-cut cancellation, O008 the selected duplicated-trace defining-
 primary matrix, O009-O010 the unwarped/common-warp source-free background
 bridges, O011 the two-profile inverse-source bridge, and O012 the finite-slope
-mixed-interface coefficient/incidence bridge. No computation is queued.
+mixed-interface coefficient/incidence bridge. O013 now closes the finite bridge
+for the first tensorial-difference polarization primitive. No computation is
+queued.
 D021/C024 close the zero-slope profile-rate escape; D022/C025 show that the
 selected nonzero-slope attachment is separately flat but activates an
-uncancelled mixed D004 boundary equation under free finite tangents. The next
-cheapest theory discriminator is exactly one minimal covariant integrable mixed
-interface completion, with finite-slope flat bulks and the persistent D005
-sector otherwise frozen. Its fields and companion variations must be derived
-before a method or O013 is selected. Planned Domain I resumes only if that or
-another explicitly declared complete action admits an actual background. The
-present exact kernels are not presumed adequate for field-space integrability,
-full mixed gauge reduction, functional trace brackets, constraint closure, or
-PDE questions.
+uncancelled mixed D004 boundary equation under free finite tangents. D023/C026
+then show that the first full covariant polarization primitive cancels that row
+but leaves only external reference amplitude, rank degeneracy, or fixed-holonomy
+edge structure. The next cheapest theory discriminator is an explicit minimal
+normal/reduction field relating core `SO(1,4)` to exterior `SO(1,3)`, with a
+declared observable deciding whether the normal-plane datum is gauge,
+superselected, or physical. Its fields and equations must be derived before a
+method or O014 is selected. Planned Domain I resumes only if that or another
+explicitly declared complete action admits an actual background. The present
+exact kernels are not presumed adequate for full mixed gauge reduction,
+functional trace brackets, constraint closure, or PDE questions.
 
 ## Deferred or non-machine-checkable issues
 
@@ -939,8 +1030,12 @@ PDE questions.
 - C025's finite D004 coefficient, frozen D005 incidence, and persistent shell
   table are checked by passing O012. Whether the finite mixed tangent belongs to
   the correct physical quotient category, whether fixing it is principled, and
-  whether a covariant integrable mixed completion exists remain theory
-  questions outside the obligation.
+  whether another covariant integrable mixed completion succeeds remain theory
+  questions outside the obligation; C026 tests only one primitive.
+- C026's finite primitive reduction, complete variation, orbit signs, and local
+  infinitesimal standalone covariance are checked by passing O013. Global
+  holonomy, large-gauge sectors, edge classification, total D005 covariance,
+  normal/reduction-field dynamics, and every other action remain outside it.
 
 ## Known limitations and risks
 
@@ -1013,6 +1108,11 @@ PDE questions.
   the finite tangent class and frozen D005 field content. Its pass cannot
   establish a general lower-regularity action, rule out mixed counterterms, or
   promote C025 beyond its restricted derived status.
+- D023, its critic, and O013 share D004/D005/D022 conventions and the OpenAI
+  producer. O013 uses a new self-contained exact representation and a generic
+  polynomial infinitesimal-covariance identity, but it cannot classify global
+  holonomy or edge modes, supply the missing total-interface reduction field,
+  test another primitive, or promote C026 beyond restricted derived status.
 
 ## Related decisions
 
@@ -1029,5 +1129,6 @@ PDE questions.
 - `research/DECISIONS.md`, **2026-08-22: Reject the ordinary regular-source escape for the exact D002 profiles**.
 - `research/DECISIONS.md`, **2026-08-22: Close the profile-rate escape and relax only endpoint regularity next**.
 - `research/DECISIONS.md`, **2026-08-22: Close the unchanged-action finite-slope escape and test one mixed completion**.
+- `research/DECISIONS.md`, **2026-08-22: Reject the single polarization repair and expose the reduction-field gate**.
 - Earlier scope and category choices remain recorded in the 2026-08-19 entries;
   the migration does not rewrite them.

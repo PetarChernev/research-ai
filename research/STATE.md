@@ -1,6 +1,6 @@
 # Research State
 
-Last updated: 2026-08-22T18:05:00Z
+Last updated: 2026-08-22T20:15:00Z
 
 ## Current question
 
@@ -11,15 +11,17 @@ backgrounds fail, and C023 now shows that the two exact D002 profiles in the
 same zero-spin-current geometry require unbounded, NEC-violating effective
 stress despite componentwise local volume integrability. C024 now proves that
 every positive classical proper-normal radius with zero endpoint value and
-slope has unbounded radial-circle sectional curvature. C025 now tests the
-selected nonzero-slope escape: its punctured bulks are flat, but a free finite
-mixed `43` trace activates an uncancelled D004 boundary equation absent from
-unchanged D005 and incompatible with the intended rank-three triad. Fixing the
-polar slope and holonomy gives only a fixed-boundary control. The immediate F0
-discriminator is one minimal covariant integrable mixed interface completion,
-with the finite-slope flat bulks and persistent D005 sector otherwise frozen.
-Functional constraint preservation remains deferred until a complete action
-admits a genuine background.
+slope has unbounded radial-circle sectional curvature. C025 tests the selected
+nonzero-slope escape: its punctured bulks are flat, but a free finite mixed `43`
+trace activates an uncancelled D004 boundary equation. C026 now tests the first
+minimal covariant action repair. Its full tensorial-difference primitive cancels
+that row but only changes polarization: fixed reference data anchor the slope,
+unrestricted reference variation degenerates the triad, and a fixed-seed orbit
+fixes holonomy while adding unclassified edge/corner structure. The immediate
+F0 discriminator is therefore an explicit covariant normal/reduction field
+relating core `SO(1,4)` to exterior `SO(1,3)`, not another ad hoc scalar
+counterterm. Functional constraint preservation remains deferred until a
+complete action admits a genuine background.
 
 ## Current working picture
 
@@ -94,10 +96,22 @@ admits a genuine background.
 - O012 passed 29/29 exact ordered-index, orientation, frozen-incidence, shell,
   and mutation assertions. It is correlated support and does not decide the
   tangent category or a new mixed completion.
-- The next missing object is one complete covariant integrable mixed interface
-  term with all companion equations. Functional preservation, F0-B/F0-C,
-  broader torsionful/non-diagonal sectors, moving interfaces, hyperbolicity,
-  and defects remain open.
+- D023/C026 complete the first one-primitive action audit. The exact full
+  tensorial-difference primitive cancels every core connection row, but its
+  complete coframe/reference variation leaves only three controls: externally
+  fixed slope, rank-at-most-two unrestricted-reference data, or a fixed
+  holonomy conjugacy class with an unresolved corner moment map. Covariance of
+  the primitive alone is not covariance of the frozen D005 total interface.
+- O013 passed 38/38 exact momentum, complete-variation, polar residual, orbit,
+  generic infinitesimal-covariance, and mutation assertions. Its self-contained
+  exact representation remains correlated OpenAI support and does not test
+  global holonomy, edge classification, total D005 covariance, or another
+  action.
+- The next missing object is a complete minimal covariant normal/reduction field
+  relating core `SO(1,4)` to exterior `SO(1,3)`, with an observable that
+  classifies the finite normal-plane datum as gauge, superselected, or physical.
+  Functional preservation, F0-B/F0-C, broader torsionful/non-diagonal sectors,
+  moving interfaces, hyperbolicity, and defects remain open.
 
 ## Active exploration portfolio
 
@@ -105,9 +119,10 @@ No branch is running. `W001-total-gauss`, `CY001-trace-primary`,
 `CY002-background-existence`, `CY003-warped-background`, and the bounded
 single-branch cycles `CY004-source-regularity` and
 `CY005-profile-independent-endpoint` and
-`CY006-finite-regularity-attachment` are closed after their derivation,
+`CY006-finite-regularity-attachment` and
+`CY007-mixed-polarization-completion` are closed after their derivation,
 critique, and synthesis barriers; CY005 warranted no new machine obligation,
-while CY006 adopted passing O012.
+while CY006 and CY007 adopted passing O012 and O013 respectively.
 
 | Branch | Path | Critique outcome | Portfolio decision |
 |---|---|---|---|
@@ -119,6 +134,7 @@ while CY006 adopted passing O012.
 | Inverse-source endpoint regularity | `research/derivations/D020.md` | `no-blocking-issue-found` | C023 retained; both exact D002 profiles require unbounded NEC-violating stress for every allowed common warp, despite componentwise local volume integrability |
 | Profile-independent endpoint curvature | `research/derivations/D021.md` | revision then `no-blocking-issue-found` | C024 retained; every positive zero-value/zero-slope classical radius has unbounded radial-circle curvature, but no universal limit or source verdict follows |
 | Finite-slope polar attachment | `research/derivations/D022.md` | `no-blocking-issue-found` | C025 retained; flat punctured bulks and persistent shell compatibility do not cure the uncancelled free mixed `43` boundary row; only a fixed-polar-data control survives |
+| Mixed Palatini polarization completion | `research/derivations/D023.md` | `no-blocking-issue-found` | C026 retained; the first full covariant primitive cancels the row but leaves only external reference amplitude, rank degeneracy, or fixed-holonomy edge structure; reduction field required next |
 
 The integrated dispositions are
 `research/results/W001-total-gauss-synthesis.md` and
@@ -127,7 +143,8 @@ The integrated dispositions are
 `research/results/CY003-warped-background-synthesis.md` and
 `research/results/CY004-source-regularity-synthesis.md` and
 `research/results/CY005-profile-independent-endpoint-synthesis.md` and
-`research/results/CY006-finite-regularity-attachment-synthesis.md`. All seven cycles'
+`research/results/CY006-finite-regularity-attachment-synthesis.md` and
+`research/results/CY007-mixed-polarization-completion-synthesis.md`. All eight cycles'
 producers/critics share OpenAI model provenance and are not independent copies
 of the evidence.
 
@@ -145,10 +162,13 @@ of the evidence.
   positive zero-value/zero-slope profile as a bounded-curvature escape in the
   torsion-free diagonal radial-circle sector. C025 shows that the selected
   nonzero-slope attachment is flat in the punctured bulk but not stationary
-  under free finite mixed variation for unchanged D004/D005. H002 is still
-  unsupported; a mixed covariant action completion, a principled tangent/gauge
-  restriction, preservation, admissible gauge closure, and quotient regularity
-  remain unproved.
+  under free finite mixed variation for unchanged D004/D005. C026 then shows
+  that the first full covariant polarization primitive cancels that row only by
+  anchoring the slope, degenerating the triad, or fixing a holonomy class with
+  unresolved edge structure. H002 is still unsupported; an explicit covariant
+  normal/reduction field, a principled tangent/gauge classification,
+  preservation, admissible gauge closure, and quotient regularity remain
+  unproved.
 - **H003 — continuum rank-change obstruction:** neither the isolated rank/charge
   nor the combined defining-primary matrix furnishes a no-go. C021-C022 supply a
   different restricted obstruction: the symmetric source-free bulk background
@@ -160,9 +180,11 @@ of the evidence.
   actual-limit or universal source inference. C025 adds a conditional
   finite-slope action obstruction: the mixed D004 boundary row is absent from
   persistent D005, while externally fixed polar data leave a control
-  background. A mixed completion, principled tangent restriction,
-  anisotropic/off-diagonal fields, torsion, moving interfaces, and alternative
-  actions remain open, so strong H003 is unproved.
+  background. C026 strengthens only that restricted obstruction: one natural
+  full covariant primitive relocates the failure into reference/coframe/edge
+  data. A dynamical reduction field, other mixed completions, principled tangent
+  restriction, anisotropic/off-diagonal fields, torsion, moving interfaces, and
+  alternative actions remain open, so strong H003 is unproved.
 - **H004/H005 — Hopf spin-statistics competitors:** unchanged and downstream of
   F0; they must not influence action design.
 
@@ -171,7 +193,8 @@ of the evidence.
 | Category | Claims / evidence |
 |---|---|
 | Independently verified | C016/D006 with the user-approved `anthropic/claude-opus-5` report, O005, and corrective O006. Scope remains interface-only and includes the non-decision clause. |
-| Newly derived and computationally passed | C025/D022/O012: the finite-slope punctured bulks are flat and the persistent shell is compatible, but free finite `43` variation produces an uncancelled D004 boundary row incompatible with the rank-three triad; only a fixed-polar-data control survives. Independent verification was not requested. |
+| Newly derived and computationally passed | C026/D023/O013: the first full tensorial-difference polarization primitive cancels the C025 row, but fixed, unrestricted, and fixed-seed-orbit reference treatments respectively anchor the slope, degenerate the triad, or fix holonomy with unresolved edge structure. Independent verification was not requested. |
+| Derived and computationally passed | C025/D022/O012: the finite-slope punctured bulks are flat and the persistent shell is compatible, but free finite `43` variation produces an uncancelled D004 boundary row incompatible with the rank-three triad; only a fixed-polar-data control survives. |
 | Newly derived, computation deferred | C024/D021: every positive `C^1` endpoint/`C^2` punctured zero-value/zero-slope radius has `limsup rho''/rho=+infinity` and unbounded-below radial-circle sectional curvature; no actual limit or source theorem follows. The first critique's dimensional correction was resolved by revision and re-critique. |
 | Derived and computationally passed | C023/D020/O011: for both exact D002 profiles and every smooth-flat common warp, the required zero-spin-current effective source is pointwise unbounded and violates both nontrivial NEC channels although every absolute stress component is locally volume-integrable. Independent verification was not requested. |
 | Derived and computationally passed | C022/D019/O010: no source-free common-warp smooth-flat background in the complete diagonal proper-normal `2+1`-symmetric ansatz, despite complete D005 shell/orbit compatibility. |
@@ -184,9 +207,23 @@ of the evidence.
 
 ## Strongest evidence
 
+- `research/results/CY007-mixed-polarization-completion-synthesis.md` records the
+  one-primitive scope, complete fixed/unrestricted/orbit reference trichotomy,
+  covariance boundary, same-model critique, O013 trust boundary, and explicit
+  reduction-field next gate.
+- D023 derives the exact ordered-pair coefficient, complete field-space
+  variation, rank-minor implication, orbit bulk/corner equations, and holonomy
+  qualification. Its critic reconstructed the decisive bridge and found no
+  blocking issue.
+- O013 has canonical outcome `passed` with 38/38 exact assertions, all ten
+  connection-row cancellations, the nonzero coframe/reference residuals, orbit
+  signs, generic infinitesimal standalone covariance, and five effective
+  mutations. It is correlated support and not a global or total-interface
+  covariance theorem.
 - `research/results/CY006-finite-regularity-attachment-synthesis.md` records the
   exact free-versus-fixed polar-data dichotomy, weak/split distinction,
-  same-model critique, O012 trust boundary, and selected mixed-action next step.
+  same-model critique, O012 trust boundary, and historical selection that led to
+  D023's mixed-action test.
 - D022 derives the finite mixed D004 boundary coefficient, proves that unchanged
   D005 has no cancellation, and keeps persistent shell compatibility separate
   from full differentiability. Its critic reconstructed the decisive bridge and
@@ -257,26 +294,28 @@ of the evidence.
 - O007 has canonical outcome `passed` with 28/28 exact assertions.
 - The C016 Opus report remains independent evidence for the earlier interface
   rank/sign bridge only. It did not review
-  W001/CY001/CY002/CY003/CY004/CY005/CY006, C017-C025, or O007-O012.
+  W001/CY001/CY002/CY003/CY004/CY005/CY006/CY007, C017-C026, or
+  O007-O013.
 
 ## Internal critique queue
 
-None. All W001/CY001 branches and D018-D022 received frozen same-model critique.
+None. All W001/CY001 branches and D018-D023 received frozen same-model critique.
 D016 and D017 were revised and re-critiqued until their final reports found no
 blocking issue; D021 was likewise revised after its first dimensional finding
-and re-critiqued with no blocking issue. D015, D018-D020, and D022 also received
-that outcome. Earlier adverse reports remain durable. None is independent
-evidence or changes independent-verification state.
+and re-critiqued with no blocking issue. D015, D018-D020, and D022-D023 also
+received that outcome. Earlier adverse reports remain durable. None is
+independent evidence or changes independent-verification state.
 
 ## Remaining evidence gaps
 
-1. Derive exactly one minimal gauge-covariant, field-space-integrable mixed
-   interface completion conjugate to `chi43`, while retaining the C025
-   finite-slope flat bulks, fixed interface, and persistent D005 action.
-2. Include every compulsory coframe, normal/edge, reference, and gauge companion
-   equation. Decide whether the completion cancels the mixed D004 row without
-   triad degeneracy, external fixing, or an uncontrolled physical edge mode. If
-   covariance forces the full mixed `SO(1,4)` sector, stop and widen explicitly.
+1. Define one minimal covariant normal/reduction field relating the core
+   `SO(1,4)` bundle to the exterior `SO(1,3)` bundle, including its gauge action,
+   admissible tangent class, and relation to the persistent D005 variables.
+2. Derive the complete variational primitive and every coframe, connection,
+   reduction-field, edge, and corner equation. Decide whether the finite
+   normal-plane `43` holonomy/tangent is gauge, a fixed superselection datum, or
+   a physical edge variable, and whether a freely selected rank-three `c>0`
+   background survives. Do not infer that answer from C026's reference field.
 3. Define enough lower-regularity quotient/trace structure to decide whether the
    free finite mixed tangent is physical, gauge, or excluded by a principled
    regularity condition rather than by declaration.
@@ -299,7 +338,9 @@ evidence or changes independent-verification state.
 
 ## Computational state
 
-- Required obligations O001-O012 all have deterministic `passed` results.
+- Required obligations O001-O013 all have deterministic `passed` results.
+- C026 links O013 and records `computational_verification: passed` and
+  `independent_verification: not-requested`; its status is `derived`.
 - C025 links O012 and records `computational_verification: passed` and
   `independent_verification: not-requested`; its status is `derived`.
 - C024 links no obligation and records `computational_verification: pending` and
@@ -338,22 +379,28 @@ evidence or changes independent-verification state.
   orchestration infrastructure fingerprint. It passed 29/29 assertions and four
   mutations from the same dirty-worktree commit. It encodes the finite tangent
   and frozen D005 field list rather than proving their physical completeness.
-- No further obligation is queued. The proposed mixed completion's fields,
-  covariance, primitive, companion variations, and gauge action must be derived
-  before choosing a representation or O013. Functional or PDE infrastructure
-  remains speculative.
+- O013 is self-contained exact sparse polynomial/exterior algebra over
+  `Fraction` with the same root orchestration fingerprint. It passed 38/38
+  assertions and five mutations from the dirty worktree. It checks complete
+  variation and local infinitesimal covariance of the one primitive but not
+  global holonomy, edge classification, total D005 covariance, or another
+  action.
+- No further obligation is queued. The normal/reduction field, its gauge action,
+  variational primitive, and classification observable must be derived before
+  choosing a representation or O014. Functional or PDE infrastructure remains
+  speculative.
 
 ## Final independent-verification nominations
 
-None. C017-C025 are intermediate or restricted derived claims; no Opus approval
+None. C017-C026 are intermediate or restricted derived claims; no Opus approval
 is requested and no verification task is pending.
 
 ## Running/next experiments
 
 - **Running:** none. No `ENNN` experiment exists.
-- **Next computation:** none. First derive the selected mixed interface
-  completion and all companion variations; allocate a check only if that work
-  exposes a discriminating executable assertion.
+- **Next computation:** none. First derive the explicit normal/reduction-field
+  theory and its complete companion variations; allocate a check only if that
+  work exposes a discriminating executable assertion.
 - **Later numerical work:** defect boundary-value, convergence, and
   hyperbolicity studies remain premature.
 
@@ -390,12 +437,16 @@ is requested and no verification task is pending.
   D005 shell row can hold while the complete free mixed D004 variation fails;
   bulk curvature, persistent shell compatibility, and mixed differentiability
   are different observables.
+- C026's primitive can cancel the C025 connection row while still failing its
+  positive criterion through compulsory coframe, reference, holonomy, and
+  corner equations; connection-row cancellation and a complete admissible
+  interface theory are different observables.
 - The `c=1` half-cap is intrinsically smooth only after omitting the open
   collapsed ray, while the fixed-cylinder zero extension has jump curvature;
   neither statement is the curvature of the full D002 quotient.
-- D007-D022, their critics, and O007-O012 materially share D002/D004-D006/D019
+- D007-D023, their critics, and O007-O013 materially share D002/D004-D006/D019
   conventions and OpenAI model provenance. O002-O010 share the exact kernel
-  where declared; O011-O012 use separate claim-local code but shared analytic
+  where declared; O011-O013 use separate claim-local code but shared analytic
   or action premises. Repeated agreement is correlated, not independent
   confirmation.
 
@@ -416,22 +467,23 @@ interpretation, or dependency conflicts.
 
 ## Next recommended actions
 
-One bounded task in a future cycle: define and vary one minimal
-gauge-covariant, field-space-integrable mixed interface completion conjugate to
-the C025 finite `43` trace. Keep the finite-slope flat bulks, fixed interface,
-and persistent D005 sector otherwise frozen. Decide whether all compulsory
-companion equations cancel the mixed row without triad degeneracy, external
-fixing, or an uncontrolled edge mode. Do not automatically start that cycle or
-bundle torsion, off-diagonal geometry, sources, and moving interfaces with the
-action change.
+One bounded task in a future cycle: define and vary one minimal covariant
+normal/reduction field connecting the core `SO(1,4)` bundle to the exterior
+`SO(1,3)` bundle. Keep the finite-slope flat bulks, fixed interface, and
+persistent D005 sector otherwise frozen. Decide whether the finite normal-plane
+`43` holonomy/tangent is gauge, a fixed superselection datum, or a physical edge
+variable and whether a freely selected rank-three background survives all
+companion equations. Do not automatically start that cycle or bundle torsion,
+off-diagonal geometry, sources, and moving interfaces with this widening.
 
 ## Repository integrity
 
 The active branch is `research/quantum-gravity`. W001's eight, CY001's three,
-and CY002-CY006's one derivation destination each were preallocated before
+and CY002-CY007's one derivation destination each were preallocated before
 workers launched. D021's revision-required first critique remains durable and
-its second critique records the resolved outcome; D022 received one
-no-blocking-issue internal critique. O008-O012 were allocated with predeclared
-criteria; CY005 correctly added no obligation and CY006 adopted passing O012;
-no Opus task was invoked; and all ordinary claims retain
-`independent_verification: not-requested` unless previously approved and passed.
+its second critique records the resolved outcome; D022-D023 each received one
+no-blocking-issue internal critique. O008-O013 were allocated with predeclared
+criteria; CY005 correctly added no obligation, CY006 adopted passing O012, and
+CY007 adopted passing O013; no Opus task was invoked; and all ordinary claims
+retain `independent_verification: not-requested` unless previously approved and
+passed.

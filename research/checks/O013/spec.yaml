@@ -1,0 +1,140 @@
+schema_version: 1
+id: "O013"
+title: "Mixed polarization completion bridge"
+claims: ["C026"]
+derivations: ["D023"]
+class: "exact-symbolic"
+required: true
+status: active
+
+question: >-
+  Under the exact C026/D023 finite-slope, fixed-interface, ordered-pair,
+  ordinary-circle assumptions, does the single primitive
+  B_ref=-integral_(Sigma x S1)(omega_+-barOmega)^{AB} wedge P^(5)_{AB}(E)
+  have the declared rank-three reduction and complete variation:
+  P43=-oSigma/(2 kappa5), P34=+oSigma/(2 kappa5),
+  B_ref=-(2pi/kappa5)(chi43-barChi43)oSigma, exact cancellation of every core
+  delta-omega boundary row, surviving coframe current and delta-barOmega wedge
+  P terms, polar fixed-reference equation chi43=barChi43,
+  unrestricted-reference rank-three contradiction P43=0, and gauge-orbit
+  bulk/corner signs +zeta D_barOmega P and -zeta P on the corner, while
+  simultaneous SO(1,4) transformation of both connections and the coframe
+  leaves the primitive invariant?
+
+assumptions:
+  - >-
+    The calculation is local to Y=Sigma x S1 with fixed planar rank-three trace
+    e0=du0, e1=du1, e2=du2, e3=e4=0, orientation
+    oY=oSigma wedge dtheta, ordinary exact period tau interpreted as 2pi, and
+    positive D004 core incidence. No moving interface or normalized-Haar
+    replacement is encoded.
+  - >-
+    Internal conventions are eta=diag(-,+,+,+,+), epsilon_01234=+1,
+    antisymmetric omega/barOmega/K, and complete ordered-pair summation with no
+    hidden factor 1/2. Coframe and connection variations are independent before
+    imposing a bulk equation.
+  - >-
+    The full reference connection transforms geometrically with omega in the
+    positive covariance identity, so K=omega-barOmega transforms in the
+    adjoint. The orbit variation is delta-barOmega=-D_barOmega zeta. The
+    transform-only-dynamical control holds barOmega fixed and retains the
+    uncancelled inhomogeneous -d-lambda term.
+  - >-
+    Coefficients are sparse free polynomials over exact Fraction arithmetic;
+    forms are canonical sparse maps on explicit ordered bases. Equality is
+    exact canonical map equality. There are no floats, tolerances, random
+    samples, heuristic simplification, or general-purpose CAS operations.
+  - >-
+    Generic covariance uses independent atoms for every spacetime component of
+    all five coframes, all ten antisymmetric K one-forms, and all ten so(1,4)
+    generators. It is a generic polynomial tensor identity, not a finite
+    witness; it does not cover finite/large transformations or global topology.
+
+acceptance_criterion: >-
+  Pass iff one exact canonical execution reconstructs the ordered 5D momenta
+  with only P43=-oSigma/(2 kappa5) and P34=+oSigma/(2 kappa5) nonzero on the
+  rank-three trace; obtains
+  B_ref=-(tau/kappa5)(chi43-barChi43)oSigma with tau interpreted exactly as
+  2pi; differentiates the unreduced primitive to -delta-omega wedge P +
+  delta-barOmega wedge P + delta-E^C wedge J_C with
+  J_C=(4 kappa5)^(-1) epsilon_ABCDE K^AB wedge E^D wedge E^E; verifies exact
+  cancellation of every delta-omega row against the D004 core potential;
+  specializes a rank-preserving triad rescaling to require
+  chi43-barChi43=0; shows an arbitrary reference variation requires nonzero
+  P43 to vanish on the rank-three witness; derives from
+  delta-barOmega=-D_barOmega zeta the bulk sign +zeta D_barOmega P and corner
+  sign -zeta P; verifies a generic exact infinitesimal simultaneous SO(1,4)
+  covariance identity; and detects predeclared isolated mutations omitting one
+  antisymmetric order, reversing the primitive sign, deleting the coframe
+  companion, reversing the orbit-corner sign, and transforming only the
+  dynamical connection, with every mutation making a fresh process exit 1.
+  Fail on any exact mismatch or ineffective mutation. Inconclusive only if a
+  predeclared exact-domain operation cannot be represented before comparison;
+  implementation exceptions are errors. The obligation does not test global
+  holonomy, edge classification, full D005 covariance, Hamiltonian structure,
+  or another action.
+
+method:
+  description: >-
+    A claim-local exact ordered-index exterior calculation combined with a
+    finite affine field-space derivative and explicit generic rational
+    SO(1,4) infinitesimal covariance identity; use a direct permutation
+    coefficient path as a correlated cross-check and semantic mutations. No
+    floating point, sampling, or heuristic simplification.
+  rationale: >-
+    The bridge consists of finite signs, ordered-pair multiplicities, a
+    polynomial field-space variation, an integration-by-parts sign, and a local
+    covariance identity. These are exactly decidable and small; numerical work
+    or a general weak-geometry/CAS stack would enlarge the trust surface.
+  representation: >-
+    A self-contained finite exterior algebra over sparse free polynomials with
+    exact rational coefficients, explicit ordered epsilon contractions, and
+    generic component atoms for SO(1,4). Canonical sparse tuples decide equality.
+  trust_surface: >-
+    Trusted scientific code is Python integer/Fraction arithmetic and short
+    claim-local polynomial, exterior, index, and transformation routines.
+    exact_graded is not reused because its larger API and shared O002-O010
+    surface do not reduce these semantics. No CAS, external package, shared
+    scientific infrastructure, or Engineer work is used.
+  conventions_and_alternate_checks: >-
+    D004/D023 epsilon, incidence, fiber-right, and ordered-pair conventions are
+    explicit. A direct complement/permutation assembly does not call the
+    momentum/form path. All ten delta-omega rows and five fresh-process
+    mutations are checked. These are correlated controls, not independent
+    verification.
+
+controls:
+  positive:
+    - "ordered rank-three momentum table and direct permutation cross-check"
+    - "unreduced complete variation and all ten D004 row cancellations"
+    - "polar coframe and unrestricted-reference residuals"
+    - "orbit bulk/corner signs"
+    - "generic exact infinitesimal simultaneous SO(1,4) tensor identity"
+  mutations:
+    - "omit one antisymmetric order"
+    - "reverse the primitive sign"
+    - "delete the coframe companion"
+    - "reverse the orbit-corner sign"
+    - "transform only the dynamical connection"
+
+implementation:
+  entrypoint: "research/checks/O013/run.py"
+  infrastructure:
+    - "pyproject.toml"
+    - "scripts/_research.py"
+    - "scripts/run_check.py"
+    - "uv.lock"
+  producer_models: ["openai/gpt-5.6-sol"]
+  infrastructure_producer_models: ["openai/gpt-5.6-sol"]
+
+independence:
+  requirement: "recommended"
+  rationale: >-
+    D023 and its critic share openai/gpt-5.6-sol and D004 conventions. A
+    separately assembled direct coefficient path plus isolated mutations is
+    proportionate for this restricted intermediate claim. A second full
+    implementation or Opus audit is not warranted because global holonomy and
+    edge classification remain outside the executable assertion.
+
+created_at: "2026-08-22T16:56:47Z"
+updated_at: "2026-08-22T20:00:00Z"
