@@ -138,6 +138,23 @@ class BidirectionalLinkTests(WorkspaceTestCase):
         self.assert_no_error_matching(payload, "computational_checks")
 
 
+class LiteratureEvidenceBoundaryTests(WorkspaceTestCase):
+    def test_exploration_report_cannot_be_linked_as_literature_evidence(self) -> None:
+        self.write_ledger(status="literature-supported")
+        report = self.root / "research" / "literature" / "explorations" / "candidate.md"
+        report.write_text("# Candidate lead\n\nNot validated evidence.\n", encoding="utf-8")
+        ledger = self.root / "research" / "claims" / "ledger.yaml"
+        text = ledger.read_text(encoding="utf-8").replace(
+            "literature: []",
+            'literature: ["research/literature/explorations/candidate.md"]',
+        )
+        ledger.write_text(text, encoding="utf-8")
+
+        payload = validate(self.root)
+        self.assertFalse(payload["valid"])
+        self.assert_error_matching(payload, "invalid or missing literature-note path")
+
+
 class ComputationalGateTests(WorkspaceTestCase):
     GATE = "checks.computational_verification cannot be passed"
 

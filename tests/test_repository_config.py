@@ -40,6 +40,58 @@ class AgentCompatibilityTests(unittest.TestCase):
         self.assertEqual(capped, [], "explicit agent step caps trigger OpenCode issue #40455")
 
 
+class LiteratureExplorerTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.path = AGENTS / "literature-explorer.md"
+        self.metadata = frontmatter(self.path)
+        self.permission = self.metadata["permission"]
+
+    def test_creative_discovery_role_is_pinned_and_scoped(self) -> None:
+        self.assertTrue(self.path.is_file())
+        self.assertEqual(self.metadata["mode"], "subagent")
+        self.assertEqual(self.metadata["model"], "openai/gpt-5.6-sol")
+        self.assertEqual(self.metadata["temperature"], 0.6)
+        self.assertEqual(
+            self.permission["edit"],
+            {"*": "deny", "research/literature/explorations/**": "allow"},
+        )
+        self.assertEqual(self.permission["bash"], "deny")
+        self.assertEqual(self.permission["task"], "deny")
+        self.assertEqual(self.permission["webfetch"], "allow")
+        self.assertEqual(self.permission["websearch"], "allow")
+        self.assertNotIn("research/literature/notes/**", self.permission["edit"])
+        self.assertNotIn("research/literature/bibliography.bib", self.permission["edit"])
+
+    def test_director_can_fan_out_explorers_and_must_evaluate_leads(self) -> None:
+        director = frontmatter(AGENTS / "research-director.md")["permission"]
+        self.assertEqual(director["task"]["literature-explorer"], "allow")
+        text = " ".join(
+            (AGENTS / "research-director.md").read_text(encoding="utf-8").split()
+        )
+        for marker in (
+            "multiple `literature-explorer` workers as sibling tasks",
+            "Route a promising lead to `literature`",
+            "Route it to `theorist`",
+            "integrate only their evaluated artifacts",
+        ):
+            self.assertIn(marker, text)
+
+    def test_discovery_artifacts_and_command_exist(self) -> None:
+        self.assertTrue((SKILLS / "literature-exploration" / "SKILL.md").is_file())
+        self.assertTrue((PROJECT_ROOT / "templates" / "literature-exploration.md").is_file())
+        self.assertTrue(
+            (PROJECT_ROOT / "research" / "literature" / "explorations" / "README.md").is_file()
+        )
+        command = (COMMANDS / "literature-explore.md").read_text(encoding="utf-8")
+        for marker in (
+            "Launch all `literature-explorer` workers as sibling tasks in one parallel batch",
+            "Use `literature` for primary-source identity",
+            "Use `theorist` for an explicit mathematical or physical dictionary",
+            "An exploration report cannot support a claim",
+        ):
+            self.assertIn(marker, command)
+
+
 class AgentRenameTests(unittest.TestCase):
     def test_scientific_computation_replaced_numerics(self) -> None:
         self.assertTrue((AGENTS / "scientific-computation.md").is_file())
@@ -166,6 +218,7 @@ class ScientificComputationScopeTests(unittest.TestCase):
         for name in (
             "research-director.md",
             "theorist.md",
+            "literature-explorer.md",
             "literature.md",
             "scientific-computation.md",
             "engineer.md",
@@ -231,7 +284,12 @@ class DelegationDepthTests(unittest.TestCase):
 
 class ArtifactSurfaceTests(unittest.TestCase):
     def test_commands_exist(self) -> None:
-        for name in ("new-check.md", "run-check.md", "research-explore.md"):
+        for name in (
+            "new-check.md",
+            "run-check.md",
+            "research-explore.md",
+            "literature-explore.md",
+        ):
             path = COMMANDS / name
             self.assertTrue(path.is_file(), f"missing command {name}")
             self.assertEqual(frontmatter(path)["agent"], "research-director")
@@ -292,6 +350,9 @@ class ArtifactSurfaceTests(unittest.TestCase):
             'operation = "research-environment-write"',
             'operation = "research-infrastructure-write"',
             'operation = "theory-branch-delegated"',
+            'delegatedAgent === "literature-explorer"',
+            'operation = "literature-exploration-delegated"',
+            'operation = "literature-exploration-write"',
             'operation = "internal-critique-delegated"',
             'operation = "internal-critique-write"',
         ):
@@ -340,6 +401,7 @@ class ArtifactSurfaceTests(unittest.TestCase):
             "research/computation/",
             "research/environment/",
             "research/checks/",
+            "research/literature/explorations/",
         ):
             self.assertIn(path, text)
 
@@ -347,6 +409,7 @@ class ArtifactSurfaceTests(unittest.TestCase):
         text = (PROJECT_ROOT / "docs" / "AGENT_ARCHITECTURE.md").read_text(encoding="utf-8")
         self.assertIn("|-- Scientific Computation", text)
         self.assertIn("|   `-- Engineer", text)
+        self.assertIn("|-- Literature Explorer x N", text)
         self.assertIn("bounded breadth", text.lower())
         self.assertIn("provisioned implementation subagent", text)
 

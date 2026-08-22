@@ -17,6 +17,7 @@ Record important conclusions in files:
 - `research/checks/`: claim-linked machine-check obligations (`ONNN`)
 - `research/computation/`: reusable research-specific computational machinery
 - `research/environment/`: research-scoped environment manifests, locks, and setup records
+- `research/literature/explorations/`: speculative cross-domain and historical discovery reports
 - `research/literature/notes/`: source-specific evidence packets
 - `research/results/`: validated consolidated results and verification reports
 - `research/DECISIONS.md`: consequential research-direction choices
@@ -30,6 +31,7 @@ Label statements as one of: assumption, conjecture, derived result, numerical ob
 - A numerical fit is not a derivation.
 - Symbolic output is not automatically a proof.
 - A citation is evidence only when the source supports the exact claim in the stated regime.
+- An exploratory literature connection is a candidate lead until focused source and/or theory evaluation establishes the relevant bridge.
 - Repetition of one argument by several agents is not independent confirmation.
 - Agreement between implementations sharing assumptions or code is not independent verification.
 - A separate agent session using the same model is procedural separation, not independence by itself.
@@ -118,7 +120,7 @@ An important computational result must be reproducible without its originating c
 ## Research Behavior
 
 - Prefer competing hypotheses and tests that discriminate among them.
-- For broad, ambitious, or weakly mapped questions, use bounded breadth-first waves: preallocate distinct derivation paths, launch several sibling theorists concurrently, wait for a first-pass barrier, run fresh GPT internal critiques, then synthesize and prune.
+- For broad, ambitious, or weakly mapped questions, use bounded breadth-first waves. Theory waves preallocate distinct derivation paths, launch sibling theorists, wait for a first-pass barrier, run fresh GPT internal critiques, then synthesize and prune. Exploratory-literature waves launch sibling search lenses into distinct non-evidentiary reports, then route only promising leads through focused literature and/or theory evaluation before incorporation.
 - Do not count repeated GPT agreement as independent confirmation. Diversity must come from distinct assumptions, formalisms, regimes, constructive routes, or falsification strategies rather than paraphrase.
 - Start with analytic estimates or tiny numerical diagnostics before expensive computation.
 - Reason about what needs checking, then build the smallest useful executable diagnostic, then stronger machinery only when scientifically justified.

@@ -20,7 +20,7 @@ No literature service or API credential is required for the baseline workflow.
 /research-start What is the leading finite-size correction to ...?
 ```
 
-The director records the problem in `research/QUESTION.md`, maps literature, theory, and computational work, creates distinct `HNNN` artifacts when appropriate, registers only precise conjectural claims, initializes `research/COMPUTATION.md`, and compresses the initial picture into `research/STATE.md`. This is initialization, not a completed research result.
+The director records the problem in `research/QUESTION.md`, maps focused literature, exploratory literature, theory, and computational work, creates distinct `HNNN` artifacts when appropriate, registers only precise conjectural claims, initializes `research/COMPUTATION.md`, and compresses the initial picture into `research/STATE.md`. This is initialization, not a completed research result.
 
 Expected artifacts:
 
@@ -56,16 +56,39 @@ cannot independently verify a claim. The director synthesizes and prunes only
 after both barriers, then sends cheap decisive assertions from surviving
 branches to Scientific Computation. Opus is never invoked by this command.
 
+When the poorly mapped space is conceptual or terminological rather than a set
+of known theoretical routes, run a creative literature wave:
+
+```text
+/literature-explore --width 4 optional focus
+```
+
+The director assigns distinct lenses to sibling `literature-explorer` workers:
+for example historical vocabulary, shared equation or operator structure,
+transferable methods, neighboring phenomena, or a technically plausible distant
+field. The exact lenses are chosen for the question. Each worker writes one
+report under `research/literature/explorations/` and has no permission to edit
+canonical source notes, BibTeX, derivations, claims, decisions, or state.
+
+The first-pass reports are discovery aids, not evidence. They can use snippets,
+abstracts, reviews, terminology trails, and proposed analogies to find leads.
+After the complete barrier, the director retains at most a few promising leads
+and routes source-dependent questions to `literature`, mapping-dependent
+questions to `theorist`, or both. Focused source notes and auditable derivations,
+not the original exploration report, are what may be incorporated. Negative,
+rejected, and deferred leads remain recorded to prevent repeated searches.
+
 Use a focused convergence cycle after a shortlist exists:
 
 ```text
 /research-cycle
 ```
 
-The director begins each cycle by reading `research/COMPUTATION.md` alongside the question, state, ledger, and hypotheses. One cycle selects the highest-information unresolved issue, decides whether it needs analytic, literature, experimental, or machine-check work, delegates a small number of specialized tasks, may request a fresh GPT internal critique, integrates disagreements, and updates state. It never invokes Opus. Scientific Computation may provision Engineer for one bounded substrate task; the Director does not invoke Engineer directly and Engineer cannot delegate. The cycle stops rather than automatically launching another cycle.
+The director begins each cycle by reading `research/COMPUTATION.md` alongside the question, state, ledger, and hypotheses. One cycle selects the highest-information unresolved issue, decides whether it needs analytic, focused literature, exploratory literature, experimental, or machine-check work, delegates a small number of specialized tasks, may request a fresh GPT internal critique, integrates disagreements, and updates state. Exploratory leads must pass through focused Literature and/or Theorist evaluation before incorporation. It never invokes Opus. Scientific Computation may provision Engineer for one bounded substrate task; the Director does not invoke Engineer directly and Engineer cannot delegate. The cycle stops rather than automatically launching another cycle.
 
 Typical outputs are:
 
+- `research/literature/explorations/<wave>-<lens>.md` for non-evidentiary discovery leads;
 - `research/literature/notes/<source>.md` for exact source evidence;
 - `research/derivations/DNNN.md` for an analytical argument;
 - `research/critiques/<target>-<date>-openai-NN.md` for same-model internal review;
