@@ -1,0 +1,269 @@
+{
+  "schema_version": 2,
+  "obligation_id": "O014",
+  "claims": [
+    "C027"
+  ],
+  "derivations": [
+    "D024"
+  ],
+  "outcome": "passed",
+  "exit_code": 0,
+  "started_at": "2026-08-23T16:43:22Z",
+  "completed_at": "2026-08-23T16:43:35Z",
+  "command": "/home/petar/Projects/research-ai/.venv/bin/python3 /home/petar/Projects/research-ai/research/checks/O014/run.py",
+  "runner_command": "uv run --locked python scripts/run_check.py O014",
+  "implementation": "research/checks/O014/run.py",
+  "git_commit": "991737a1dff4e48a3b8dd1d75c270fea52cbcff3",
+  "dirty_worktree": true,
+  "spec_sha256": "2569a7fb59e700dc116c007a6055a49e372d0c41174f8005c547416b0f80d59f",
+  "implementation_sha256": "02a6bb68996337f1eda08e980d2c2686729e14730885c09bd2b30ac6c9a94f53",
+  "infrastructure": [
+    {
+      "path": "pyproject.toml",
+      "type": "file",
+      "sha256": "a83358c688c795208a1da1b9ee6b630afb791719baa9f72a2cb53e672417e07e"
+    },
+    {
+      "path": "scripts/_research.py",
+      "type": "file",
+      "sha256": "d651210158db51853658afd917ff616ae9c90ea95e4c2cfbc37f1427b04f8210"
+    },
+    {
+      "path": "scripts/run_check.py",
+      "type": "file",
+      "sha256": "1187837d94b89bf08ab2b9b7164a6c116930f7cb9c9e3a320f5f7b4117e4cf24"
+    },
+    {
+      "path": "uv.lock",
+      "type": "file",
+      "sha256": "e32bee08b2192dd59a9820a15bdf7cb914daf0a7136e594869e98e4c0ae7bea0"
+    }
+  ],
+  "infrastructure_sha256": "c161ea4ada2e2a5118552101f73cbe899007cc28701c86677cf238a6f6cb7357",
+  "environment": {
+    "python": "3.12.12",
+    "python_implementation": "CPython",
+    "python_executable": "/home/petar/Projects/research-ai/.venv/bin/python3",
+    "platform": "Linux-6.17.0-41-generic-x86_64-with-glibc2.42",
+    "machine": "x86_64",
+    "packages": {
+      "PyYAML": "6.0.3"
+    }
+  },
+  "observations": {
+    "assertions": {
+      "failed": 0,
+      "failed_names": [],
+      "passed": 46,
+      "total": 46
+    },
+    "details": {
+      "derived_vs_expected": {
+        "E_rows_equal": true,
+        "V_rows_equal": true,
+        "boosted_01_correct": {
+          "P01": "25/8",
+          "P14": "-15/8",
+          "formula": "(25/8) P01-(15/8) P14"
+        },
+        "boosted_01_old_unlowered": {
+          "P01": "25/8",
+          "P14": "15/8",
+          "formula": "(25/8) P01+(15/8) P14"
+        },
+        "corner_rows_equal": true,
+        "expected_E": "delta_E^C*(epsilon_ABCDE/4)*C^AB*E^D*E^E",
+        "expected_V": "2*delta_V^A*(V^B*DP_AB+2*K^B*P_AB)",
+        "expected_corner": "-2*delta_V^A*V^B*P_AB",
+        "expected_hhP_rank": 6,
+        "expected_omega": "-2*delta_omega^A_C*V^C*V^B*P_AB",
+        "generic_residual_rank": 6,
+        "old_unlowered_differs": true,
+        "omega_rows_equal": true,
+        "spatial_masking_control_equal": true
+      },
+      "expression_graph": {
+        "ibp_boundary_terms": 20,
+        "ibp_bulk_terms": 180,
+        "raw_variation_terms": 180,
+        "root": "B=-2*K^A*V^B*P_AB(E)"
+      },
+      "limitations": [
+        "finite exact local algebra only",
+        "frozen D005 Euler rows assumed zero on shell",
+        "no tangent-admissibility decision",
+        "no global holonomy or total mixed moment map",
+        "no action-class completeness",
+        "no functional preservation or C002/C003",
+        "correlated OpenAI evidence, not independent verification"
+      ],
+      "mutation": null,
+      "noether": {
+        "BV_diamond_V_terms": 320,
+        "D_Bomega_terms": 380,
+        "all_plus_residual_terms": 120,
+        "all_plus_witness": "-2*E0^E1^E2^K0^V3^alpha04",
+        "corrected_residual_terms": 0,
+        "minus_BE_diamond_E_terms": 120
+      },
+      "polar_exact_support": {
+        "B_coefficient_before_circle_integration": "-2",
+        "B_over_c": "-1",
+        "P34": "1/2*x0^x1^x2",
+        "P43": "-1/2*x0^x1^x2",
+        "c": "2",
+        "coframe_residual": "6*scale^theta^x0^x1^x2",
+        "connection_residual": "0",
+        "corner_pullback": "0",
+        "longitudinal_V": "4*theta^x0^x1^x2",
+        "ordinary_circle_result": "B=-(tau*c/kappa5)*oSigma; coframe=-(3*tau*c/kappa5)*alpha*oSigma",
+        "transverse_V": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ]
+      },
+      "projector": {
+        "V": [
+          "3/4",
+          "0",
+          "0",
+          "0",
+          "5/4"
+        ],
+        "V2": "1",
+        "VK": "0",
+        "coset_rank": 4,
+        "h_lower_upper": [
+          [
+            "25/16",
+            "0",
+            "0",
+            "0",
+            "15/16"
+          ],
+          [
+            "0",
+            "1",
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "1",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "1",
+            "0"
+          ],
+          [
+            "-15/16",
+            "0",
+            "0",
+            "0",
+            "-9/16"
+          ]
+        ],
+        "h_upper_lower": [
+          [
+            "25/16",
+            "0",
+            "0",
+            "0",
+            "-15/16"
+          ],
+          [
+            "0",
+            "1",
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "1",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0",
+            "1",
+            "0"
+          ],
+          [
+            "15/16",
+            "0",
+            "0",
+            "0",
+            "-9/16"
+          ]
+        ],
+        "stabilizer_rank": 6,
+        "uniqueness_rank": 10
+      }
+    },
+    "infrastructure_producer_models": [
+      "openai/gpt-5.6-sol"
+    ],
+    "mutation_processes": {
+      "all-plus-noether": {
+        "detected": true,
+        "exit_code": 1
+      },
+      "delete-second-F": {
+        "detected": true,
+        "exit_code": 1
+      },
+      "independent-Omega": {
+        "detected": true,
+        "exit_code": 1
+      },
+      "omit-delta-omega-V": {
+        "detected": true,
+        "exit_code": 1
+      },
+      "omit-polar-order": {
+        "detected": true,
+        "exit_code": 1
+      },
+      "reverse-corner": {
+        "detected": true,
+        "exit_code": 1
+      }
+    },
+    "obligation_id": "O014",
+    "producer_model": "openai/gpt-5.6-sol",
+    "representation_and_trust": {
+      "CAS_trusted": false,
+      "assumptions": "eta=(-++++), epsilon01234=+1, V^2=1, ordered pairs, fiber-right positive incidence",
+      "coefficient_ring": "fractions.Fraction (Q)",
+      "cross_checks": "separate D024 targets, explicitly lowered boosted D004/hhP matrices, historical unlowered negative law, concrete c=2 polar support, six upstream mutations",
+      "custom_infrastructure_risk": "no reusable infrastructure introduced",
+      "custom_kernel_scope": "claim-local minimal Poly/Expr primitives",
+      "domain": "finite SO(1,4) tensors, antisymmetric ordered pairs, spacetime exterior forms, first field variation",
+      "existing_substrate_adequate": true,
+      "floating_point": false,
+      "normal_form": "sorted sparse graded monomials; exact equality decidable",
+      "operations": "epsilon/wedge momentum, graph Leibniz variation, graded covariant D, explicit IBP, projector matrices",
+      "random_sampling": false
+    }
+  },
+  "artifacts": [],
+  "logs": [
+    "research/checks/O014/logs/stdout.log",
+    "research/checks/O014/logs/stderr.log"
+  ],
+  "notes": "Canonical outcome derived from the recorded process exit status."
+}

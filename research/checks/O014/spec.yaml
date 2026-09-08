@@ -1,0 +1,135 @@
+schema_version: 1
+id: "O014"
+title: >-
+  Reduction-field polarization bridge
+
+# Scientific targets. At least one claim or derivation should be linked once the
+# obligation is attached to the research record.
+claims: ["C027"]
+derivations: ["D024"]
+
+# Generic, method-neutral classification. Allowed values:
+#   exact-symbolic | formal | numerical | convergence | independent-implementation
+#   limiting-case | symmetry | dimensional | counterexample | other
+# The class describes what kind of assertion is being tested. It does not select
+# a library, language, or tool; the research chooses the method.
+class: "exact-symbolic"
+
+# required: true means this obligation is part of the currently declared
+# verification strategy for its target claims. A required active obligation
+# without a passing result blocks the structural computational gate.
+required: true
+
+# active | superseded. Superseded obligations remain durable history and do not
+# block the current strategy. Do not delete failed history to clear the gate.
+status: active
+
+# The exact mathematical question tested, stated so that a reader can tell what
+# is NOT tested.
+question: >-
+  Under the exact C027/D024 fixed-interface, ordered-pair, ordinary-circle assumptions, does the unit spacelike reduction field V determine Omega_V^{AB}=omega^{AB}+V^A(D_omega V)^B-(D_omega V)^A V^B under the two minimality conditions; does the dependent primitive B_V=-integral_Y(omega-Omega_V)^{AB} wedge P_AB have the complete omega/E/V variation and graded Noether identity stated in D024; does D004 plus B_V cancel exactly the coset connection momentum while retaining the stabilizer projection; and on the basic rank-three polar trace does it cancel the 43 row but leave the free-coframe residual that forces c=0, with transverse V residual and polar corner pullback zero?
+
+# Assumptions the executable check encodes: conventions, normalizations, domains,
+# regularity, parameter ranges, representation choices, and anything the
+# implementation takes for granted.
+assumptions:
+  - >-
+    Pointwise internal domain R^(1,4), eta=diag(-,+,+,+,+), epsilon_01234=+1,
+    V_A V^A=1, and both orders of every antisymmetric pair. The fixed interface
+    has oY=oSigma wedge dtheta, fiber forms right, positive core incidence, and
+    formal ordinary period tau=2pi.
+  - >-
+    Coframe, connection, reduction field, and unit multiplier are independent
+    before variation. Omega_V obeys D_Omega V=0 and retains omega's doubly
+    V-orthogonal block. Frozen D005 chain-rule terms vanish only on its imported
+    complete shell, where every original Euler row vanishes.
+  - >-
+    Polar data are V=e4, P43=-oSigma/(2 kappa5), P34=+oSigma/(2 kappa5),
+    omega43=c dtheta, basic rank-three coframes, and free common rescaling of
+    e0,e1,e2, with stipulated c>0.
+  - >-
+    Coefficients use exact Fraction arithmetic and canonical sparse free
+    polynomials; forms and matrices have explicit basis orders. No floats,
+    tolerances, random samples, CAS simplification, or hidden relations.
+
+# Predeclared pass/fail/inconclusive criterion. Write this before implementing.
+acceptance_criterion: >-
+  Pass iff one deterministic exact execution (i) verifies the unit projector
+  identities, D_(Omega_V)V=0, retained stabilizer block, and uniqueness under
+  both minimality conditions; (ii) independently differentiates B_V in omega,
+  E, and V and recovers D024 (18)-(20), including the minus corner sign; (iii)
+  for generic antisymmetric momentum leaves exactly h_A^C h_B^D P_CD, so four
+  coset rows cancel and six stabilizer rows remain; (iv) on V=e4 with the stated
+  P43/P34 reconstructs B_V=-(tau c/kappa5)oSigma, exact delta-chi43
+  cancellation, zero transverse V residual, coframe residual
+  -(3 tau c/kappa5) alpha oSigma and exclusion of stipulated c>0, and zero basic
+  polar corner pullback; (v) verifies the graded polynomial
+  D B_omega-B_E diamond E+B_V diamond V=0 while the all-plus mutation is
+  generically nonzero; and (vi) mutations deleting the second K-wedge-P term
+  in F, canceling all ten rows, reversing the corner sign, using the all-plus
+  polynomial, treating Omega_V as independent, or omitting one polar ordered
+  contribution each make a fresh process exit 1. Fail on mismatch or ineffective
+  mutation. Inconclusive only if a declared exact-domain operation cannot be
+  represented; implementation exceptions are errors.
+
+method:
+  description: >-
+    A claim-local exact rational exterior/index calculation with a generic projector path, an independently assembled adapted-polar coefficient path, explicit graded field-space variation, and fresh-process semantic mutations; no floating point, sampling, heuristic simplification, or general-purpose CAS.
+  rationale: >-
+    The decisive bridge is finite polynomial tensor algebra, wedge ordering, ordered-pair multiplicity, a small linear uniqueness statement, and one exact polar specialization. Canonical sparse forms and rational matrices make equality decidable while keeping the trust surface smaller than a general CAS or functional/PDE stack. Generic and adapted-gauge paths attack different errors.
+  representation: >-
+    Self-contained exact rational tensors and matrices, sparse free polynomials
+    over Q, and sparse canonical exterior forms. Equality is canonical tuple
+    equality. A nontrivial rational unit V tests the generic projector, while an
+    adapted frame tests tensorial variation without inverse coframes.
+  trust_surface: >-
+    Trusted scientific code is Python integer/Fraction arithmetic and short
+    claim-local polynomial, exterior, index, derivative, and row-reduction
+    routines. Reusing O013 would preserve correlation while importing its
+    independent-reference semantics and hiding the dependent-V chain rule. No
+    CAS, package, reusable research kernel, or Engineer work is used.
+  alternate_assembly_and_limits: >-
+    A direct adapted-polar scalar assembly does not call the generic projector
+    or momentum path. It shares D004 conventions and model provenance, so it is
+    a correlated control, not independent verification. Omitted physics includes
+    tangent admissibility, global holonomy, total mixed moment maps, observable
+    algebra, action completeness, functional preservation, and C002/C003.
+
+controls:
+  positive:
+    - "projector, induced connection, retained block, and uniqueness"
+    - "complete omega/E/V variation and generic P_parallel residual"
+    - "direct adapted-polar ordered-pair result and residuals"
+    - "corrected graded Noether polynomial"
+  mutations:
+    - "delete second K wedge P term in F"
+    - "cancel all ten connection rows"
+    - "reverse corner sign"
+    - "use all-plus Noether polynomial"
+    - "treat Omega_V as independent"
+    - "omit one polar ordered contribution"
+
+implementation:
+  # Repository-relative entrypoint executed by scripts/run_check.py.
+  entrypoint: "research/checks/O014/run.py"
+  # Repository-relative reusable machinery this obligation depends on, normally
+  # under research/computation/. Also list material research-environment
+  # manifests, locks, container definitions, and build records under
+  # research/environment/. The runner fingerprints files and directories, so a
+  # change makes the recorded result stale.
+  infrastructure:
+    - "pyproject.toml"
+    - "scripts/_research.py"
+    - "scripts/run_check.py"
+    - "uv.lock"
+  producer_models: ["openai/gpt-5.6-sol"]
+  infrastructure_producer_models: ["openai/gpt-5.6-sol"]
+
+independence:
+  # not-required | recommended | required
+  requirement: "recommended"
+  rationale: >-
+    D024, both internal critiques, and the planned implementation share OpenAI provenance and D004 conventions. A separate generic projector/Noether path plus a directly assembled polar path and semantic mutations are proportionate correlated controls for this restricted intermediate claim; a second full implementation or independent verifier is not warranted because the physical classification and broad conclusions remain outside the obligation.
+
+created_at: "2026-08-22T23:03:42Z"
+updated_at: "2026-08-23T00:00:00Z"
