@@ -4,7 +4,7 @@ target_artifacts: []
 outcome: inconclusive
 independent: false
 reviewer: internal-critic-openai
-reviewer_model: openai/gpt-5.6-sol
+reviewer_model: openai/gpt-6-astra
 originating_models: []
 created_at: "{{DATE}}"
 ---

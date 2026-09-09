@@ -49,7 +49,7 @@ For broad, ambitious, or weakly mapped questions, explore before converging:
 ```
 
 The director creates genuinely distinct branch charters, preallocates every
-`DNNN` path, launches sibling GPT-5.6 Sol theorists concurrently, waits for the
+`DNNN` path, launches sibling GPT 6 theorists concurrently, waits for the
 first-pass barrier, and then launches fresh GPT internal critics concurrently.
 The critics write under `research/critiques/`, are explicitly same-model, and
 cannot independently verify a claim. The director synthesizes and prunes only
@@ -217,7 +217,7 @@ The verifier's task is not to observe that checks passed or reproduce the produc
 
 Full reproduction or a clean independent implementation is a separate expensive workflow. Launch it only with explicit user approval after a bounded verifier identifies a concrete need; do not make it an implicit condition of every verification report.
 
-Core producers and the internal critic are pinned to GPT-5.6 Sol; Opus 5 is reserved for independent verification. Actual provenance remains authoritative. Historical or exceptional Opus production makes Opus ineligible for that claim, which must then remain below `verified`; GPT critique cannot substitute for independence.
+Core producers and the internal critic are pinned to GPT 6; Opus 5 is reserved for independent verification. Actual provenance remains authoritative. Historical or exceptional Opus production makes Opus ineligible for that claim, which must then remain below `verified`; GPT critique cannot substitute for independence.
 
 A different model, preferably from a different provider, is required but not sufficient. Only a genuinely independent `verified` report using alternate reasoning, code, data, or comparably strong checks can support ledger status `verified`; supportive work sharing assumptions or implementations remains below that threshold.
 

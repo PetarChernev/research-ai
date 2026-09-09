@@ -5,7 +5,7 @@ question: "{{QUESTION}}"
 wave: "{{WAVE}}"
 lens: "{{LENS}}"
 explorer: literature-explorer
-explorer_model: openai/gpt-5.6-sol
+explorer_model: openai/gpt-6-astra
 created_at: "{{DATE}}"
 ---
 

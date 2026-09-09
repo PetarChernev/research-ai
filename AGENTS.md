@@ -35,7 +35,7 @@ Label statements as one of: assumption, conjecture, derived result, numerical ob
 - Repetition of one argument by several agents is not independent confirmation.
 - Agreement between implementations sharing assumptions or code is not independent verification.
 - A separate agent session using the same model is procedural separation, not independence by itself.
-- A GPT-5.6 Sol internal critique is a useful second pass but is not independent verification, even when it runs in a fresh session.
+- A GPT 6 internal critique is a useful second pass but is not independent verification, even when it runs in a fresh session.
 - Route final independent verification only to the reserved Opus 5 verifier after explicit user approval, and record both sides of that model boundary.
 - Keep material assumptions and unresolved contradictions visible.
 
@@ -45,7 +45,7 @@ Internal critique and independent verification are different operations. GPT int
 
 ## Model Assignment
 
-Each agent's model is configured independently in its file under `.opencode/agents/`. Core scientific producers and the internal critic are pinned to `openai/gpt-5.6-sol`; the independent verifier is pinned to `anthropic/claude-opus-5`. A single claim may still have heterogeneous provenance from mechanical helpers or imported evidence. Establish the actual producing model per artifact rather than inferring it from hierarchy. Engineer-authored environments and reusable infrastructure count as material production when they support a claim.
+Each agent's model is configured independently in its file under `.opencode/agents/`. Core scientific producers and the internal critic are pinned to `openai/gpt-6-astra`; the independent verifier is pinned to `anthropic/claude-opus-5`. A single claim may still have heterogeneous provenance from mechanical helpers or imported evidence. Establish the actual producing model per artifact rather than inferring it from hierarchy. Engineer-authored environments and reusable infrastructure count as material production when they support a claim.
 
 One constraint is hard: a claim may reach `verified` only through `verifier-anthropic` on `anthropic/claude-opus-5`, and that exact model must be absent from every model that materially produced the claim or its primary evidence. Model separation is necessary but not sufficient; the report must also contain a substantive alternate reconstruction or comparably strong attack.
 

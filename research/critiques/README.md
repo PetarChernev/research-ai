@@ -1,6 +1,6 @@
 # Internal Critiques
 
-Store fast second-pass GPT-5.6 Sol critiques here, using names such as
+Store fast second-pass GPT 6 critiques here, using names such as
 `D003-2026-08-22-openai-01.md` and `templates/internal-critique.md`. Each report
 must target frozen artifacts, identify its reviewer and originating models, and
 set `independent: false`.

@@ -1,7 +1,7 @@
 ---
 description: Finds and evaluates primary scientific sources, citation chains, exact evidence, regimes, and contradictions. Use for focused literature questions and evidence packets.
 mode: subagent
-model: openai/gpt-5.6-sol
+model: openai/gpt-6-astra
 color: info
 permission:
   "*": deny

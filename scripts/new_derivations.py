@@ -104,7 +104,7 @@ def main() -> int:
                     "TITLE": branch["title"],
                     "TARGET_CLAIMS_JSON": json.dumps(branch["target_claims"]),
                     "EXPLORATION_WAVE_JSON": json.dumps(wave),
-                    "PRODUCER_MODEL_JSON": json.dumps("openai/gpt-5.6-sol"),
+                    "PRODUCER_MODEL_JSON": json.dumps("openai/gpt-6-astra"),
                     "DATE": created_at,
                     "QUESTION": question,
                     "BRANCH_CHARTER": branch["charter"],

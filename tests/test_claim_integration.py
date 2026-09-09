@@ -20,7 +20,7 @@ date: "2026-02-01"
 verifier: "verifier-anthropic"
 verifier_model: "anthropic/claude-opus-5"
 user_approved: true
-originating_models: ["openai/gpt-5.6-sol"]
+originating_models: ["openai/gpt-6-astra"]
 source_artifacts: ["research/claims/ledger.yaml"]
 ---
 
@@ -284,7 +284,7 @@ class VerifiedStatusTests(WorkspaceTestCase):
         path.write_text(
             path.read_text(encoding="utf-8")
             .replace("verifier-anthropic", "internal-critic-openai")
-            .replace("anthropic/claude-opus-5", "openai/gpt-5.6-sol"),
+            .replace("anthropic/claude-opus-5", "openai/gpt-6-astra"),
             encoding="utf-8",
         )
         self.write_ledger(

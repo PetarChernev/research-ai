@@ -1,7 +1,7 @@
 ---
 description: Performs analytical derivations, modeling, asymptotics, perturbation theory, dimensional reasoning, and limit checks. Use for theory artifacts and analytic tests.
 mode: subagent
-model: openai/gpt-5.6-sol
+model: openai/gpt-6-astra
 color: accent
 permission:
   "*": deny
