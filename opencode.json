@@ -1,5 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "model": "openai/gpt-6-astra",
   "default_agent": "research-director",
   "instructions": [
     "AGENTS.md"

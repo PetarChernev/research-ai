@@ -36,7 +36,7 @@ The producer and review roles use closed tool allowlists and scoped write access
 - `theorist` writes only derivation artifacts, and exposes candidate machine-checkable obligations from substantial derivations.
 - `scientific-computation` chooses the computational representation and trust strategy, defines machine-check semantics and acceptance criteria, writes experiment and claim-specific obligation code, validates reusable infrastructure against the intended mathematics, and runs obligations through the deterministic wrapper. It cannot write `research/checks/**/result.json`.
 - `engineer` is a provisioned implementation subagent under `scientific-computation`, not a peer scientific role. It writes only reusable software and tests under `research/computation/` and research-scoped environment definitions under `research/environment/`, from a bounded computational contract. It cannot write claim checks, claims, state, decisions, canonical results, or verification reports.
-- `internal-critic-openai` runs `openai/gpt-5.6-sol`, performs fast same-model second-pass attacks, and writes only `research/critiques/`. It is never independent evidence.
+- `internal-critic-openai` runs `openai/gpt-6-astra`, performs fast same-model second-pass attacks, and writes only `research/critiques/`. It is never independent evidence.
 - `verifier-anthropic` runs `anthropic/claude-opus-5`, accepts only user-approved final audits, and is the sole writer of independent verification reports.
 
 There is deliberately no separate global agent for symbolic algebra, formal proof, numerical simulation, PDEs, theorem proving, or code review. Those are methods the `scientific-computation` role uses when the research requires them, recorded in `research/COMPUTATION.md`. Adding a global agent per method would multiply roles without adding a materially different scientific operation.
@@ -155,20 +155,20 @@ This workspace targets the interfaces verified with OpenCode `1.18.18`:
 - auto-discovered project plugins in `.opencode/plugins/`;
 - scoped permission patterns and one bounded two-level delegation path.
 
-Every agent's model is configured independently in its own file under `.opencode/agents/`, using the `model:` frontmatter field. There is no inheritance requirement: the director may run on one provider while a producer runs on another. An agent with no `model:` field follows the invoking primary model, which is a convenience default rather than a guarantee. Model changes are config-time and take effect only after OpenCode restarts.
+Every agent's model is configured independently in its own file under `.opencode/agents/`, using the `model:` frontmatter field. There is no inheritance requirement: the director may run on one provider while a producer runs on another. An agent with no `model:` field follows the project model in `opencode.json`, which is a convenience default rather than a guarantee. Skills execute within the invoking agent and do not define a separate model, so they use that agent's pinned model. Model changes are config-time and take effect only after OpenCode restarts.
 
 Current assignment:
 
 | Agent                    | Model                        | Rationale                                                                                       |
 | ------------------------ | ---------------------------- | ----------------------------------------------------------------------------------------------- |
-| `research-director`      | `openai/gpt-5.6-sol`         | Fixed orchestration and synthesis model; keeps Opus unused by production.                       |
-| `theorist`               | `openai/gpt-5.6-sol`         | Analytical derivation on a provider distinct from the default verifier.                         |
-| `literature-explorer`    | `openai/gpt-5.6-sol`         | Creative discovery at temperature 0.6; produces non-evidentiary candidate leads.                |
-| `literature`             | `openai/gpt-5.6-sol`         | Strong source judgment while preserving the reserved Opus boundary.                             |
-| `scientific-computation` | `openai/gpt-5.6-sol`         | Fixed authorship for computational semantics and claim-specific checks.                         |
-| `engineer`               | `openai/gpt-5.6-sol`         | Fixed implementation provenance for research substrate.                                         |
+| `research-director`      | `openai/gpt-6-astra`         | Fixed orchestration and synthesis model; keeps Opus unused by production.                       |
+| `theorist`               | `openai/gpt-6-astra`         | Analytical derivation on a provider distinct from the default verifier.                         |
+| `literature-explorer`    | `openai/gpt-6-astra`         | Creative discovery at temperature 0.6; produces non-evidentiary candidate leads.                |
+| `literature`             | `openai/gpt-6-astra`         | Strong source judgment while preserving the reserved Opus boundary.                             |
+| `scientific-computation` | `openai/gpt-6-astra`         | Fixed authorship for computational semantics and claim-specific checks.                         |
+| `engineer`               | `openai/gpt-6-astra`         | Fixed implementation provenance for research substrate.                                         |
 | `bibliographer`          | `anthropic/claude-haiku-4-5` | Mechanical BibTeX formatting and identifier checking; no evidence judgment.                     |
-| `internal-critic-openai` | `openai/gpt-5.6-sol`         | Fast same-model critique; explicitly not independent verification.                              |
+| `internal-critic-openai` | `openai/gpt-6-astra`         | Fast same-model critique; explicitly not independent verification.                              |
 | `verifier-anthropic`     | `anthropic/claude-opus-5`    | Pinned to create a verification model boundary.                                                 |
 
 Producer and review models are pinned deliberately. Opus 5 is absent from every producer role and appears only in `verifier-anthropic`; its identity and explicit user approval are asserted in every independent report. To change a model, edit agent frontmatter and update the documented, validated, and reported identity together.

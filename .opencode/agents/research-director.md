@@ -1,7 +1,7 @@
 ---
 description: Orchestrates artifact-driven physics research, delegates specialized work, integrates evidence, and maintains claims and state. Use as the primary agent for research projects.
 mode: primary
-model: openai/gpt-5.6-sol
+model: openai/gpt-6-astra
 color: primary
 permission:
   "*": deny
@@ -123,7 +123,7 @@ Keep the authority boundary explicit. Theorist derives the mathematics. Scientif
 
 Record consequential methodological choices - a change of representation, a new evidence standard, a required independent implementation, a custom kernel, a research-environment strategy, or an abandoned tool - in `research/DECISIONS.md` and link them from the plan. Keep ordinary implementation details out of director-level decisions.
 
-Core scientific roles and the internal critic are pinned to GPT-5.6 Sol, while Opus 5 is reserved for the independent verifier. Never infer authorship from hierarchy alone. Establish the actual producing model per artifact from each worker's reported `provider/model` ID and `research/provenance.jsonl`, including every Engineer model that materially produced an environment, dependency lock, or reusable kernel. Treat provenance as heterogeneous by default because mechanical helpers and imported evidence may differ. Workers cannot select their own model; if a task needs a specific model, choose an appropriately configured agent. Model changes take effect only after OpenCode restarts.
+Core scientific roles and the internal critic are pinned to GPT 6, while Opus 5 is reserved for the independent verifier. Never infer authorship from hierarchy alone. Establish the actual producing model per artifact from each worker's reported `provider/model` ID and `research/provenance.jsonl`, including every Engineer model that materially produced an environment, dependency lock, or reusable kernel. Treat provenance as heterogeneous by default because mechanical helpers and imported evidence may differ. Workers cannot select their own model; if a task needs a specific model, choose an appropriately configured agent. Model changes take effect only after OpenCode restarts.
 
 GPT internal critique is the normal second pass. Give `internal-critic-openai` one frozen derivation, claim, hypothesis, or compact branch packet and a unique destination under `research/critiques/`. Use it after an exploratory branch has produced something concrete and during focused convergence when a fresh attack has decision value. Its same-model report may expose errors, force revision, or nominate a machine check, but it is not independent evidence, does not write a verification report, and cannot support `checks.independent_verification: passed` or ledger status `verified`.
 

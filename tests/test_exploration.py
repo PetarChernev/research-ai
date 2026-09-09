@@ -14,8 +14,8 @@ target_artifacts: ["research/derivations/D001.md"]
 outcome: revision-required
 independent: false
 reviewer: internal-critic-openai
-reviewer_model: openai/gpt-5.6-sol
-originating_models: ["openai/gpt-5.6-sol"]
+reviewer_model: openai/gpt-6-astra
+originating_models: ["openai/gpt-6-astra"]
 created_at: "2026-08-22T00:00:00Z"
 ---
 
@@ -71,7 +71,7 @@ class DerivationPortfolioTests(WorkspaceTestCase):
         for item in payload["derivations"]:
             text = (self.root / item["path"]).read_text(encoding="utf-8")
             self.assertIn('exploration_wave: "initial-map"', text)
-            self.assertIn("producer_model: \"openai/gpt-5.6-sol\"", text)
+            self.assertIn("producer_model: \"openai/gpt-6-astra\"", text)
             self.assertIn("## Branch charter", text)
         report = validate(self.root)
         self.assertTrue(report["valid"], report["errors"])

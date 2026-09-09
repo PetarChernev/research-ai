@@ -49,7 +49,7 @@ class LiteratureExplorerTests(unittest.TestCase):
     def test_creative_discovery_role_is_pinned_and_scoped(self) -> None:
         self.assertTrue(self.path.is_file())
         self.assertEqual(self.metadata["mode"], "subagent")
-        self.assertEqual(self.metadata["model"], "openai/gpt-5.6-sol")
+        self.assertEqual(self.metadata["model"], "openai/gpt-6-astra")
         self.assertEqual(self.metadata["temperature"], 0.6)
         self.assertEqual(
             self.permission["edit"],
@@ -199,7 +199,7 @@ class ScientificComputationScopeTests(unittest.TestCase):
     def test_internal_critic_is_non_independent_and_separately_scoped(self) -> None:
         path = AGENTS / "internal-critic-openai.md"
         metadata = frontmatter(path)
-        self.assertEqual(metadata["model"], "openai/gpt-5.6-sol")
+        self.assertEqual(metadata["model"], "openai/gpt-6-astra")
         permission = metadata["permission"]
         self.assertEqual(
             permission["edit"], {"*": "deny", "research/critiques/**": "allow"}
@@ -223,7 +223,7 @@ class ScientificComputationScopeTests(unittest.TestCase):
             "scientific-computation.md",
             "engineer.md",
         ):
-            self.assertEqual(frontmatter(AGENTS / name)["model"], "openai/gpt-5.6-sol")
+            self.assertEqual(frontmatter(AGENTS / name)["model"], "openai/gpt-6-astra")
 
 
 class EngineerScopeTests(unittest.TestCase):
@@ -275,6 +275,7 @@ class DelegationDepthTests(unittest.TestCase):
         import json
 
         config = json.loads((PROJECT_ROOT / "opencode.json").read_text(encoding="utf-8"))
+        self.assertEqual(config["model"], "openai/gpt-6-astra")
         self.assertEqual(config["subagent_depth"], 2)
         scientific = frontmatter(AGENTS / "scientific-computation.md")["permission"]
         engineer = frontmatter(AGENTS / "engineer.md")["permission"]

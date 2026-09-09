@@ -1,7 +1,7 @@
 ---
 description: Builds, tests, documents, and maintains research-specific software and execution environments from a computational contract supplied by Scientific Computation. Use only when the computational substrate must be created, extended, repaired, or materially changed.
 mode: subagent
-model: openai/gpt-5.6-sol
+model: openai/gpt-6-astra
 color: info
 permission:
   "*": deny

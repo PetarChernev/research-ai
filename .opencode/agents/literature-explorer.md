@@ -1,7 +1,7 @@
 ---
 description: Searches broadly across fields, terminology, history, and mathematical structures for unexpected research connections. Use for creative literature discovery, not source validation.
 mode: subagent
-model: openai/gpt-5.6-sol
+model: openai/gpt-6-astra
 temperature: 0.6
 color: info
 permission:

@@ -1492,8 +1492,8 @@ def validate_internal_critiques(root: Path, report: Report) -> int:
             report.error(location, "internal critiques must set independent: false")
         if metadata.get("reviewer") != "internal-critic-openai":
             report.error(location, "reviewer must be internal-critic-openai")
-        if metadata.get("reviewer_model") != "openai/gpt-5.6-sol":
-            report.error(location, "reviewer_model must be openai/gpt-5.6-sol")
+        if metadata.get("reviewer_model") != "openai/gpt-6-astra":
+            report.error(location, "reviewer_model must be openai/gpt-6-astra")
         if not valid_choice(metadata.get("outcome"), CRITIQUE_OUTCOMES):
             report.error(location, f"invalid internal critique outcome '{metadata.get('outcome')}'")
         if not valid_timestamp(metadata.get("created_at")):
