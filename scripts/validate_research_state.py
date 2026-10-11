@@ -758,6 +758,36 @@ def validate_obligations(
                 "obligation directories must be named ONNN; allocate IDs with scripts/new_check.py",
             )
             continue
+        reservation = entry / "reservation.yaml"
+        if reservation.is_file():
+            location = relative(root, reservation)
+            try:
+                metadata = yaml.safe_load(reservation.read_text(encoding="utf-8"))
+            except (OSError, UnicodeError, yaml.YAMLError) as exc:
+                report.error(location, str(exc))
+                continue
+            if not isinstance(metadata, dict):
+                report.error(location, "reservation must contain a mapping")
+                continue
+            if metadata.get("id") != entry.name or metadata.get("status") != "reserved":
+                report.error(location, "reservation needs matching id and status: reserved")
+            if not valid_timestamp(metadata.get("recorded_at")):
+                report.error(location, "recorded_at must be a timezone-aware ISO-8601 timestamp")
+            if not isinstance(metadata.get("reason"), str) or not metadata["reason"].strip():
+                report.error(location, "reservation needs a nonempty reason")
+            if not (entry / "README.md").is_file():
+                report.error(location, "reservation needs README.md")
+            # A reservation records an unused ID, never a way to hide failed or
+            # incomplete evidence. Only documentation and empty directories fit.
+            for descendant in entry.rglob("*"):
+                if descendant.is_symlink():
+                    report.error(location, "reserved ID must not contain symlinks")
+                    continue
+                if descendant in (reservation, entry / "README.md"):
+                    continue
+                if not descendant.is_dir():
+                    report.error(location, "reserved ID contains evidence or unexpected files")
+            continue
         obligations[entry.name] = Obligation(id=entry.name, path=entry)
 
     for obligation_id, obligation in obligations.items():
@@ -1492,8 +1522,13 @@ def validate_internal_critiques(root: Path, report: Report) -> int:
             report.error(location, "internal critiques must set independent: false")
         if metadata.get("reviewer") != "internal-critic-openai":
             report.error(location, "reviewer must be internal-critic-openai")
-        if metadata.get("reviewer_model") != "openai/gpt-6-astra":
-            report.error(location, "reviewer_model must be openai/gpt-6-astra")
+        # Artifact provenance survives deployment model changes. Keep this
+        # historical allowlist separate from the current agent configuration;
+        # never rewrite an older review's author to match today's model pin.
+        if metadata.get("reviewer_model") not in (
+            "openai/gpt-6-astra", "openai/gpt-5.6-sol"
+        ):
+            report.error(location, "reviewer_model must be a supported OpenAI internal critic model")
         if not valid_choice(metadata.get("outcome"), CRITIQUE_OUTCOMES):
             report.error(location, f"invalid internal critique outcome '{metadata.get('outcome')}'")
         if not valid_timestamp(metadata.get("created_at")):

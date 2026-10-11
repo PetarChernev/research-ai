@@ -87,6 +87,51 @@ class NewCheckTests(WorkspaceTestCase):
 
 
 class ObligationStructureValidationTests(WorkspaceTestCase):
+    def reserve_id(self):
+        directory = self.root / "research" / "checks" / "O018"
+        directory.mkdir()
+        (directory / "README.md").write_text("Reserved empty orphan ID.\n", encoding="utf-8")
+        (directory / "reservation.yaml").write_text(
+            'id: O018\nstatus: reserved\nrecorded_at: "2026-10-09T00:00:00Z"\n'
+            'reason: Empty orphan reconciled without inventing evidence.\n', encoding="utf-8"
+        )
+        return directory
+
+    def test_reserved_id_is_not_evidence_and_is_never_reused(self) -> None:
+        directory = self.reserve_id()
+        (directory / "history").mkdir()
+        payload = validate(self.root)
+        self.assertTrue(payload["valid"], payload["errors"])
+        self.assertEqual(payload["counts"]["obligations"], 0)
+        self.assertEqual(self.new_check()["id"], "O019")
+
+    def test_reservation_cannot_hide_evidence(self) -> None:
+        directory = self.reserve_id()
+        for name in ("result.json", "spec.yaml", "run.py", "history/result.json"):
+            with self.subTest(name=name):
+                path = directory / name
+                path.parent.mkdir(exist_ok=True)
+                path.write_text("{}", encoding="utf-8")
+                self.assert_error_matching(validate(self.root), "reserved ID contains evidence")
+                path.unlink()
+
+    def test_malformed_reservation_is_rejected(self) -> None:
+        directory = self.reserve_id()
+        path = directory / "reservation.yaml"
+        for content, error in (
+            ("[]", "reservation must contain a mapping"),
+            ("id: O017\nstatus: active\n", "matching id and status"),
+            ("id: O018\nstatus: reserved\n", "recorded_at must be"),
+        ):
+            with self.subTest(content=content):
+                path.write_text(content, encoding="utf-8")
+                self.assert_error_matching(validate(self.root), error)
+
+    def test_unmarked_orphan_still_fails(self) -> None:
+        directory = self.root / "research" / "checks" / "O018"
+        (directory / "logs").mkdir(parents=True)
+        self.assert_error_matching(validate(self.root), "missing required file 'spec.yaml'")
+
     def test_duplicate_or_malformed_obligation_directory_fails(self) -> None:
         self.new_check()
         duplicate = self.root / "research" / "checks" / "O001-old"

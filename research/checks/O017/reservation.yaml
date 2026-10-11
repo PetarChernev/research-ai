@@ -1,0 +1,4 @@
+id: O017
+status: reserved
+recorded_at: "2026-10-09T00:00:00Z"
+reason: Empty orphan directory reconciled during maintenance; retain ID without inventing an obligation or result.

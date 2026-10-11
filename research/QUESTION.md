@@ -1,8 +1,17 @@
 # Research Question
 
-Status: active — foundation stage
+Status: active — formulation-level breadth reset (W002-dimension-routes)
 
 ## Question
+
+Can we define one model in which the region possessing an extra spatial
+direction is not prescribed, exhibit its dynamics, and calculate its energy
+or its effect on a probe? The current task is to compare baseline realizations
+of dynamical dimensionality before committing to more derivations in one
+formulation. Exact intrinsic, emergent, and probe-relative dimension are
+distinct targets, not interchangeable answers.
+
+## Initiating ambition (preserved long-term question)
 
 **Initiating question (2026-08-19):**
 
@@ -10,7 +19,42 @@ Status: active — foundation stage
 
 This is the exact programmatic question distilled from the supplied working note **“Fermions as Local Dimensional Defects: Hopf-Framed Dynamical Dimension and a Solitonic Route to Spin-Statistics.”** The note is a source of conjectures and candidate calculations, not evidence that those conjectures hold.
 
-The **current bounded question** is the first dependency gate:
+## Current bounded question — user-directed reset, 2026-09-09
+
+> Can we define one model in which the region possessing an extra spatial
+> direction is not prescribed, exhibit its dynamics, and calculate its energy
+> or its effect on a probe? Before further deep derivations in one formulation,
+> what materially different routes could realize dynamical dimensionality as
+> an applicable theory?
+
+The active task is one eight-branch formulation-level exploration wave, frozen
+in `research/results/W002-dimension-routes-plan.md`. The initiating exact
+intrinsic `3+1/4+1` ambition remains the strongest target, not a mandatory
+assumption that excludes every useful intermediate model from comparison.
+Separate **intrinsic/topological dimension**, **emergent geometric dimension**,
+and **probe/scale-dependent accessible or propagation dimension** explicitly.
+A permanent bulk, finite tower, small nonzero circle, or vanishing propagation
+coefficient is a declared relaxation, never evidence for literal disappearance.
+
+For this wave, fixed-background classical/quantum toy models and discrete or
+matrix ontologies are admissible comparison routes. Require one persistent
+time, no negative-energy kinetic term in the demonstrated sector, a dynamical
+region selector (not a hand-set radius profile), and a defined energy or probe
+observable. Initial data, couplings, and boundary conditions may be specified;
+the region's entire trajectory may not be prescribed. Stability, nucleation,
+relativistic covariance, universal probe coupling, and recovery of gravity are
+separate gates: mark what is demonstrated and what is deferred.
+
+Success for this wave is an internally critiqued route matrix and a small
+shortlist with explicit assumption costs, model sketches, discriminators, and
+next tasks. It is not eight completed gravitational theories. Hopf framing,
+spin/statistics, particles, and UV completion do not guide model selection now.
+No common computational stack is preselected for the new routes.
+
+## Preserved exact-continuum subprogram (not the whole current scope)
+
+The **previous bounded question**, still open within its restricted route, is
+the first dependency gate:
 
 > Does there exist a resolution-independent, Lorentz-covariant classical `4 \leftrightarrow 5` framework, formulated without an inverse coframe at rank change, whose bulk and transition equations follow from one variational principle and whose linearized initial-value problem is free of an evident constraint inconsistency, ghost, or loss of predictivity?
 
@@ -18,7 +62,11 @@ The Hopf defect is the first intended benchmark if this gate is passed, not an a
 
 ## Scope
 
-### Included now: foundation stage F0
+The active breadth scope is specified above. The remaining scope, observables,
+and F0/F1/F2 gates preserve the exact-continuum subprogram rather than imposing
+that route on every W002 comparison.
+
+### Included in that subprogram: foundation stage F0
 
 - Connected Lorentzian generalized spaces with only two regular open strata: total spacetime dimensions `d=4` and `d=5`, each with one timelike direction.
 - An asymptotically `3+1`-dimensional, Poincaré-invariant candidate vacuum.
@@ -32,7 +80,7 @@ The Hopf defect is the first intended benchmark if this gate is passed, not an a
 - Downstream benchmark, only after F0: a localized timelike world-tube with an exactly `d=5` core, an exactly `d=4` exterior, and Hopf-framed collapse data of charge `Q=1`.
 - Downstream topology observable: the map induced on fundamental groups by inclusion of the admissible Hopf sector into the full generalized-geometric configuration space, and the classes of a physical `2\pi` rotation and two-defect exchange.
 
-### Explicit exclusions from the present stage
+### Exclusions within that subprogram (not the breadth comparison)
 
 - A PRL-style manuscript, electron fit, Standard Model embedding, generations, or mass-spectrum fit.
 - Identification of the collapsing circle with electromagnetism; gauge charge and chirality remain separate open problems.
@@ -84,6 +132,17 @@ The Hopf defect is the first intended benchmark if this gate is passed, not an a
 - Gauge fixing, regularity class, admissible topology/rank changes, and the precise definition of tangent dimension at singular points are unresolved choices and must be fixed before theorem-level claims.
 
 ## Success criteria
+
+### Current breadth objective (W002)
+
+Complete the frozen eight-route matrix, one substantive hand-derived witness
+or scoped obstruction per route, a full first-pass barrier, fresh same-model
+critique for every completed route, and a synthesis that preserves assumption
+costs and prunes the build queue. Select the smallest next observable/theory
+gate without equating operational access with intrinsic dimension, generating
+non-discriminating checks, or restarting the old deep dive by default. This
+wave is complete; see `research/results/W002-dimension-routes-synthesis.md`.
+The F0/F1/F2 criteria below remain the exact-continuum subprogram's later gates.
 
 ### Gate F0-A — mathematical state space
 

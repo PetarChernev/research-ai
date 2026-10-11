@@ -201,6 +201,7 @@ class WorkspaceTestCase(unittest.TestCase):
             "derivations/D*",
             "hypotheses/H*",
             "critiques/*.md",
+            "literature/explorations/*",
             "computation/*",
             "results/verification/C*.md",
         ):

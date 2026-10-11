@@ -34,6 +34,19 @@ the obligation runner.
 
 ## Execution
 
+### Reserved orphan IDs
+
+An inspected empty orphan shell may retain its ID using `README.md` and
+`reservation.yaml` with `id`, `status: reserved`, timezone-aware `recorded_at`,
+and a nonempty `reason`. It is excluded from obligation counts and has no
+scientific outcome. The allocator still sees the directory and cannot reuse
+its ID. Validation rejects any other files (including nested historical
+evidence) or symlinks in a reservation; incomplete or failed obligations must
+never be converted into reservations. O016–O018 were reconciled this way on
+2026-10-09 after inspection found only empty subdirectories.
+
+### Running an obligation
+
 ```bash
 uv run --locked python scripts/run_check.py O001
 ```

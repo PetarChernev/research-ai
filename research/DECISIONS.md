@@ -1,5 +1,67 @@
 # Research Decisions
 
+## 2026-09-09: Retain a three-route shortlist and defer non-discriminating checks
+
+- **Decision:** Close W002 after all eight first passes and fresh internal
+  critiques. Shortlist D028 positive-radion domains for continuum operational
+  reach, D030 dynamical links for the cheapest transparent response model, and
+  D031 variable-incidence complexes as the distinct intrinsic challenger. Keep
+  D027 as a foundational reserve. Deprioritize D029's planar layer, D032's
+  global matrix geometry and D033's infinite-sheet rank change for the first
+  finite-region implementation. This is not a universal rejection of those
+  formalisms. Keep the ledger and independent-verification states unchanged.
+- **Reason:** The useful uncertainty is now the dimension/probe contract and
+  assumption cost, not a vote among correct algebraic toys. D028 needs an
+  accessible finite-lifetime channel; D030 retains N exterior states; D031 has
+  no matter probe of created interiors. No route meets the full intrinsic
+  relativistic target. D032's critic requires revision of its Hessian-to-locality
+  diagnostic, which is not adopted and remains unresolved in the frozen card.
+- **Evidence:** `research/results/W002-dimension-routes-synthesis.md`,
+  D027-D034, and all eight `DNNN-2026-09-09-openai-01.md` critiques. Worker
+  reports and producing provenance events confirm `openai/gpt-6-astra` for
+  all new scientific artifacts; this is correlated evidence only.
+- **Computational strategy:** No new obligation or infrastructure. Elementary
+  residual/rank/generator checks would not decide the route comparison;
+  D028's meaningful spectral/response candidate needs an explicit profile,
+  source, cutoff and time window, and D030's finite-region response is a
+  lower-cost competitor. First perform a bounded observable-contract fan-in.
+  Preserve D031's theory-first matter bridge as a separate route rather than
+  implicitly turning it into a discretization of a chosen continuum model.
+- **Alternatives considered:** Immediately run eight bookkeeping checks;
+  choose a numerical stack before defining the observable; repair matrix
+  locality by Hessian positivity; resume Palatini counterterms; or claim a
+  successful intrinsic theory from a wall force. Rejected because these
+  either miss the decision, overstate evidence or repeat the narrow deep dive.
+- **Reversibility and record:** Re-rank when a finite-domain observable or an
+  intrinsic matter-transfer construction changes the evidence. Prior live state
+  and plan were archived as `research/results/pre-W002-state.md` and
+  `research/results/pre-W002-computation.md`. Historical model IDs and orphan
+  check directories are not rewritten/filled to satisfy validation; inherited
+  structural blockers are reported separately from scientific results.
+
+## 2026-09-09: Reopen formulation choice before another exact-collapse deep dive
+
+- **Decision:** At the user's request, run one width-eight theory wave,
+  `W002-dimension-routes`, around autonomous region selection plus an energy or
+  probe observable. Preserve the exact intrinsic continuum ambition but compare
+  it explicitly with emergent and operational realizations, each labelled with
+  its relaxed assumptions. Pause the formerly recommended collar-category task.
+- **Reason:** C007-C029 delimit one deeply investigated category/action route;
+  they do not establish that it is the right baseline or exclude other meanings
+  of dynamical dimension. The main uncertainty is now formulation and useful
+  observables, not another coefficient or interface identity.
+- **Evidence/authority:** User request of 2026-09-09; updated
+  `research/QUESTION.md`; frozen
+  `research/results/W002-dimension-routes-plan.md`.
+- **Methodological consequence:** Require concise route cards and one explicit
+  diagnostic each, a complete eight-branch first-pass barrier, and eight fresh
+  same-model critiques before ranking. Existing exact kernels are archival
+  methodology, not the default representation for the new portfolio. No Opus
+  audit or substantial infrastructure during this wave.
+- **Reversibility:** The prior exact-route claims and hypotheses are unchanged.
+  They may be resumed if a scope-explicit comparison favors that route. A toy
+  success cannot discharge C001-C006 or the original F0/F1 gates.
+
 Record consequential choices, not routine edits. Examples include abandoning a hypothesis, changing conventions, narrowing scope, selecting a numerical method, or accepting a contested source interpretation.
 
 ## Entry format

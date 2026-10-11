@@ -130,6 +130,19 @@ class InternalCritiqueTests(WorkspaceTestCase):
         self.assertFalse(payload["valid"])
         self.assert_error_matching(payload, "must set independent: false")
 
+    def test_historical_critic_model_remains_valid_provenance(self) -> None:
+        self.write_critique(CRITIQUE.replace("openai/gpt-6-astra", "openai/gpt-5.6-sol"))
+        payload = validate(self.root)
+        self.assertTrue(payload["valid"], payload["errors"])
+
+    def test_unsupported_critic_models_are_rejected(self) -> None:
+        for model in ("anthropic/claude-opus-5", "openai/unknown", "invalid"):
+            with self.subTest(model=model):
+                self.write_critique(CRITIQUE.replace(
+                    "reviewer_model: openai/gpt-6-astra", f"reviewer_model: {model}"
+                ))
+                self.assert_error_matching(validate(self.root), "supported OpenAI internal critic model")
+
     def test_internal_critique_cannot_use_verification_outcome(self) -> None:
         self.write_critique(
             CRITIQUE.replace("outcome: revision-required", "outcome: verified").replace(
